@@ -1,17 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="Geometry">
+      <UniqueIdentifier>{f59ffb61-dac2-44bd-82b0-ac7c32417310}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="Agent">
+      <UniqueIdentifier>{b6008634-5e89-4bde-b217-818d78a2e01c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Geometry\Header files">
+      <UniqueIdentifier>{681578d7-cd94-435e-b0cd-d261f303a49f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Geometry\Source files">
+      <UniqueIdentifier>{70ea49cf-810b-4915-b87f-efca29ab72ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Agent\Header files">
+      <UniqueIdentifier>{7ce08144-6ec5-411a-932c-a22bf0a8fa9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Agent\Source files">
+      <UniqueIdentifier>{be45e4a5-819e-44cf-a095-218b7787827b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
