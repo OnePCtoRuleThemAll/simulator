@@ -24,6 +24,9 @@
     <ClInclude Include="GeometryBase.h">
       <Filter>Geometry\Header files</Filter>
     </ClInclude>
+    <ClInclude Include="Point.h">
+      <Filter>Geometry\Header files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GeometryBase.cpp">
