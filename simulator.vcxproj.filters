@@ -20,4 +20,14 @@
       <UniqueIdentifier>{be45e4a5-819e-44cf-a095-218b7787827b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GeometryBase.h">
+      <Filter>Geometry\Header files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GeometryBase.cpp">
+      <Filter>Geometry\Source files</Filter>
+    </ClCompile>
+  </ItemGroup>
 </Project>
