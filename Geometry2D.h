@@ -10,19 +10,35 @@ namespace Geometry2D
 	struct Point 
 		: GeomteryBase
 	{
+		/// <summary> Constructor. </summary>
 		Point();
 
+		/// <summary>Parameterized constructor. </summary>
+		/// <param name = "positionX"> Position X of point. </param>
+		/// /// <param name = "positionX"> Position  of point. </param>
 		Point(T positionX, T positionY);
 
+		/// <summary>Copy constructor. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
 		Point(Point<T>& other);
 
+		/// <summary>Destructor. </summary>
 		~Point();
 
+		/// <summary> Assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
 		GeomteryBase& assign(GeomteryBase& other)override;
 
+		/// <summary> Objcet equality. </summary>
+		/// <param name="other">Object to compare with. </param>
+		/// <returns>True if objects are equal both in types and in values. </returns>
 		bool equals(GeomteryBase& other) override;
 
+		/// <summary> Postion X of point. </summary>
 		T mPositionX;
+
+		/// <summary> Postion Y of point. </summary>
 		T mPositionY;
 	};
 
@@ -81,6 +97,10 @@ namespace Geometry2D
 		return false;
 	}
 
+	/// <summary>Distance between two points. </summary>
+	/// <param name = "point1"> First point. </param>
+	/// <param name = "point2"> Second point. </param>
+	/// <returns> Returns distance between two points. </returns>
 	template<typename T>
 	double distanceBetweenPoints(Point<T>& point1, Point<T>& point2);
 
