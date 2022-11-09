@@ -59,9 +59,9 @@ namespace Geometry2D
 	template<typename T>
 	inline Point<T>::Point(Point<T>& other)
 	{
-		mPositionX = other.mPositionX;
-		mPositionY = other.mPositionY;
+		this->assign(other);
 	}
+
 	template<typename T>
 	inline Point<T>::~Point()
 	{
