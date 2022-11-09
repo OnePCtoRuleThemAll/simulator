@@ -128,7 +128,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="GeometryBase.h" />
-    <ClInclude Include="Point.h" />
+    <ClInclude Include="Geometry2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GeometryBase.cpp" />

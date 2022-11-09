@@ -18,39 +18,44 @@ namespace Geometry2D
 
 		~Point();
 
-		GeomteryBase& operator=(GeomteryBase& other) override;
-
 		GeomteryBase& assign(GeomteryBase& other)override;
 
-		bool operator==(GeomteryBase& other) override;
-
 		bool equals(GeomteryBase& other) override;
-
-		double distanceToPoint(Point& other);
-
 
 		T mPositionX;
 		T mPositionY;
 	};
 
+	double distanceBetweenPoints(Point<T>& point1, Point<T>& point2);
+
+	double distanceBetweenPoints(Point<T>& point1, Point<T>& point2) {
+		return sqrt(pow(point1. - x1, 2) + pow(y2 - y1, 2) * 1.0);
+	}
+
 	template<typename T>
 	inline Point<T>::Point()
 	{
-		this->mPositionX = 0;
-		this->mPositionY = 0;
+		mPositionX = 0;
+		mPositionY = 0;
 	}
 
 	template<typename T>
 	inline Point<T>::Point(T positionX, T positionY)
 	{
-		this->mPositionX = positionX;
-		this->mPositionY = positionY;
+		mPositionX = positionX;
+		mPositionY = positionY;
 	}
 
 	template<typename T>
 	inline Point<T>::Point(Point<T>& other)
 	{
-		this->mPositionX = other.mPositionX;
-		this->mPositionY = other.mPositionY;
+		mPositionX = other.mPositionX;
+		mPositionY = other.mPositionY;
+	}
+	template<typename T>
+	inline Point<T>::~Point()
+	{
+		mPositionX = 0;
+		mPositionY = 0;
 	}
 }

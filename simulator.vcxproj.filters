@@ -24,7 +24,7 @@
     <ClInclude Include="GeometryBase.h">
       <Filter>Geometry\Header files</Filter>
     </ClInclude>
-    <ClInclude Include="Point.h">
+    <ClInclude Include="Geometry2D.h">
       <Filter>Geometry\Header files</Filter>
     </ClInclude>
   </ItemGroup>
