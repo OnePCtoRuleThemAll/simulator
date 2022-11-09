@@ -26,12 +26,6 @@ namespace Geometry2D
 		T mPositionY;
 	};
 
-	double distanceBetweenPoints(Point<T>& point1, Point<T>& point2);
-
-	double distanceBetweenPoints(Point<T>& point1, Point<T>& point2) {
-		return sqrt(pow(point1. - x1, 2) + pow(y2 - y1, 2) * 1.0);
-	}
-
 	template<typename T>
 	inline Point<T>::Point()
 	{
@@ -58,4 +52,42 @@ namespace Geometry2D
 		mPositionX = 0;
 		mPositionY = 0;
 	}
+
+	template<typename T>
+	inline GeomteryBase& Point<T>::assign(GeomteryBase& other)
+	{
+		if(this != &other)
+		{
+			Point<T>& otherPoint = dynamic_cast<Point<T>&>(other);
+			mPositionX = otherPoint.mPositionX;
+			mPositionY = otherPoint.mPositionY;
+		}
+
+		return *this;
+	}
+
+	template<typename T>
+	inline bool Point<T>::equals(GeomteryBase& other)
+	{
+		if (this == &other) {
+			return true;
+		}
+		else {
+			Point<T>* otherPoint = dynamic_cast<Point<T>*>(&other);
+			if (otherPoint != nullptr && otherPoint->mPositionX == mPositionX && otherPoint->mPositionY == mPositionY) {
+			return true;
+			}
+		}
+		return false;
+	}
+
+	template<typename T>
+	double distanceBetweenPoints(Point<T>& point1, Point<T>& point2);
+
+	template<typename T>
+	double distanceBetweenPoints(Point<T>& point1, Point<T>& point2) {
+		return sqrt(pow(point1.mPositionX - point2.mPositionX, 2) + pow(point1.mPositionY - point2.mPositionY, 2) * 1.0);
+	}
+
+
 }
