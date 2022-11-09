@@ -14,6 +14,8 @@ namespace Geometry2D
 
 		Point(T positionX, T positionY);
 
+		Point(Point<T>& other);
+
 		~Point();
 
 		GeomteryBase& operator=(GeomteryBase& other) override;
@@ -27,7 +29,28 @@ namespace Geometry2D
 		double distanceToPoint(Point& other);
 
 
-		T mPositionX = 0;
-		T mPositionY = 0;
+		T mPositionX;
+		T mPositionY;
 	};
+
+	template<typename T>
+	inline Point<T>::Point()
+	{
+		this->mPositionX = 0;
+		this->mPositionY = 0;
+	}
+
+	template<typename T>
+	inline Point<T>::Point(T positionX, T positionY)
+	{
+		this->mPositionX = positionX;
+		this->mPositionY = positionY;
+	}
+
+	template<typename T>
+	inline Point<T>::Point(Point<T>& other)
+	{
+		this->mPositionX = other.mPositionX;
+		this->mPositionY = other.mPositionY;
+	}
 }
