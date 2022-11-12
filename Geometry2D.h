@@ -359,4 +359,13 @@ namespace Geometry2D
 	double angleBetweenVectors(Vector<T>& vector1, Vector<T>& vector2) {
 		return acos(dotProduct(vector1, vector2) / sqrt(sizeOfVector(vector1) * sizeOfVector(vector2))) * 180.0 / PI;
 	}
+
+	/// <summary> Rotate vector by angle. </summary>
+	/// <param name = "vector"> Vector. </param>
+	/// <param name = "degrees"> Angle in degrees. </param>
+	template<typename T>
+	void rotateVectorByAngle(Vector<T>& vector, double angle) {
+		vector.mDeltaX = oldX * cos(angle * (PI / 180)) + oldY * sin(angle * (PI / 180));
+		vector.mDeltaY = oldX * sin(angle * (PI / 180)) - oldY * cos(angle * (PI / 180));
+	}
 }
