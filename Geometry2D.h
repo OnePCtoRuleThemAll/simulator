@@ -365,7 +365,7 @@ namespace Geometry2D
 	/// <param name = "degrees"> Angle in degrees. </param>
 	template<typename T>
 	void rotateVectorByAngle(Vector<T>& vector, double angle) {
-		vector.mDeltaX = oldX * cos(angle * (PI / 180)) + oldY * sin(angle * (PI / 180));
-		vector.mDeltaY = oldX * sin(angle * (PI / 180)) - oldY * cos(angle * (PI / 180));
+		vector.mDeltaX = vector.mDeltaX * cos(angle * (PI / 180)) - vector.mDeltaY * sin(angle * (PI / 180));
+		vector.mDeltaY = vector.mDeltaX * sin(angle * (PI / 180)) + vector.mDeltaY * cos(angle * (PI / 180));
 	}
 }
