@@ -1,6 +1,9 @@
 #pragma once
 
 #include "GeometryBase.h"
+#include <cmath> 
+
+#define PI 3.14159265
 
 namespace Geometry2D 
 {
@@ -299,5 +302,61 @@ namespace Geometry2D
 			}
 		}
 		return false;
+	}
+
+	/// <summary>Size of vector. </summary>
+	/// <param name = "Vector"> Vector. </param>
+	/// <returns> Returns size of vector. </returns>
+	template<typename T>
+	double sizeOfVector(Vector<T> vector) {
+		return sqrt(pow(vector.mDeltaX, 2) + pow(vector.mDeltaY, 2) * 1.0);
+	}
+
+	/// <summary>Vector addtion. </summary>
+	/// <param name = "vector1"> First vector. </param>
+	/// <param name = "vector2"> Second vector. </param>
+	/// <returns> Returns result vector. </returns>
+	template<typename T>
+	Vector<T>& vectorAddition(Vector<T>& vector1, Vector<T>& vector2) {
+		Vector<T>* pResultVector = new Vector<T>(vector1.mDeltaX + vector2.mDeltaX, vector1.mDeltaY + vector2.mDeltaY);
+		//pResultVector->mDeltaX = vector1.mDeltaX + vector2.mDeltaX;
+		//pResultVector->mDeltaY = vector1.mDeltaY + vector2.mDeltaY;
+		return *pResultVector;
+	}
+
+	/// <summary>Vector multiplication. </summary>
+	/// <param name = "vector"> First vector. </param>
+	/// <param name = "scalary"> Value of scalary. </param>
+	template<typename T>
+	void vectorMultiplication(Vector<T>& vector, T scalary) {
+		vector.mDeltaX *= scalary; 
+		vector.mDeltaY *= scalary;
+	}
+
+	/// <summary> Dot product. </summary>
+	/// <param name = "vector1"> First vector. </param>
+	/// <param name = "vector2"> Second vector. </param>
+	/// <returns> Returns dot product. </returns>
+	template<typename T>
+	T dotProduct(Vector<T>& vector1, Vector<T>& vector2) {
+		 return vector1.mDeltaX * vector2.mDeltaX + vector1.mDeltaY * vector2.mDeltaY;
+	}
+
+	/// <summary>Move point by vector. </summary>
+	/// <param name = "vector"> Vector. </param>
+	/// <param name = "point"> Point. </param>
+	template<typename T>
+	void movePointByVector(Vector<T>& vector, Point<T>& point) {
+		point.mPositionX += vector.mDeltaX;
+		point.mPositionY += vector.mDeltaY;
+	}
+
+	/// <summary> Angle between vectors. </summary>
+	/// <param name = "vector1"> First vector. </param>
+	/// <param name = "vector2"> Second vector. </param>
+	/// <returns> Returns angle between vectors in degrees. </returns>
+	template<typename T>
+	double angleBetweenVectors(Vector<T>& vector1, Vector<T>& vector2) {
+		return acos(dotProduct(vector1, vector2) / sqrt(sizeOfVector(vector1) * sizeOfVector(vector2))) * 180.0 / PI;
 	}
 }
