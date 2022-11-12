@@ -20,7 +20,12 @@ namespace Geometry2D
 
 		/// <summary>Copy constructor. </summary>
 		/// <param name = "other"> Source objcet of taken properties. </param>
-		Point(Point<T>& other);
+		Point(const Point<T>& other);
+
+
+		/// <summary>Move constructor. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		Point(Point<T>&& other);
 
 		/// <summary>Destructor. </summary>
 		~Point();
@@ -28,7 +33,17 @@ namespace Geometry2D
 		/// <summary> Assign of object. </summary>
 		/// <param name = "other"> Source objcet of taken properties. </param>
 		/// <returns> Adress of the object. </returns>
-		GeomteryBase& assign(GeomteryBase& other)override;
+		GeomteryBase& assign(const GeomteryBase& other)override;
+
+		/// <summary> Move assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		Point<T>& assign(Point<T>&& other)override;
+
+		/// <summary> Assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		Point<T>& assign(const Point<T>& other)override;
 
 		/// <summary> Objcet equality. </summary>
 		/// <param name="other">Object to compare with. </param>
@@ -43,23 +58,32 @@ namespace Geometry2D
 	};
 
 	template<typename T>
-	inline Point<T>::Point()
+	inline Point<T>::Point() :
+		mPositionX(0),
+		mPositionY(0)
 	{
-		mPositionX = 0;
-		mPositionY = 0;
 	}
 
 	template<typename T>
-	inline Point<T>::Point(T positionX, T positionY)
+	inline Point<T>::Point(T positionX, T positionY) :
+		mPositionX(positionX),
+		mPositionY(positionY)
 	{
-		mPositionX = positionX;
-		mPositionY = positionY;
 	}
 
 	template<typename T>
-	inline Point<T>::Point(Point<T>& other)
+	inline Point<T>::Point(const Point<T>& other)
 	{
 		this->assign(other);
+	}
+
+	template<typename T>
+	inline Point<T>::Point(Point<T>&& other) :
+		mPositionX(other.mPositionX),
+		mPositionY(other.mPositionY)
+	{
+		other.mPositionX = 0;
+		other.mPositionY = 0;
 	}
 
 	template<typename T>
@@ -70,11 +94,38 @@ namespace Geometry2D
 	}
 
 	template<typename T>
-	inline GeomteryBase& Point<T>::assign(GeomteryBase& other)
+	inline GeomteryBase& Point<T>::assign(const GeomteryBase& other)
 	{
 		if(this != &other)
 		{
-			Point<T>& otherPoint = dynamic_cast<Point<T>&>(other);
+			Point<T>& otherPoint = static_cast<Point<T>&>(other);
+			mPositionX = otherPoint.mPositionX;
+			mPositionY = otherPoint.mPositionY;
+		}
+
+		return *this;
+	}
+
+	template<typename T>
+	inline Point<T>& Point<T>::assign(Point<T>&& other)
+	{
+		if (this != &other)
+		{
+			mPositionX = other.mPositionX;
+			mPositionY = other.mPositionY;
+			other.mPositionX = 0;
+			other.mPositionY = 0;
+		}
+
+		return *this;
+	}
+
+	template<typename T>
+	inline Point<T>& Point<T>::assign(const Point<T>& other)
+	{
+		if (this != &other)
+		{
+			Point<T>& otherPoint = Point<T>&(other);
 			mPositionX = otherPoint.mPositionX;
 			mPositionY = otherPoint.mPositionY;
 		}
@@ -101,9 +152,6 @@ namespace Geometry2D
 	/// <param name = "point1"> First point. </param>
 	/// <param name = "point2"> Second point. </param>
 	/// <returns> Returns distance between two points. </returns>
-	template<typename T>
-	double distanceBetweenPoints(Point<T>& point1, Point<T>& point2);
-
 	template<typename T>
 	double distanceBetweenPoints(Point<T>& point1, Point<T>& point2) {
 		return sqrt(pow(point1.mPositionX - point2.mPositionX, 2) + pow(point1.mPositionY - point2.mPositionY, 2) * 1.0);
