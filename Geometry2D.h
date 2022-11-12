@@ -15,7 +15,7 @@ namespace Geometry2D
 
 		/// <summary>Parameterized constructor. </summary>
 		/// <param name = "positionX"> Position X of point. </param>
-		/// /// <param name = "positionX"> Position  of point. </param>
+		/// /// <param name = "positionY"> Position Y of point. </param>
 		Point(T positionX, T positionY);
 
 		/// <summary>Copy constructor. </summary>
@@ -157,5 +157,147 @@ namespace Geometry2D
 		return sqrt(pow(point1.mPositionX - point2.mPositionX, 2) + pow(point1.mPositionY - point2.mPositionY, 2) * 1.0);
 	}
 
+	/// <summary> Struct representing point. </summary>
+	/// <typeparam name = "T"> Data type to compute with. </typepram>
+	template<typename T>
+	struct Vector
+		: GeomteryBase
+	{
+		/// <summary> Constructor. </summary>
+		Vector();
 
+		/// <summary>Parameterized constructor. </summary>
+		/// <param name = "deltaX"> Position X of point. </param>
+		/// /// <param name = "deltaY"> Position Y  of point. </param>
+		Vector(T deltaX, T deltaY);
+
+		/// <summary>Copy constructor. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		Vector(const Vector<T>& other);
+
+
+		/// <summary>Move constructor. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		Vector(Vector<T>&& other);
+
+		/// <summary>Destructor. </summary>
+		~Vector();
+
+		/// <summary> Assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		GeomteryBase& assign(const GeomteryBase& other)override;
+
+		/// <summary> Move assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		Vector<T>& assign(Vector<T>&& other)override;
+
+		/// <summary> Assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		Vector<T>& assign(const Vector<T>& other)override;
+
+		/// <summary> Objcet equality. </summary>
+		/// <param name="other">Object to compare with. </param>
+		/// <returns>True if objects are equal both in types and in values. </returns>
+		bool equals(GeomteryBase& other) override;
+
+		/// <summary> Delta X of vector. </summary>
+		T mDeltaX;
+
+		/// <summary> Delta Y of vector. </summary>
+		T mDeltaY;
+	};
+
+	template<typename T>
+	inline Vector<T>::Vector() :
+		mDeltaX(0),
+		mDeltaY(0)
+	{
+	}
+
+	template<typename T>
+	inline Vector<T>::Vector(T deltaX, T deltaY) :
+		mDeltaX(deltaX),
+		mDeltaY(deltaY)
+	{
+	}
+
+	template<typename T>
+	inline Vector<T>::Vector(const Vector<T>& other)
+	{
+		this->assign(other);
+	}
+
+	template<typename T>
+	inline Vector<T>::Vector(Vector<T>&& other) :
+		mDeltaX(other.mDeltaX),
+		mDeltaY(other.mDeltaY)
+	{
+		other.mDeltaX = 0;
+		other.mDeltaY = 0;
+	}
+
+	template<typename T>
+	inline Vector<T>::~Vector()
+	{
+		mDeltaX = 0;
+		mDeltaY = 0;
+	}
+
+	template<typename T>
+	inline GeomteryBase& Vector<T>::assign(const GeomteryBase& other)
+	{
+		if (this != &other)
+		{
+			Vector<T>& otherVector = static_cast<Vector<T>&>(other);
+			mDeltaX = otherVector.mDeltaX;
+			mDeltaY = otherVector.mDeltaY;
+		}
+
+		return *this;
+	}
+
+	template<typename T>
+	inline Vector<T>& Vector<T>::assign(Vector<T>&& other)
+	{
+		if (this != &other)
+		{
+			mDeltaX = other.mDeltaX;
+			mDeltaY = other.mDeltaY;
+			other.mDeltaX = 0;
+			other.mDeltaY = 0;
+		}
+
+		return *this;
+	}
+
+	template<typename T>
+	inline Vector<T>& Vector<T>::assign(const Vector<T>& other)
+	{
+		if (this != &other)
+		{
+			Vector<T>& otherVector = Vector<T>&(other);
+			mDeltaX = otherVector.mDeltaX;
+			mDeltaY = otherVector.mDeltaY;
+		}
+
+		return *this;
+	}
+
+	template<typename T>
+	inline bool Vector<T>::equals(GeomteryBase& other)
+	{
+		if (this == &other) {
+			return true;
+		}
+		else {
+			Vector<T>* otherVector = dynamic_cast<Vector<T>*>(&other);
+			if (otherVector != nullptr && otherVector->mDeltaX == mDeltaX && otherVector->mDeltaY == mDeltaY) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
