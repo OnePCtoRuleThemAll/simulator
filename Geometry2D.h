@@ -39,12 +39,12 @@ namespace Geometry2D
 		/// <summary> Move assign of object. </summary>
 		/// <param name = "other"> Source objcet of taken properties. </param>
 		/// <returns> Adress of the object. </returns>
-		Point<T>& operator=(Point<T>&& other) override;
+		Point<T>& operator=(Point<T>&& other);
 
 		/// <summary> Assign of object. </summary>
 		/// <param name = "other"> Source objcet of taken properties. </param>
 		/// <returns> Adress of the object. </returns>
-		Point<T>& assign(const Point<T>& other) override;
+		Point<T>& assign(const Point<T>& other);
 
 		/// <summary> Objcet equality. </summary>
 		/// <param name="other">Object to compare with. </param>
@@ -60,8 +60,8 @@ namespace Geometry2D
 		/// <summary>Move point by vector. </summary>
 		/// <param name = "vector"> Vector. </param>
 		/// <param name = "point"> Point. </param>
-		template<typename T>
-		void movePointByVector(const Vector<T>& vector);
+		//template<typename T>
+		//void movePointByVector(const Vector<T> vector);
 	};
 
 	template<typename T>
@@ -151,9 +151,6 @@ namespace Geometry2D
 		return false;
 	}
 
-	template<typename T>
-	inline void Geometry2D::Point<T>::movePointByVector(const Vector<T>& vector) {
-	}
 
 	/// <summary>Distance between two points. </summary>
 	/// <param name = "point1"> First point. </param>
@@ -198,12 +195,12 @@ namespace Geometry2D
 		/// <summary> Move assign of object. </summary>
 		/// <param name = "other"> Source objcet of taken properties. </param>
 		/// <returns> Adress of the object. </returns>
-		Vector<T>& operator=(Vector<T>&& other) override;
+		Vector<T>& operator=(Vector<T>&& other);
 
 		/// <summary> Assign of object. </summary>
 		/// <param name = "other"> Source objcet of taken properties. </param>
 		/// <returns> Adress of the object. </returns>
-		Vector<T>& assign(const Vector<T>& other) override;
+		Vector<T>& assign(const Vector<T>& other);
 
 		/// <summary> Objcet equality. </summary>
 		/// <param name="other">Object to compare with. </param>
