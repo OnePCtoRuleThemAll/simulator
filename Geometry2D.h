@@ -3,8 +3,6 @@
 #include "GeometryBase.h"
 #include <cmath> 
 
-#define PI 3.14159265
-
 namespace Geometry2D 
 {
 	/// <summary> Struct representing point. </summary>
@@ -58,6 +56,12 @@ namespace Geometry2D
 
 		/// <summary> Postion Y of point. </summary>
 		T mPositionY;
+
+		/// <summary>Move point by vector. </summary>
+		/// <param name = "vector"> Vector. </param>
+		/// <param name = "point"> Point. </param>
+		template<typename T>
+		void movePointByVector(const Vector<T>& vector);
 	};
 
 	template<typename T>
@@ -110,16 +114,12 @@ namespace Geometry2D
 	}
 
 	template<typename T>
-	inline Point<T>& Point<T>::assign(Point<T>&& other)
+	inline Point<T>& Point<T>::operator=(Point<T>&& other)
 	{
-		if (this != &other)
-		{
-			mPositionX = other.mPositionX;
-			mPositionY = other.mPositionY;
-			other.mPositionX = 0;
-			other.mPositionY = 0;
-		}
-
+		mPositionX = other.mPositionX;
+		mPositionY = other.mPositionY;
+		other.mPositionX = 0;
+		other.mPositionY = 0;
 		return *this;
 	}
 
@@ -151,13 +151,17 @@ namespace Geometry2D
 		return false;
 	}
 
+	template<typename T>
+	inline void Geometry2D::Point<T>::movePointByVector(const Vector<T>& vector) {
+	}
+
 	/// <summary>Distance between two points. </summary>
 	/// <param name = "point1"> First point. </param>
 	/// <param name = "point2"> Second point. </param>
 	/// <returns> Returns distance between two points. </returns>
 	template<typename T>
 	double distanceBetweenPoints(Point<T>& point1, Point<T>& point2) {
-		return sqrt(pow(point1.mPositionX - point2.mPositionX, 2) + pow(point1.mPositionY - point2.mPositionY, 2) * 1.0);
+		return sqrt(pow(point1.mPositionX - point2.mPositionX, 2) + pow(point1.mPositionY - point2.mPositionY, 2));
 	}
 
 	/// <summary> Struct representing vector. </summary>
@@ -189,17 +193,17 @@ namespace Geometry2D
 		/// <summary> Assign of object. </summary>
 		/// <param name = "other"> Source objcet of taken properties. </param>
 		/// <returns> Adress of the object. </returns>
-		GeomteryBase& assign(const GeomteryBase& other)override;
+		GeomteryBase& assign(const GeomteryBase& other) override;
 
 		/// <summary> Move assign of object. </summary>
 		/// <param name = "other"> Source objcet of taken properties. </param>
 		/// <returns> Adress of the object. </returns>
-		Vector<T>& assign(Vector<T>&& other)override;
+		Vector<T>& operator=(Vector<T>&& other) override;
 
 		/// <summary> Assign of object. </summary>
 		/// <param name = "other"> Source objcet of taken properties. </param>
 		/// <returns> Adress of the object. </returns>
-		Vector<T>& assign(const Vector<T>& other)override;
+		Vector<T>& assign(const Vector<T>& other) override;
 
 		/// <summary> Objcet equality. </summary>
 		/// <param name="other">Object to compare with. </param>
@@ -211,6 +215,20 @@ namespace Geometry2D
 
 		/// <summary> Delta Y of vector. </summary>
 		T mDeltaY;
+
+		/// <summary>Size of vector. </summary>
+		/// <param name = "Vector"> Vector. </param>
+		/// <returns> Returns size of vector. </returns>
+		double sizeOfVector();
+
+		/// <summary>Vector addtion. </summary>
+		/// <param name = "vector"> First vector. </param>
+		/// <returns> Returns result vector. </returns>
+		void vectorAddition(Vector<T>& vector);
+
+		/// <summary>Vector multiplication. </summary>
+		/// <param name = "scalary"> Value of scalary. </param>
+		void vectorMultiplication(T scalary);
 	};
 
 	template<typename T>
@@ -263,16 +281,12 @@ namespace Geometry2D
 	}
 
 	template<typename T>
-	inline Vector<T>& Vector<T>::assign(Vector<T>&& other)
+	inline Vector<T>& Vector<T>::operator=(Vector<T>&& other)
 	{
-		if (this != &other)
-		{
-			mDeltaX = other.mDeltaX;
-			mDeltaY = other.mDeltaY;
-			other.mDeltaX = 0;
-			other.mDeltaY = 0;
-		}
-
+		mDeltaX = other.mDeltaX;
+		mDeltaY = other.mDeltaY;
+		other.mDeltaX = 0;
+		other.mDeltaY = 0;
 		return *this;
 	}
 
@@ -304,12 +318,32 @@ namespace Geometry2D
 		return false;
 	}
 
+	template<typename T>
+	inline double Vector<T>::sizeOfVector()
+	{
+		return sqrt(pow(mDeltaX, 2) + pow(mDeltaY, 2));
+	}
+
+	template<typename T>
+	inline void Geometry2D::Vector<T>::vectorAddition(Vector<T>& vector)
+	{
+		mDeltaX += vector.mDeltaX;
+		mDeltaY += vector.mDeltaY;
+	}
+
+	template<typename T>
+	inline void Geometry2D::Vector<T>::vectorMultiplication(T scalary)
+	{
+		mDeltaX *= scalary;
+		mDeltaY *= scalary;
+	}
+
 	/// <summary>Size of vector. </summary>
 	/// <param name = "Vector"> Vector. </param>
 	/// <returns> Returns size of vector. </returns>
 	template<typename T>
 	double sizeOfVector(Vector<T> vector) {
-		return sqrt(pow(vector.mDeltaX, 2) + pow(vector.mDeltaY, 2) * 1.0);
+		return vector.sizeOfVector();
 	}
 
 	/// <summary>Vector addtion. </summary>
@@ -319,8 +353,6 @@ namespace Geometry2D
 	template<typename T>
 	Vector<T>& vectorAddition(Vector<T>& vector1, Vector<T>& vector2) {
 		Vector<T>* pResultVector = new Vector<T>(vector1.mDeltaX + vector2.mDeltaX, vector1.mDeltaY + vector2.mDeltaY);
-		//pResultVector->mDeltaX = vector1.mDeltaX + vector2.mDeltaX;
-		//pResultVector->mDeltaY = vector1.mDeltaY + vector2.mDeltaY;
 		return *pResultVector;
 	}
 
@@ -328,9 +360,10 @@ namespace Geometry2D
 	/// <param name = "vector"> First vector. </param>
 	/// <param name = "scalary"> Value of scalary. </param>
 	template<typename T>
-	void vectorMultiplication(Vector<T>& vector, T scalary) {
-		vector.mDeltaX *= scalary; 
-		vector.mDeltaY *= scalary;
+	Vector<T>& vectorMultiplication(const Vector<T>& vector, T scalary) {
+		Vector<T>* pResultVector = new Vector<T>(vector);
+		pResultVector->vectorMultiplication(scalary);
+		return *pResultVector;
 	}
 
 	/// <summary> Dot product. </summary>
@@ -346,26 +379,28 @@ namespace Geometry2D
 	/// <param name = "vector"> Vector. </param>
 	/// <param name = "point"> Point. </param>
 	template<typename T>
-	void movePointByVector(Vector<T>& vector, Point<T>& point) {
+	Point<T>& movePointByVector(const Vector<T>& vector, const Point<T>& point) {
 		point.mPositionX += vector.mDeltaX;
 		point.mPositionY += vector.mDeltaY;
+		Point<T>* pResultPoint = new Point<T>(point);
+		pResultPoint->mPositionX;
 	}
 
 	/// <summary> Angle between vectors. </summary>
 	/// <param name = "vector1"> First vector. </param>
 	/// <param name = "vector2"> Second vector. </param>
-	/// <returns> Returns angle between vectors in degrees. </returns>
+	/// <returns> Returns angle between vectors in radians. </returns>
 	template<typename T>
 	double angleBetweenVectors(Vector<T>& vector1, Vector<T>& vector2) {
-		return acos(dotProduct(vector1, vector2) / sqrt(sizeOfVector(vector1) * sizeOfVector(vector2))) * 180.0 / PI;
+		return acos(dotProduct(vector1, vector2) / sqrt(sizeOfVector(vector1) * sizeOfVector(vector2)));
 	}
 
 	/// <summary> Rotate vector by angle. </summary>
 	/// <param name = "vector"> Vector. </param>
-	/// <param name = "degrees"> Angle in degrees. </param>
+	/// <param name = "degrees"> Angle in radians. </param>
 	template<typename T>
 	void rotateVectorByAngle(Vector<T>& vector, double angle) {
-		vector.mDeltaX = vector.mDeltaX * cos(angle * (PI / 180)) - vector.mDeltaY * sin(angle * (PI / 180));
-		vector.mDeltaY = vector.mDeltaX * sin(angle * (PI / 180)) + vector.mDeltaY * cos(angle * (PI / 180));
+		vector.mDeltaX = vector.mDeltaX * cos(angle) - vector.mDeltaY * sin(angle);
+		vector.mDeltaY = vector.mDeltaX * sin(angle) + vector.mDeltaY * cos(angle);
 	}
 }
