@@ -12,7 +12,7 @@ namespace Geometry2D
 		/// <summary> Assign operator. </summary>
 		/// <param name = "other"> Source objcet of taken properties.</param>
 		/// <returns> Adress of the object. </returns>
-		virtual GeomteryBase& operator=(GeomteryBase& other);
+		GeomteryBase& operator=(GeomteryBase& other);
 
 		/// <summary>  Assigning object. </summary>
 		/// <param name = "other"> Source objcet of taken properties. </param>
@@ -22,7 +22,7 @@ namespace Geometry2D
 		/// <summary> Equals operator. </summary>
 		/// <param name="other">Object to compare with. </param>
 		/// <returns>True if objects are equal. </returns>
-		virtual bool operator==(GeomteryBase& other);
+		bool operator==(GeomteryBase& other);
 
 		/// <summary> Objcet equality. </summary>
 		/// <param name="other">Object to compare with. </param>
