@@ -36,22 +36,22 @@ namespace Geometry2D
 		/// <summary> Assign of object. </summary>
 		/// <param name = "other"> Source objcet of taken properties. </param>
 		/// <returns> Adress of the object. </returns>
-		GeomteryBase& assign(const GeomteryBase& other)override;
+		GeomteryBase& assign(const GeomteryBase& other) override;
 
 		/// <summary> Move assign of object. </summary>
 		/// <param name = "other"> Source objcet of taken properties. </param>
 		/// <returns> Adress of the object. </returns>
-		Point<T>& assign(Point<T>&& other)override;
+		Point<T>& assign(Point<T>&& other) override;
 
 		/// <summary> Assign of object. </summary>
 		/// <param name = "other"> Source objcet of taken properties. </param>
 		/// <returns> Adress of the object. </returns>
-		Point<T>& assign(const Point<T>& other)override;
+		Point<T>& assign(const Point<T>& other) override;
 
 		/// <summary> Objcet equality. </summary>
 		/// <param name="other">Object to compare with. </param>
 		/// <returns>True if objects are equal both in types and in values. </returns>
-		bool equals(GeomteryBase& other) override;
+		bool equals(const GeomteryBase& other) override;
 
 		/// <summary> Postion X of point. </summary>
 		T mPositionX;
@@ -137,7 +137,7 @@ namespace Geometry2D
 	}
 
 	template<typename T>
-	inline bool Point<T>::equals(GeomteryBase& other)
+	inline bool Point<T>::equals(const GeomteryBase& other)
 	{
 		if (this == &other) {
 			return true;
@@ -204,7 +204,7 @@ namespace Geometry2D
 		/// <summary> Objcet equality. </summary>
 		/// <param name="other">Object to compare with. </param>
 		/// <returns>True if objects are equal both in types and in values. </returns>
-		bool equals(GeomteryBase& other) override;
+		bool equals(const GeomteryBase& other) override;
 
 		/// <summary> Delta X of vector. </summary>
 		T mDeltaX;
@@ -290,7 +290,7 @@ namespace Geometry2D
 	}
 
 	template<typename T>
-	inline bool Vector<T>::equals(GeomteryBase& other)
+	inline bool Vector<T>::equals(const GeomteryBase& other)
 	{
 		if (this == &other) {
 			return true;
