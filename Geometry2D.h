@@ -164,7 +164,7 @@ namespace Geometry2D
 		return sqrt(pow(point1.mPositionX - point2.mPositionX, 2) + pow(point1.mPositionY - point2.mPositionY, 2));
 	}
 
-	/// <summary> Struct representing point. </summary>
+	/// <summary> Struct representing vector. </summary>
 	/// <typeparam name = "T"> Data type to compute with. </typepram>
 	template<typename T>
 	struct Vector
@@ -174,8 +174,8 @@ namespace Geometry2D
 		Vector();
 
 		/// <summary>Parameterized constructor. </summary>
-		/// <param name = "deltaX"> Position X of point. </param>
-		/// /// <param name = "deltaY"> Position Y  of point. </param>
+		/// <param name = "deltaX"> Delta X of vector. </param>
+		/// /// <param name = "deltaY"> Delta Y  of vector. </param>
 		Vector(T deltaX, T deltaY);
 
 		/// <summary>Copy constructor. </summary>
