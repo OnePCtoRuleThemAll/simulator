@@ -41,7 +41,7 @@ namespace Geometry2D
 		/// <summary> Move assign of object. </summary>
 		/// <param name = "other"> Source objcet of taken properties. </param>
 		/// <returns> Adress of the object. </returns>
-		Point<T>& assign(Point<T>&& other) override;
+		Point<T>& operator=(Point<T>&& other) override;
 
 		/// <summary> Assign of object. </summary>
 		/// <param name = "other"> Source objcet of taken properties. </param>
