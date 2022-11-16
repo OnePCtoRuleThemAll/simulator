@@ -5,6 +5,8 @@
 
 namespace Geometry2D 
 {
+	template <typename T> struct Vector;
+
 	/// <summary> Struct representing point. </summary>
 	/// <typeparam name = "T"> Data type to compute with. </typepram>
 	template<typename T>
@@ -59,9 +61,7 @@ namespace Geometry2D
 
 		/// <summary>Move point by vector. </summary>
 		/// <param name = "vector"> Vector. </param>
-		/// <param name = "point"> Point. </param>
-		//template<typename T>
-		//void movePointByVector(const Vector<T> vector);
+		void movePointByVector(const Vector<T>& vector);
 	};
 
 	template<typename T>
@@ -105,7 +105,7 @@ namespace Geometry2D
 	{
 		if(this != &other)
 		{
-			Point<T>& otherPoint = static_cast<Point<T>&>(other);
+			const Point<T>& otherPoint = static_cast<const Point<T>&>(other);
 			mPositionX = otherPoint.mPositionX;
 			mPositionY = otherPoint.mPositionY;
 		}
@@ -143,12 +143,19 @@ namespace Geometry2D
 			return true;
 		}
 		else {
-			Point<T>* otherPoint = dynamic_cast<Point<T>*>(&other);
+			const Point<T>* otherPoint = dynamic_cast<const Point<T>*>(&other);
 			if (otherPoint != nullptr && otherPoint->mPositionX == mPositionX && otherPoint->mPositionY == mPositionY) {
 			return true;
 			}
 		}
 		return false;
+	}
+
+	template<typename T>
+	inline void Geometry2D::Point<T>::movePointByVector(const Vector<T>& vector)
+	{
+		mPositionX += vector.mDeltaX;
+		mPositionY += vector.mDeltaY;
 	}
 
 
@@ -226,6 +233,16 @@ namespace Geometry2D
 		/// <summary>Vector multiplication. </summary>
 		/// <param name = "scalary"> Value of scalary. </param>
 		void vectorMultiplication(T scalary);
+
+		/// <summary> Angle between vectors. </summary>
+		/// <param name = "vector1"> First vector. </param>
+		/// <returns> Returns angle between vectors in radians. </returns>
+		double angleBetweenVectors(Vector<T>& vector);
+
+		/// <summary> Rotate vector by angle. </summary>
+		/// <param name = "vector"> Vector. </param>
+		/// <param name = "angle"> Angle in radians. </param>
+		void rotateVectorByAngle(double angle);
 	};
 
 	template<typename T>
@@ -269,7 +286,7 @@ namespace Geometry2D
 	{
 		if (this != &other)
 		{
-			Vector<T>& otherVector = static_cast<Vector<T>&>(other);
+			const Vector<T>& otherVector = static_cast<const Vector<T>&>(other);
 			mDeltaX = otherVector.mDeltaX;
 			mDeltaY = otherVector.mDeltaY;
 		}
@@ -307,7 +324,7 @@ namespace Geometry2D
 			return true;
 		}
 		else {
-			Vector<T>* otherVector = dynamic_cast<Vector<T>*>(&other);
+			const Vector<T>* otherVector = dynamic_cast<const Vector<T>*>(&other);
 			if (otherVector != nullptr && otherVector->mDeltaX == mDeltaX && otherVector->mDeltaY == mDeltaY) {
 				return true;
 			}
@@ -372,15 +389,21 @@ namespace Geometry2D
 		 return vector1.mDeltaX * vector2.mDeltaX + vector1.mDeltaY * vector2.mDeltaY;
 	}
 
+
 	/// <summary>Move point by vector. </summary>
 	/// <param name = "vector"> Vector. </param>
 	/// <param name = "point"> Point. </param>
 	template<typename T>
 	Point<T>& movePointByVector(const Vector<T>& vector, const Point<T>& point) {
-		point.mPositionX += vector.mDeltaX;
-		point.mPositionY += vector.mDeltaY;
 		Point<T>* pResultPoint = new Point<T>(point);
-		pResultPoint->mPositionX;
+		pResultPoint->movePointByVector(vector);
+		return *pResultPoint;
+	}
+
+	template<typename T>
+	inline double Geometry2D::Vector<T>::angleBetweenVectors(Vector<T>& vector)
+	{
+		return acos(dotProduct(*this, vector) / sqrt(this->sizeOfVector() * sizeOfVector(vector)));
 	}
 
 	/// <summary> Angle between vectors. </summary>
@@ -392,12 +415,21 @@ namespace Geometry2D
 		return acos(dotProduct(vector1, vector2) / sqrt(sizeOfVector(vector1) * sizeOfVector(vector2)));
 	}
 
+	template<typename T>
+	inline void Geometry2D::Vector<T>::rotateVectorByAngle(double angle)
+	{
+		mDeltaX = mDeltaX * cos(angle) - mDeltaY * sin(angle);
+		mDeltaY = mDeltaX * sin(angle) + mDeltaY * cos(angle);
+	}
+
 	/// <summary> Rotate vector by angle. </summary>
 	/// <param name = "vector"> Vector. </param>
 	/// <param name = "degrees"> Angle in radians. </param>
 	template<typename T>
-	void rotateVectorByAngle(Vector<T>& vector, double angle) {
-		vector.mDeltaX = vector.mDeltaX * cos(angle) - vector.mDeltaY * sin(angle);
-		vector.mDeltaY = vector.mDeltaX * sin(angle) + vector.mDeltaY * cos(angle);
+	Vector<T>& rotateVectorByAngle(Vector<T>& vector, double angle) {
+		Vector<T>* pResultVector = new Vector<T>(vector);
+		pResultVector->rotateVectorByAngle(angle);
+		return *pResultVector;
 	}
+	
 }
