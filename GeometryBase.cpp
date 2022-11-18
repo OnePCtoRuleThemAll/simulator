@@ -5,12 +5,12 @@ namespace  Geometry2D {
 	{
 	}
 
-	GeomteryBase& GeomteryBase::operator=(GeomteryBase& other)
+	GeomteryBase& GeomteryBase::operator=(const GeomteryBase& other)
 	{
 		return this->assign(other);
 	}
 
-	bool GeomteryBase::operator==(GeomteryBase& other)
+	bool GeomteryBase::operator==(const GeomteryBase& other)
 	{
 		return this->equals(other);
 	}
