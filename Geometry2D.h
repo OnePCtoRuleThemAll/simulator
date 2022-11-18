@@ -431,5 +431,144 @@ namespace Geometry2D
 		pResultVector->rotateVectorByAngle(angle);
 		return *pResultVector;
 	}
+
+	/// <summary> Struct representing vector. </summary>
+	/// <typeparam name = "T"> Data type to compute with. </typepram>
+	template<typename T>
+	struct Line
+		: GeomteryBase
+	{
+		/// <summary> Constructor. </summary>
+		Line();
+
+		/// <summary>Parameterized constructor. </summary>
+		/// <param name = "point1"> First point defining line. </param>
+		/// /// <param name = "point2"> Second point defining line. </param>
+		Line(const Point<T>& point1, const Point<T>& point2);
+
+		/// <summary>Copy constructor. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		Line(const Line<T>& other);
+
+
+		/// <summary>Move constructor. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		Line(Line<T>&& other);
+
+		/// <summary>Destructor. </summary>
+		~Line();
+
+		/// <summary> Assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		GeomteryBase& assign(const GeomteryBase& other) override;
+
+		/// <summary> Move assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		Line<T>& operator=(Line<T>&& other);
+
+		/// <summary> Assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		Line<T>& assign(const Line<T>& other);
+
+		/// <summary> Objcet equality. </summary>
+		/// <param name="other">Object to compare with. </param>
+		/// <returns>True if objects are equal both in types and in values. </returns>
+		bool equals(const GeomteryBase& other) override;
+
+		/// <summary> First vector defining line. </summary>
+		Point<T>* mPoint1;
+
+		/// <summary> Second vector defining line. </summary>
+		Point<T>* mPoint2;
+	};
 	
+	template<typename T>
+	inline Line<T>::Line() :
+		mPoint1(Point<T>()),
+		mPoint2(Point<T>())
+	{
+	}
+
+	template<typename T>
+	inline Line<T>::Line(const Point<T>& point1, const Point<T>& point2) :
+		mPoint1(Point<T>(point1)),
+		mPoint2(Point<T>(point2))
+	{
+	}
+
+	template<typename T>
+	inline Line<T>::Line(const Line<T>& other)
+	{
+		this->assign(other);
+	}
+
+	template<typename T>
+	inline Line<T>::Line(Line<T>&& other) :
+		mPoint1(other.mPoint1),
+		mPoint2(other.mPoint2)
+	{
+		other.mPoint1 = nullptr;
+		other.mPoint2 = nullptr;
+	}
+
+	template<typename T>
+	inline Line<T>::~Line()
+	{
+		mPoint1 = nullptr;
+		mPoint2 = nullptr;
+	}
+
+	template<typename T>
+	inline GeomteryBase& Line<T>::assign(const GeomteryBase& other)
+	{
+		if (this != &other)
+		{
+			const Line<T>& otherLine = static_cast<const Line<T>&>(other);
+			mPoint1->assign(otherLine.mPoint1);
+			mPoint2->assign(otherLine.mPoint2);
+		}
+
+		return *this;
+	}
+
+	template<typename T>
+	inline Line<T>& Line<T>::operator=(Line<T>&& other)
+	{
+		mPoint1 = other.mPoint1;
+		mPoint2 - other.mPoint2;
+		other.mPoint1 = nullptr;
+		other.mPoint2 = nullptr;
+		return *this;
+	}
+
+	template<typename T>
+	inline Line<T>& Line<T>::assign(const Line<T>& other)
+	{
+		if (this != &other)
+		{
+			Line<T>& otherLine = Line<T>&(other);
+			mPoint1->assign(otherLine.mPoint1);
+			mPoint2->assign(otherLine.mPoint2);
+		}
+		return *this;
+	}
+
+	template<typename T>
+	inline bool Line<T>::equals(const GeomteryBase& other)
+	{
+		if (this == &other) {
+			return true;
+		}
+		else {
+			const Line<T>* otherLine = dynamic_cast<const Line<T>*>(&other);
+			if (otherLine != nullptr && otherLine->mPoint1->equals(mPoint1) && otherLine->mPoint2->equals(mPoint2)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 }
