@@ -661,7 +661,7 @@ namespace Geometry2D
 	{
 		Vector<T> normalizedVector = this->normalizedVector();
 		return abs(normalizedVector.mDeltaX * point.mPositionX + normalizedVector.mDeltaY * point.mPositionY + this->coefficientOfLine()) /
-			sqrt(pow(normalizedVector.mDeltaX, 2) + pow(normalizedVector.mDeltaY, 2))
+			sqrt(pow(normalizedVector.mDeltaX, 2) + pow(normalizedVector.mDeltaY, 2));
 	}
 
 
