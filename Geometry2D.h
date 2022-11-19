@@ -483,6 +483,19 @@ namespace Geometry2D
 
 		/// <summary> Second vector defining line. </summary>
 		Point<T>* mPoint2;
+
+		/// <summary> Gradient of line. </summary>
+		/// <returns> Gradient of line. </returns>
+		double gradient();
+
+		/// <summary> Y-intercept. </summary>
+		/// <returns> Y-intercept of line. </returns>
+		double interceptWithAxisY();
+
+		/// <summary> Is point on line. </summary>
+		/// <param name="point"> Point. </param>
+		/// <returns>True if point lies on line. </returns>
+		bool isPointOnLine(Point<T>& point);
 	};
 	
 	template<typename T>
@@ -570,5 +583,27 @@ namespace Geometry2D
 		}
 		return false;
 	}
+
+	template<typename T>
+	inline double Line<T>::gradient()
+	{
+		return (mPoint2->mPositionY - mPoint1->mPositionY) / (mPoint2->mPositionX - mPoint1->mPositionX);
+	}
+
+	template<typename T>
+	inline double Line<T>::interceptWithAxisY()
+	{
+		return mPoint1->mPositionY - (this->gradient() * mPoint1->mPositionX);
+	}
+
+	template<typename T>
+	inline bool Line<T>::isPointOnLine(Point<T>& point)
+	{
+		if (point.mPositionY == ((this->gradient() * point.mPositionX) + this->interceptWithAxisY())) {
+			return true;
+		}
+		return false;
+	}
+
 
 }
