@@ -12,12 +12,13 @@ int main(int argc, char* argv[]) {
 
 	cout << cpyPoint->mPositionX << endl;
 	point->mPositionX = 0;
+	cout << point->mPositionX << endl;
 	cout << cpyPoint->mPositionX;
 	
-	//Geometry2D::Line<int>* line = new Geometry2D::Line<int>(*startPoint, *endPoint);
+	Geometry2D::Line<int>* line = new Geometry2D::Line<int>(*startPoint, *endPoint);
 	delete point;
 	delete vector;
-	//delete line;
+	delete line;
 
 	return 0;
 }

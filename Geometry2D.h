@@ -130,8 +130,8 @@ namespace Geometry2D
 		if (this != &other)
 		{
 			Point<T> otherPoint = Point<T>(other);
-			mPositionX = otherPoint->mPositionX;
-			mPositionY = otherPoint->mPositionY;
+			mPositionX = otherPoint.mPositionX;
+			mPositionY = otherPoint.mPositionY;
 		}
 
 		return *this;
@@ -529,15 +529,15 @@ namespace Geometry2D
 
 	template<typename T>
 	inline Line<T>::Line(const Point<T>& point1, const Point<T>& point2) :
-		mPoint1(Point<T>(point1)),
-		mPoint2(Point<T>(point2))
+		mPoint1(new Point<T>(point1)),
+		mPoint2(new Point<T>(point2))
 	{
 	}
 
 	template<typename T>
 	inline Line<T>::Line(const Line<T>& other) :
-		mPoint1(Point<T>(other.mPoint1)),
-		mPoint2(Point<T>(other.mPoint2))
+		mPoint1(new Point<T>(*(other.mPoint1))),
+		mPoint2(new Point<T>(*(other.mPoint2)))
 	{
 	}
 
@@ -563,8 +563,8 @@ namespace Geometry2D
 		if (this != &other)
 		{
 			const Line<T>& otherLine = static_cast<const Line<T>&>(other);
-			mPoint1->assign(otherLine.mPoint1);
-			mPoint2->assign(otherLine.mPoint2);
+			mPoint1->assign(*(otherLine.mPoint1));
+			mPoint2->assign(*(otherLine.mPoint2));
 		}
 
 		return *this;
@@ -600,7 +600,7 @@ namespace Geometry2D
 		}
 		else {
 			const Line<T>* otherLine = dynamic_cast<const Line<T>*>(&other);
-			if (otherLine != nullptr && otherLine->mPoint1->equals(mPoint1) && otherLine->mPoint2->equals(mPoint2)) {
+			if (otherLine != nullptr && otherLine->mPoint1->equals(*(mPoint1)) && otherLine->mPoint2->equals(*(mPoint2))) {
 				return true;
 			}
 		}
