@@ -500,6 +500,22 @@ namespace Geometry2D
 		/// <summary> Moves line by vector. </summary>
 		/// <param name="vector"> Vector. </param>
 		void moveLineByVector(Vector<T>& vector);
+
+		/// <summary> Directional vector of line. </summary>
+		/// <returns> Directional vector of line. </returns>
+		Vector<T>& directionalVector();
+
+		/// <summary> Normalized vector of line. </summary>
+		/// <returns> Normalized vector of line. </returns>
+		Vector<T>& normalizedVector();
+
+		/// <summary> Coefficient of line. </summary>
+		/// <returns> Coefficient of line. </returns>
+		double coefficientOfLine();
+
+		/// <summary> Coefficient of line. </summary>
+		/// <returns> Coefficient of line. </returns>
+		double distancetoPoint(const Point<T>& point);
 	};
 	
 	template<typename T>
@@ -614,6 +630,38 @@ namespace Geometry2D
 	{
 		mPoint1->movePointByVector(vector);
 		mPoint2->movePointByVector(vector);
+	}
+
+	template<typename T>
+	inline Vector<T>& Line<T>::directionalVector()
+	{
+		Vector<T>* pResultVector = new Vector<T>(mPoint2->mPositionX - mPoint1->mPositionX, mPoint2->mPositionY - mPoint1->mPositionY);
+		return *pResultVector;
+	}
+
+	template<typename T>
+	inline Vector<T>& Line<T>::normalizedVector()
+	{
+		Vector<T> resultVector = this->directionalVector();
+		T newDeltaX = resultVector.mDeltaY * -1;
+		resultVector.mDeltaY = resultVector.mDeltaX;
+		resultVector.mDeltaX = newDeltaX;
+		return resultVector;
+	}
+
+	template<typename T>
+	inline double Line<T>::coefficientOfLine()
+	{
+		Vector<T> normalizedVector = this->normalizedVector();
+		return (normalizedVector.mDeltaX * mPoint1->mPositionX + normalizedVector.mDeltaY * mPoint1->mPositionY) * -1;
+	}
+
+	template<typename T>
+	inline double Line<T>::distancetoPoint(const Point<T>& point)
+	{
+		Vector<T> normalizedVector = this->normalizedVector();
+		return abs(normalizedVector.mDeltaX * point.mPositionX + normalizedVector.mDeltaY * point.mPositionY + this->coefficientOfLine()) /
+			sqrt(pow(normalizedVector.mDeltaX, 2) + pow(normalizedVector.mDeltaY, 2))
 	}
 
 
