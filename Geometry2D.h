@@ -358,7 +358,8 @@ namespace Geometry2D
 	/// <param name = "Vector"> Vector. </param>
 	/// <returns> Returns size of vector. </returns>
 	template<typename T>
-	double sizeOfVector(Vector<T> vector) {
+	double sizeOfVector(Vector<T> vector) 
+	{
 		return vector.sizeOfVector();
 	}
 
@@ -367,7 +368,8 @@ namespace Geometry2D
 	/// <param name = "vector2"> Second vector. </param>
 	/// <returns> Returns result vector. </returns>
 	template<typename T>
-	Vector<T>& vectorAddition(Vector<T>& vector1, Vector<T>& vector2) {
+	Vector<T>& vectorAddition(Vector<T>& vector1, Vector<T>& vector2) 
+	{
 		Vector<T>* pResultVector = new Vector<T>(vector1.mDeltaX + vector2.mDeltaX, vector1.mDeltaY + vector2.mDeltaY);
 		return *pResultVector;
 	}
@@ -376,7 +378,8 @@ namespace Geometry2D
 	/// <param name = "vector"> First vector. </param>
 	/// <param name = "scalary"> Value of scalary. </param>
 	template<typename T>
-	Vector<T>& vectorMultiplication(const Vector<T>& vector, T scalary) {
+	Vector<T>& vectorMultiplication(const Vector<T>& vector, T scalary) 
+	{
 		Vector<T>* pResultVector = new Vector<T>(vector);
 		pResultVector->vectorMultiplication(scalary);
 		return *pResultVector;
@@ -387,7 +390,8 @@ namespace Geometry2D
 	/// <param name = "vector2"> Second vector. </param>
 	/// <returns> Returns dot product. </returns>
 	template<typename T>
-	T dotProduct(Vector<T>& vector1, Vector<T>& vector2) {
+	T dotProduct(Vector<T>& vector1, Vector<T>& vector2) 
+	{
 		 return vector1.mDeltaX * vector2.mDeltaX + vector1.mDeltaY * vector2.mDeltaY;
 	}
 
@@ -396,7 +400,8 @@ namespace Geometry2D
 	/// <param name = "vector"> Vector. </param>
 	/// <param name = "point"> Point. </param>
 	template<typename T>
-	Point<T>& movePointByVector(const Vector<T>& vector, const Point<T>& point) {
+	Point<T>& movePointByVector(const Vector<T>& vector, const Point<T>& point) 
+	{
 		Point<T>* pResultPoint = new Point<T>(point);
 		pResultPoint->movePointByVector(vector);
 		return *pResultPoint;
@@ -413,7 +418,8 @@ namespace Geometry2D
 	/// <param name = "vector2"> Second vector. </param>
 	/// <returns> Returns angle between vectors in radians. </returns>
 	template<typename T>
-	double angleBetweenVectors(Vector<T>& vector1, Vector<T>& vector2) {
+	double angleBetweenVectors(Vector<T>& vector1, Vector<T>& vector2) 
+	{
 		return acos(dotProduct(vector1, vector2) / sqrt(sizeOfVector(vector1) * sizeOfVector(vector2)));
 	}
 
@@ -428,7 +434,8 @@ namespace Geometry2D
 	/// <param name = "vector"> Vector. </param>
 	/// <param name = "degrees"> Angle in radians. </param>
 	template<typename T>
-	Vector<T>& rotateVectorByAngle(Vector<T>& vector, double angle) {
+	Vector<T>& rotateVectorByAngle(Vector<T>& vector, double angle) 
+	{
 		Vector<T>* pResultVector = new Vector<T>(vector);
 		pResultVector->rotateVectorByAngle(angle);
 		return *pResultVector;
@@ -497,11 +504,11 @@ namespace Geometry2D
 		/// <summary> Is point on line. </summary>
 		/// <param name="point"> Point. </param>
 		/// <returns>True if point lies on line. </returns>
-		bool isPointOnLine(Point<T>& point);
+		bool isPointOnLine(const Point<T>& point);
 
 		/// <summary> Moves line by vector. </summary>
 		/// <param name="vector"> Vector. </param>
-		void moveLineByVector(Vector<T>& vector);
+		void moveLineByVector(const Vector<T>& vector);
 
 		/// <summary> Directional vector of line. </summary>
 		/// <returns> Directional vector of line. </returns>
@@ -620,7 +627,7 @@ namespace Geometry2D
 	}
 
 	template<typename T>
-	inline bool Line<T>::isPointOnLine(Point<T>& point)
+	inline bool Line<T>::isPointOnLine(const Point<T>& point)
 	{
 		if (point.mPositionY == ((this->gradient() * point.mPositionX) + this->interceptWithAxisY())) {
 			return true;
@@ -629,7 +636,7 @@ namespace Geometry2D
 	}
 
 	template<typename T>
-	inline void Line<T>::moveLineByVector(Vector<T>& vector)
+	inline void Line<T>::moveLineByVector(const Vector<T>& vector)
 	{
 		mPoint1->movePointByVector(vector);
 		mPoint2->movePointByVector(vector);
@@ -645,11 +652,11 @@ namespace Geometry2D
 	template<typename T>
 	inline Vector<T>& Line<T>::normalizedVector()
 	{
-		Vector<T> resultVector = this->directionalVector();
-		T newDeltaX = resultVector.mDeltaY * -1;
-		resultVector.mDeltaY = resultVector.mDeltaX;
-		resultVector.mDeltaX = newDeltaX;
-		return resultVector;
+		Vector<T>* resultVector = new Vector<T>(this->directionalVector());
+		T newDeltaX = resultVector->mDeltaY * -1;
+		resultVector->mDeltaY = resultVector->mDeltaX;
+		resultVector->mDeltaX = newDeltaX;
+		return *resultVector;
 	}
 
 	template<typename T>
@@ -667,5 +674,80 @@ namespace Geometry2D
 			sqrt(pow(normalizedVector.mDeltaX, 2) + pow(normalizedVector.mDeltaY, 2));
 	}
 
+	/// <summary> Gradient of line. </summary>
+	/// <returns> Gradient of line. </returns>
+	template<typename T>
+	double gradient(Line<T>& line) 
+	{
+		return (line.mPoint2->mPositionY - line.mPoint1->mPositionY) / (line.mPoint2->mPositionX - line.mPoint1->mPositionX);
+	}
 
+	/// <summary> Y-intercept. </summary>
+	/// <returns> Y-intercept of line. </returns>
+	template<typename T>
+	double lineInterceptWithAxisY(Line<T>& line) 
+	{
+		return line.mPoint1->mPositionY - (line.gradient() * line.mPoint1->mPositionX);
+	}
+
+	/// <summary> Is point on line. </summary>
+	/// <param name="point"> Point. </param>
+	/// <returns>True if point lies on line. </returns>
+	template<typename T>
+	bool isPointOnLine(Line<T>& line, Point<T>& point) 
+	{
+		if (point.mPositionY == ((line.gradient() * point.mPositionX) +line.interceptWithAxisY())) {
+			return true;
+		}
+		return false;
+	}
+
+	/// <summary> Moves line by vector. </summary>
+	/// <param name="vector"> Vector. </param>
+	template<typename T>
+	Line<T>& moveLineByVector(Line<T>& line, Vector<T>& vector) 
+	{
+		line.mPoint1->movePointByVector(vector);
+		line.mPoint2->movePointByVector(vector);
+	}
+
+	/// <summary> Directional vector of line. </summary>
+	/// <returns> Directional vector of line. </returns>
+	template<typename T>
+	Vector<T>& directionalVectorOfLine(Line<T>& line)
+	{
+		Vector<T>* pResultVector = new Vector<T>(line.mPoint2->mPositionX - line.mPoint1->mPositionX, line.mPoint2->mPositionY - line.mPoint1->mPositionY);
+		return *pResultVector;
+	}
+
+	/// <summary> Normalized vector of line. </summary>
+	/// <returns> Normalized vector of line. </returns>
+	template<typename T>
+	Vector<T>& normalizedVectorOfLine(Line<T>& line)
+	{
+		Vector<T>* resultVector = new Vector<T>(line.directionalVector());
+		T newDeltaX = resultVector.mDeltaY * -1;
+		resultVector.mDeltaY = resultVector.mDeltaX;
+		resultVector.mDeltaX = newDeltaX;
+		return *resultVector;
+	}
+
+	/// <summary> Coefficient of line. </summary>
+	/// <returns> Coefficient of line. </returns>
+	template<typename T>
+	double coefficientOfLine(Line<T>& line)
+	{
+		Vector<T> normalizedVector = line.normalizedVector();
+		return (normalizedVector.mDeltaX * line.mPoint1->mPositionX + normalizedVector.mDeltaY * line.mPoint1->mPositionY) * -1;
+	}
+
+	/// <summary> Coefficient of line. </summary>
+	/// <returns> Coefficient of line. </returns>
+	template<typename T>
+	double distancePointToLine(Line<T>& line, Point<T>& point)
+	{
+		Vector<T> normalizedVector = line.normalizedVector();
+		return abs(normalizedVector.mDeltaX * point.mPositionX + normalizedVector.mDeltaY * point.mPositionY + line.coefficientOfLine()) /
+			sqrt(pow(normalizedVector.mDeltaX, 2) + pow(normalizedVector.mDeltaY, 2));
+	}
 }

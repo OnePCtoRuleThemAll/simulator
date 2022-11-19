@@ -13,9 +13,11 @@ int main(int argc, char* argv[]) {
 	cout << cpyPoint->mPositionX << endl;
 	point->mPositionX = 0;
 	cout << point->mPositionX << endl;
-	cout << cpyPoint->mPositionX;
+	cout << cpyPoint->mPositionX << endl;
 	
 	Geometry2D::Line<int>* line = new Geometry2D::Line<int>(*startPoint, *endPoint);
+	cout << Geometry2D::distancePointToLine(*line, *point) << endl;
+	
 	delete point;
 	delete vector;
 	delete line;
