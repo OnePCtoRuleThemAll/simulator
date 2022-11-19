@@ -496,6 +496,10 @@ namespace Geometry2D
 		/// <param name="point"> Point. </param>
 		/// <returns>True if point lies on line. </returns>
 		bool isPointOnLine(Point<T>& point);
+
+		/// <summary> Moves line by vector. </summary>
+		/// <param name="vector"> Vector. </param>
+		void moveLineByVector(Vector<T>& vector);
 	};
 	
 	template<typename T>
@@ -603,6 +607,13 @@ namespace Geometry2D
 			return true;
 		}
 		return false;
+	}
+
+	template<typename T>
+	inline void Line<T>::moveLineByVector(Vector<T>& vector)
+	{
+		mPoint1->movePointByVector(vector);
+		mPoint2->movePointByVector(vector);
 	}
 
 
