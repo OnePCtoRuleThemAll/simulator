@@ -311,7 +311,7 @@ namespace Geometry2D
 	{
 		if (this != &other)
 		{
-			Vector<T>& otherVector = Vector<T>&(other);
+			Vector<T> otherVector = Vector<T>(other);
 			mDeltaX = otherVector.mDeltaX;
 			mDeltaY = otherVector.mDeltaY;
 		}
@@ -585,7 +585,7 @@ namespace Geometry2D
 	{
 		if (this != &other)
 		{
-			Line<T>& otherLine = Line<T>&(other);
+			Line<T> otherLine = Line<T>(other);
 			mPoint1->assign(otherLine.mPoint1);
 			mPoint2->assign(otherLine.mPoint2);
 		}
