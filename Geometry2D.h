@@ -79,9 +79,10 @@ namespace Geometry2D
 	}
 
 	template<typename T>
-	inline Point<T>::Point(const Point<T>& other)
+	inline Point<T>::Point(const Point<T>& other) :
+		mPositionX(other.mPositionX),
+		mPositionY(other.mPositionY)
 	{
-		this->assign(other);
 	}
 
 	template<typename T>
@@ -128,9 +129,9 @@ namespace Geometry2D
 	{
 		if (this != &other)
 		{
-			Point<T>& otherPoint = Point<T>&(other);
-			mPositionX = otherPoint.mPositionX;
-			mPositionY = otherPoint.mPositionY;
+			Point<T> otherPoint = Point<T>(other);
+			mPositionX = otherPoint->mPositionX;
+			mPositionY = otherPoint->mPositionY;
 		}
 
 		return *this;
@@ -260,9 +261,10 @@ namespace Geometry2D
 	}
 
 	template<typename T>
-	inline Vector<T>::Vector(const Vector<T>& other)
+	inline Vector<T>::Vector(const Vector<T>& other) :
+		mDeltaX(other.mDeltaX),
+		mDeltaY(other.mDeltaY)
 	{
-		this->assign(other);
 	}
 
 	template<typename T>
@@ -533,9 +535,10 @@ namespace Geometry2D
 	}
 
 	template<typename T>
-	inline Line<T>::Line(const Line<T>& other)
+	inline Line<T>::Line(const Line<T>& other) :
+		mPoint1(Point<T>(other.mPoint1)),
+		mPoint2(Point<T>(other.mPoint2))
 	{
-		this->assign(other);
 	}
 
 	template<typename T>
