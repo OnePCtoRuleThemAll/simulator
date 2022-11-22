@@ -79,9 +79,10 @@ namespace Geometry2D
 	}
 
 	template<typename T>
-	inline Point<T>::Point(const Point<T>& other)
+	inline Point<T>::Point(const Point<T>& other) :
+		mPositionX(other.mPositionX),
+		mPositionY(other.mPositionY)
 	{
-		this->assign(other);
 	}
 
 	template<typename T>
@@ -89,8 +90,6 @@ namespace Geometry2D
 		mPositionX(other.mPositionX),
 		mPositionY(other.mPositionY)
 	{
-		other.mPositionX = 0;
-		other.mPositionY = 0;
 	}
 
 	template<typename T>
@@ -128,9 +127,8 @@ namespace Geometry2D
 	{
 		if (this != &other)
 		{
-			Point<T>& otherPoint = Point<T>&(other);
-			mPositionX = otherPoint.mPositionX;
-			mPositionY = otherPoint.mPositionY;
+			mPositionX = other.mPositionX;
+			mPositionY = other.mPositionY;
 		}
 
 		return *this;
@@ -260,9 +258,10 @@ namespace Geometry2D
 	}
 
 	template<typename T>
-	inline Vector<T>::Vector(const Vector<T>& other)
+	inline Vector<T>::Vector(const Vector<T>& other) :
+		mDeltaX(other.mDeltaX),
+		mDeltaY(other.mDeltaY)
 	{
-		this->assign(other);
 	}
 
 	template<typename T>
@@ -270,8 +269,6 @@ namespace Geometry2D
 		mDeltaX(other.mDeltaX),
 		mDeltaY(other.mDeltaY)
 	{
-		other.mDeltaX = 0;
-		other.mDeltaY = 0;
 	}
 
 	template<typename T>
@@ -309,9 +306,8 @@ namespace Geometry2D
 	{
 		if (this != &other)
 		{
-			Vector<T>& otherVector = Vector<T>&(other);
-			mDeltaX = otherVector.mDeltaX;
-			mDeltaY = otherVector.mDeltaY;
+			mDeltaX = other.mDeltaX;
+			mDeltaY = other.mDeltaY;
 		}
 
 		return *this;
@@ -356,7 +352,8 @@ namespace Geometry2D
 	/// <param name = "Vector"> Vector. </param>
 	/// <returns> Returns size of vector. </returns>
 	template<typename T>
-	double sizeOfVector(Vector<T> vector) {
+	double sizeOfVector(Vector<T> vector) 
+	{
 		return vector.sizeOfVector();
 	}
 
@@ -365,19 +362,21 @@ namespace Geometry2D
 	/// <param name = "vector2"> Second vector. </param>
 	/// <returns> Returns result vector. </returns>
 	template<typename T>
-	Vector<T>& vectorAddition(Vector<T>& vector1, Vector<T>& vector2) {
+	Vector<T>* vectorAddition(Vector<T>& vector1, Vector<T>& vector2) 
+	{
 		Vector<T>* pResultVector = new Vector<T>(vector1.mDeltaX + vector2.mDeltaX, vector1.mDeltaY + vector2.mDeltaY);
-		return *pResultVector;
+		return pResultVector;
 	}
 
 	/// <summary>Vector multiplication. </summary>
 	/// <param name = "vector"> First vector. </param>
 	/// <param name = "scalary"> Value of scalary. </param>
 	template<typename T>
-	Vector<T>& vectorMultiplication(const Vector<T>& vector, T scalary) {
+	Vector<T>* vectorMultiplication(const Vector<T>& vector, T scalary) 
+	{
 		Vector<T>* pResultVector = new Vector<T>(vector);
 		pResultVector->vectorMultiplication(scalary);
-		return *pResultVector;
+		return pResultVector;
 	}
 
 	/// <summary> Dot product. </summary>
@@ -385,7 +384,8 @@ namespace Geometry2D
 	/// <param name = "vector2"> Second vector. </param>
 	/// <returns> Returns dot product. </returns>
 	template<typename T>
-	T dotProduct(Vector<T>& vector1, Vector<T>& vector2) {
+	T dotProduct(Vector<T>& vector1, Vector<T>& vector2) 
+	{
 		 return vector1.mDeltaX * vector2.mDeltaX + vector1.mDeltaY * vector2.mDeltaY;
 	}
 
@@ -394,10 +394,11 @@ namespace Geometry2D
 	/// <param name = "vector"> Vector. </param>
 	/// <param name = "point"> Point. </param>
 	template<typename T>
-	Point<T>& movePointByVector(const Vector<T>& vector, const Point<T>& point) {
+	Point<T>* movePointByVector(const Vector<T>& vector, const Point<T>& point) 
+	{
 		Point<T>* pResultPoint = new Point<T>(point);
 		pResultPoint->movePointByVector(vector);
-		return *pResultPoint;
+		return pResultPoint;
 	}
 
 	template<typename T>
@@ -411,7 +412,8 @@ namespace Geometry2D
 	/// <param name = "vector2"> Second vector. </param>
 	/// <returns> Returns angle between vectors in radians. </returns>
 	template<typename T>
-	double angleBetweenVectors(Vector<T>& vector1, Vector<T>& vector2) {
+	double angleBetweenVectors(Vector<T>& vector1, Vector<T>& vector2) 
+	{
 		return acos(dotProduct(vector1, vector2) / sqrt(sizeOfVector(vector1) * sizeOfVector(vector2)));
 	}
 
@@ -426,10 +428,323 @@ namespace Geometry2D
 	/// <param name = "vector"> Vector. </param>
 	/// <param name = "degrees"> Angle in radians. </param>
 	template<typename T>
-	Vector<T>& rotateVectorByAngle(Vector<T>& vector, double angle) {
+	Vector<T>* rotateVectorByAngle(Vector<T>& vector, double angle) 
+	{
 		Vector<T>* pResultVector = new Vector<T>(vector);
 		pResultVector->rotateVectorByAngle(angle);
-		return *pResultVector;
+		return pResultVector;
 	}
+
+	/// <summary> Struct representing vector. </summary>
+	/// <typeparam name = "T"> Data type to compute with. </typepram>
+	template<typename T>
+	struct Line
+		: GeomteryBase
+	{
+		/// <summary> Constructor. </summary>
+		Line();
+
+		/// <summary>Parameterized constructor. </summary>
+		/// <param name = "point1"> First point defining line. </param>
+		/// /// <param name = "point2"> Second point defining line. </param>
+		Line(const Point<T>& point1, const Point<T>& point2);
+
+		/// <summary>Copy constructor. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		Line(const Line<T>& other);
+
+
+		/// <summary>Move constructor. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		Line(Line<T>&& other);
+
+		/// <summary>Destructor. </summary>
+		~Line();
+
+		/// <summary> Assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		GeomteryBase& assign(const GeomteryBase& other) override;
+
+		/// <summary> Move assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		Line<T>& operator=(Line<T>&& other);
+
+		/// <summary> Assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		Line<T>& assign(const Line<T>& other);
+
+		/// <summary> Objcet equality. </summary>
+		/// <param name="other">Object to compare with. </param>
+		/// <returns>True if objects are equal both in types and in values. </returns>
+		bool equals(const GeomteryBase& other) override;
+
+		/// <summary> First vector defining line. </summary>
+		Point<T>* mPoint1;
+
+		/// <summary> Second vector defining line. </summary>
+		Point<T>* mPoint2;
+
+		/// <summary> Gradient of line. </summary>
+		/// <returns> Gradient of line. </returns>
+		double gradient();
+
+		/// <summary> Y-intercept. </summary>
+		/// <returns> Y-intercept of line. </returns>
+		double interceptWithAxisY();
+
+		/// <summary> Is point on line. </summary>
+		/// <param name="point"> Point. </param>
+		/// <returns>True if point lies on line. </returns>
+		bool isPointOnLine(const Point<T>& point);
+
+		/// <summary> Moves line by vector. </summary>
+		/// <param name="vector"> Vector. </param>
+		void moveLineByVector(const Vector<T>& vector);
+
+		/// <summary> Directional vector of line. </summary>
+		/// <returns> Directional vector of line. </returns>
+		Vector<T>* directionalVector();
+
+		/// <summary> Normalized vector of line. </summary>
+		/// <returns> Normalized vector of line. </returns>
+		Vector<T>* normalizedVector();
+
+		/// <summary> Coefficient of line. </summary>
+		/// <returns> Coefficient of line. </returns>
+		double coefficientOfLine();
+
+		/// <summary> Coefficient of line. </summary>
+		/// <returns> Coefficient of line. </returns>
+		double distancetoPoint(const Point<T>& point);
+	};
 	
+	template<typename T>
+	inline Line<T>::Line() :
+		mPoint1(Point<T>()),
+		mPoint2(Point<T>())
+	{
+	}
+
+	template<typename T>
+	inline Line<T>::Line(const Point<T>& point1, const Point<T>& point2) :
+		mPoint1(new Point<T>(point1)),
+		mPoint2(new Point<T>(point2))
+	{
+	}
+
+	template<typename T>
+	inline Line<T>::Line(const Line<T>& other) :
+		mPoint1(new Point<T>(*(other.mPoint1))),
+		mPoint2(new Point<T>(*(other.mPoint2)))
+	{
+	}
+
+	template<typename T>
+	inline Line<T>::Line(Line<T>&& other) :
+		mPoint1(other.mPoint1),
+		mPoint2(other.mPoint2)
+	{
+		other.mPoint1 = nullptr;
+		other.mPoint2 = nullptr;
+	}
+
+	template<typename T>
+	inline Line<T>::~Line()
+	{
+		delete mPoint1;
+		delete mPoint2;
+		mPoint1 = nullptr;
+		mPoint2 = nullptr;
+	}
+
+	template<typename T>
+	inline GeomteryBase& Line<T>::assign(const GeomteryBase& other)
+	{
+		if (this != &other)
+		{
+			const Line<T>& otherLine = static_cast<const Line<T>&>(other);
+			mPoint1->assign(*(otherLine.mPoint1));
+			mPoint2->assign(*(otherLine.mPoint2));
+		}
+
+		return *this;
+	}
+
+	template<typename T>
+	inline Line<T>& Line<T>::operator=(Line<T>&& other)
+	{
+		mPoint1 = other.mPoint1;
+		mPoint2 - other.mPoint2;
+		other.mPoint1 = nullptr;
+		other.mPoint2 = nullptr;
+		return *this;
+	}
+
+	template<typename T>
+	inline Line<T>& Line<T>::assign(const Line<T>& other)
+	{
+		if (this != &other)
+		{
+			mPoint1->assign(other.mPoint1);
+			mPoint2->assign(other.mPoint2);
+		}
+		return *this;
+	}
+
+	template<typename T>
+	inline bool Line<T>::equals(const GeomteryBase& other)
+	{
+		if (this == &other) {
+			return true;
+		}
+		else {
+			const Line<T>* otherLine = dynamic_cast<const Line<T>*>(&other);
+			if (otherLine != nullptr && otherLine->mPoint1->equals(*(mPoint1)) && otherLine->mPoint2->equals(*(mPoint2))) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	template<typename T>
+	inline double Line<T>::gradient()
+	{
+		return (mPoint2->mPositionY - mPoint1->mPositionY) / (mPoint2->mPositionX - mPoint1->mPositionX);
+	}
+
+	template<typename T>
+	inline double Line<T>::interceptWithAxisY()
+	{
+		return mPoint1->mPositionY - (this->gradient() * mPoint1->mPositionX);
+	}
+
+	template<typename T>
+	inline bool Line<T>::isPointOnLine(const Point<T>& point)
+	{
+		return this->distancetoPoint(point) == 0;
+	}
+
+	template<typename T>
+	inline void Line<T>::moveLineByVector(const Vector<T>& vector)
+	{
+		mPoint1->movePointByVector(vector);
+		mPoint2->movePointByVector(vector);
+	}
+
+	template<typename T>
+	inline Vector<T>* Line<T>::directionalVector()
+	{
+		Vector<T>* pResultVector = new Vector<T>(mPoint2->mPositionX - mPoint1->mPositionX, mPoint2->mPositionY - mPoint1->mPositionY);
+		return pResultVector;
+	}
+
+	template<typename T>
+	inline Vector<T>* Line<T>::normalizedVector()
+	{
+		Vector<T>* resultVector = new Vector<T>(*this->directionalVector());
+		T newDeltaX = resultVector->mDeltaY * -1;
+		resultVector->mDeltaY = resultVector->mDeltaX;
+		resultVector->mDeltaX = newDeltaX;
+		return resultVector;
+	}
+
+	template<typename T>
+	inline double Line<T>::coefficientOfLine()
+	{
+		Vector<T>* normalizedVector = this->normalizedVector();
+		double result = (normalizedVector->mDeltaX * mPoint1->mPositionX + normalizedVector->mDeltaY * mPoint1->mPositionY) * -1;
+		delete normalizedVector;
+		return result;
+	}
+
+	template<typename T>
+	inline double Line<T>::distancetoPoint(const Point<T>& point)
+	{
+		Vector<T>* normalizedVector = this->normalizedVector();
+		double result = abs(normalizedVector->mDeltaX * point.mPositionX + normalizedVector->mDeltaY * point.mPositionY + this->coefficientOfLine()) /
+			sqrt(pow(normalizedVector->mDeltaX, 2) + pow(normalizedVector->mDeltaY, 2));
+		delete normalizedVector;
+		return result;
+	}
+
+	/// <summary> Gradient of line. </summary>
+	/// <returns> Gradient of line. </returns>
+	template<typename T>
+	double gradient(Line<T>& line) 
+	{
+		return (line.mPoint2->mPositionY - line.mPoint1->mPositionY) / (line.mPoint2->mPositionX - line.mPoint1->mPositionX);
+	}
+
+	/// <summary> Y-intercept. </summary>
+	/// <returns> Y-intercept of line. </returns>
+	template<typename T>
+	double lineInterceptWithAxisY(Line<T>& line) 
+	{
+		return line.mPoint1->mPositionY - (line.gradient() * line.mPoint1->mPositionX);
+	}
+
+	/// <summary> Is point on line. </summary>
+	/// <param name="point"> Point. </param>
+	/// <returns>True if point lies on line. </returns>
+	template<typename T>
+	bool isPointOnLine(Line<T>& line, Point<T>& point) 
+	{
+		return line.distancetoPoint(point) == 0;
+	}
+
+	/// <summary> Moves line by vector. </summary>
+	/// <param name="vector"> Vector. </param>
+	template<typename T>
+	Line<T>& moveLineByVector(Line<T>& line, Vector<T>& vector) 
+	{
+		line.mPoint1->movePointByVector(vector);
+		line.mPoint2->movePointByVector(vector);
+	}
+
+	/// <summary> Directional vector of line. </summary>
+	/// <returns> Directional vector of line. </returns>
+	template<typename T>
+	Vector<T>* directionalVectorOfLine(Line<T>& line)
+	{
+		Vector<T>* pResultVector = new Vector<T>(line.mPoint2->mPositionX - line.mPoint1->mPositionX, line.mPoint2->mPositionY - line.mPoint1->mPositionY);
+		return pResultVector;
+	}
+
+	/// <summary> Normalized vector of line. </summary>
+	/// <returns> Normalized vector of line. </returns>
+	template<typename T>
+	Vector<T>* normalizedVectorOfLine(Line<T>& line)
+	{
+		Vector<T>* resultVector = new Vector<T>(*line.directionalVector());
+		T newDeltaX = resultVector.mDeltaY * -1;
+		resultVector.mDeltaY = resultVector.mDeltaX;
+		resultVector.mDeltaX = newDeltaX;
+		return resultVector;
+	}
+
+	/// <summary> Coefficient of line. </summary>
+	/// <returns> Coefficient of line. </returns>
+	template<typename T>
+	double coefficientOfLine(Line<T>& line)
+	{
+		Vector<T>* normalizedVector = line.normalizedVector();
+		double result =  (normalizedVector->mDeltaX * line.mPoint1->mPositionX + normalizedVector->mDeltaY * line.mPoint1->mPositionY) * -1;
+		delete normalizedVector;
+		return result;
+	}
+
+	/// <summary> Coefficient of line. </summary>
+	/// <returns> Coefficient of line. </returns>
+	template<typename T>
+	double distancePointToLine(Line<T>& line, Point<T>& point)
+	{
+		Vector<T>* normalizedVector = line.normalizedVector();
+		double result = abs(normalizedVector->mDeltaX * point.mPositionX + normalizedVector->mDeltaY * point.mPositionY + line.coefficientOfLine()) /
+			sqrt(pow(normalizedVector->mDeltaX, 2) + pow(normalizedVector->mDeltaY, 2));
+		delete normalizedVector;
+		return result;
+	}
 }
