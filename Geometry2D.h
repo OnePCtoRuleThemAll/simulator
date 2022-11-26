@@ -747,4 +747,82 @@ namespace Geometry2D
 		delete normalizedVector;
 		return result;
 	}
+
+	/// <summary> Struct representing vector. </summary>
+	/// <typeparam name = "T"> Data type to compute with. </typepram>
+	template<typename T>
+	struct LineSegment
+		: GeomteryBase
+	{
+		/// <summary> Constructor. </summary>
+		LineSegment();
+
+		/// <summary>Parameterized constructor. </summary>
+		/// <param name = "point1"> First point defining line. </param>
+		/// /// <param name = "point2"> Second point defining line. </param>
+		LineSegment(const Point<T>& point1, const Point<T>& point2);
+
+		/// <summary>Copy constructor. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		LineSegment(const Line<T>& other);
+
+
+		/// <summary>Move constructor. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		LineSegment(LineSegment<T>&& other);
+
+		/// <summary>Destructor. </summary>
+		~LineSegment();
+
+		/// <summary> Assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		GeomteryBase& assign(const GeomteryBase& other) override;
+
+		/// <summary> Move assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		LineSegment<T>& operator=(LineSegment<T>&& other);
+
+		/// <summary> Assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		LineSegment<T>& assign(const LineSegment<T>& other);
+
+		/// <summary> Objcet equality. </summary>
+		/// <param name="other">Object to compare with. </param>
+		/// <returns>True if objects are equal both in types and in values. </returns>
+		bool equals(const GeomteryBase& other) override;
+
+		/// <summary> First vector defining line. </summary>
+		Point<T>* mPoint1;
+
+		/// <summary> Second vector defining line. </summary>
+		Point<T>* mPoint2;
+
+		/// <summary> Is point on line. </summary>
+		/// <param name="point"> Point. </param>
+		/// <returns>True if point lies on line. </returns>
+		bool isPointOnLineSegment(const Point<T>& point);
+
+		/// <summary> Moves line by vector. </summary>
+		/// <param name="vector"> Vector. </param>
+		void moveLineSegmentByVector(const Vector<T>& vector);
+
+		/// <summary> Directional vector of line. </summary>
+		/// <returns> Directional vector of line. </returns>
+		Vector<T>* directionalVector();
+
+		/// <summary> Normalized vector of line. </summary>
+		/// <returns> Normalized vector of line. </returns>
+		Vector<T>* normalizedVector();
+
+		/// <summary> Coefficient of line. </summary>
+		/// <returns> Coefficient of line. </returns>
+		double coefficientOfLineSegment();
+
+		/// <summary> Coefficient of line. </summary>
+		/// <returns> Coefficient of line. </returns>
+		double distancetoPoint(const Point<T>& point);
+	};
 }
