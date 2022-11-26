@@ -730,10 +730,7 @@ namespace Geometry2D
 	template<typename T>
 	double coefficientOfLine(Line<T>& line)
 	{
-		Vector<T>* normalizedVector = line.normalizedVector();
-		double result =  (normalizedVector->mDeltaX * line.mPoint1->mPositionX + normalizedVector->mDeltaY * line.mPoint1->mPositionY) * -1;
-		delete normalizedVector;
-		return result;
+		return line.coefficientOfLine();
 	}
 
 	/// <summary> Coefficient of line. </summary>
@@ -741,10 +738,309 @@ namespace Geometry2D
 	template<typename T>
 	double distancePointToLine(Line<T>& line, Point<T>& point)
 	{
-		Vector<T>* normalizedVector = line.normalizedVector();
-		double result = abs(normalizedVector->mDeltaX * point.mPositionX + normalizedVector->mDeltaY * point.mPositionY + line.coefficientOfLine()) /
-			sqrt(pow(normalizedVector->mDeltaX, 2) + pow(normalizedVector->mDeltaY, 2));
+		return line.distancetoPoint(point);
+	}
+
+	/// <summary> Struct representing vector. </summary>
+	/// <typeparam name = "T"> Data type to compute with. </typepram>
+	template<typename T>
+	struct LineSegment
+		: GeomteryBase
+	{
+		/// <summary> Constructor. </summary>
+		LineSegment();
+
+		/// <summary>Parameterized constructor. </summary>
+		/// <param name = "point1"> First point defining line. </param>
+		/// /// <param name = "point2"> Second point defining line. </param>
+		LineSegment(const Point<T>& point1, const Point<T>& point2);
+
+		/// <summary>Copy constructor. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		LineSegment(const LineSegment<T>& other);
+
+
+		/// <summary>Move constructor. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		LineSegment(LineSegment<T>&& other);
+
+		/// <summary>Destructor. </summary>
+		~LineSegment();
+
+		/// <summary> Assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		GeomteryBase& assign(const GeomteryBase& other) override;
+
+		/// <summary> Move assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		LineSegment<T>& operator=(LineSegment<T>&& other);
+
+		/// <summary> Assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		LineSegment<T>& assign(const LineSegment<T>& other);
+
+		/// <summary> Objcet equality. </summary>
+		/// <param name="other">Object to compare with. </param>
+		/// <returns>True if objects are equal both in types and in values. </returns>
+		bool equals(const GeomteryBase& other) override;
+
+		/// <summary> First vector defining line. </summary>
+		Point<T>* mPoint1;
+
+		/// <summary> Second vector defining line. </summary>
+		Point<T>* mPoint2;
+
+		/// <summary> Is point on line. </summary>
+		/// <param name="point"> Point. </param>
+		/// <returns>True if point lies on line. </returns>
+		bool isPointOnLineSegment(const Point<T>& point);
+
+		/// <summary> Moves line by vector. </summary>
+		/// <param name="vector"> Vector. </param>
+		void moveLineSegmentByVector(const Vector<T>& vector);
+
+		/// <summary> Directional vector of line. </summary>
+		/// <returns> Directional vector of line. </returns>
+		Vector<T>* directionalVector();
+
+		/// <summary> Normalized vector of line. </summary>
+		/// <returns> Normalized vector of line. </returns>
+		Vector<T>* normalizedVector();
+
+		/// <summary> Coefficient of line. </summary>
+		/// <returns> Coefficient of line. </returns>
+		double coefficientOfLineSegment();
+
+		/// <summary> Coefficient of line. </summary>
+		/// <returns> Coefficient of line. </returns>
+		double distancetoPoint(const Point<T>& point);
+	};
+
+	template<typename T>
+	inline LineSegment<T>::LineSegment() :
+		mPoint1(Point<T>()),
+		mPoint2(Point<T>())
+	{
+	}
+
+	template<typename T>
+	inline LineSegment<T>::LineSegment(const Point<T>& point1, const Point<T>& point2) :
+		mPoint1(new Point<T>(point1)),
+		mPoint2(new Point<T>(point2))
+	{
+	}
+
+	template<typename T>
+	inline LineSegment<T>::LineSegment(const LineSegment<T>& other) :
+		mPoint1(new Point<T>(*(other.mPoint1))),
+		mPoint2(new Point<T>(*(other.mPoint2)))
+	{
+	}
+
+	template<typename T>
+	inline LineSegment<T>::LineSegment(LineSegment<T>&& other) :
+		mPoint1(other.mPoint1),
+		mPoint2(other.mPoint2)
+	{
+		other.mPoint1 = nullptr;
+		other.mPoint2 = nullptr;
+	}
+
+	template<typename T>
+	inline LineSegment<T>::~LineSegment()
+	{
+		delete mPoint1;
+		delete mPoint2;
+		mPoint1 = nullptr;
+		mPoint2 = nullptr;
+	}
+
+	template<typename T>
+	inline GeomteryBase& LineSegment<T>::assign(const GeomteryBase& other)
+	{
+		if (this != &other)
+		{
+			const Line<T>& otherLine = static_cast<const Line<T>&>(other);
+			mPoint1->assign(*(otherLine.mPoint1));
+			mPoint2->assign(*(otherLine.mPoint2));
+		}
+
+		return *this;
+	}
+
+	template<typename T>
+	inline LineSegment<T>& LineSegment<T>::operator=(LineSegment<T>&& other)
+	{
+		mPoint1 = other.mPoint1;
+		mPoint2 - other.mPoint2;
+		other.mPoint1 = nullptr;
+		other.mPoint2 = nullptr;
+		return *this;
+	}
+
+	template<typename T>
+	inline LineSegment<T>& LineSegment<T>::assign(const LineSegment<T>& other)
+	{
+		if (this != &other)
+		{
+			mPoint1->assign(other.mPoint1);
+			mPoint2->assign(other.mPoint2);
+		}
+		return *this;
+	}
+
+	template<typename T>
+	inline bool LineSegment<T>::equals(const GeomteryBase& other)
+	{
+		if (this == &other) {
+			return true;
+		}
+		else {
+			const LineSegment<T>* otherLine = dynamic_cast<const LineSegment<T>*>(&other);
+			if (otherLine != nullptr && otherLine->mPoint1->equals(*(mPoint1)) && otherLine->mPoint2->equals(*(mPoint2))) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	template<typename T>
+	inline bool LineSegment<T>::isPointOnLineSegment(const Point<T>& point)
+	{
+		return this->distancetoPoint(point) == 0;
+	}
+
+	template<typename T>
+	inline void LineSegment<T>::moveLineSegmentByVector(const Vector<T>& vector)
+	{
+		mPoint1->movePointByVector(vector);
+		mPoint2->movePointByVector(vector);
+	}
+
+	template<typename T>
+	inline Vector<T>* LineSegment<T>::directionalVector()
+	{
+		Vector<T>* pResultVector = new Vector<T>(mPoint2->mPositionX - mPoint1->mPositionX, mPoint2->mPositionY - mPoint1->mPositionY);
+		return pResultVector;
+	}
+
+	template<typename T>
+	inline Vector<T>* LineSegment<T>::normalizedVector()
+	{
+		Vector<T>* resultVector = new Vector<T>(*this->directionalVector());
+		T newDeltaX = resultVector->mDeltaY * -1;
+		resultVector->mDeltaY = resultVector->mDeltaX;
+		resultVector->mDeltaX = newDeltaX;
+		return resultVector;
+	}
+
+	template<typename T>
+	inline double LineSegment<T>::coefficientOfLineSegment()
+	{
+		Vector<T>* normalizedVector = this->normalizedVector();
+		double result = (normalizedVector->mDeltaX * mPoint1->mPositionX + normalizedVector->mDeltaY * mPoint1->mPositionY) * -1;
 		delete normalizedVector;
 		return result;
+	}
+
+	template<typename T>
+	inline double LineSegment<T>::distancetoPoint(const Point<T>& point)
+	{
+		Vector<T>* pLineSegment = new Vector<T>(*mPoint1, *mPoint2);
+		Vector<T>* pFirstPointAndPoint = new Vector<T>(*mPoint1, point);
+		Vector<T>* pSecondPointAndPoint = new Vector<T>(*mPoint2, point);
+
+		double dotProductLineSeg1 = dotProduct(*pLineSegment, *pFirstPointAndPoint);
+		double dotProductLineSeg2 = dotProduct(*pLineSegment, *pSecondPointAndPoint);
+
+		double result = 0;
+
+		if (dotProductLineSeg1 > 0) {
+			result = pFirstPointAndPoint->sizeOfVector();
+		}
+		else if (dotProductLineSeg2 < 0) {
+			result = pSecondPointAndPoint->sizeOfVector();
+		}
+		else {
+			result = abs((pLineSegment->mDeltaX * pFirstPointAndPoint->mDeltaY) - (pLineSegment->mDeltaY * pFirstPointAndPoint->mDeltaX)) / sqrt(pow(pLineSegment->mDeltaX, 2) + pow(pLineSegment->mDeltaY, 2));
+		}
+		delete pLineSegment;
+		delete pFirstPointAndPoint;
+		delete pSecondPointAndPoint;
+		return result;
+	}
+
+	/// <summary> Gradient of line. </summary>
+	/// <returns> Gradient of line. </returns>
+	template<typename T>
+	double gradient(LineSegment<T>& line)
+	{
+		return (line.mPoint2->mPositionY - line.mPoint1->mPositionY) / (line.mPoint2->mPositionX - line.mPoint1->mPositionX);
+	}
+
+	/// <summary> Y-intercept. </summary>
+	/// <returns> Y-intercept of line. </returns>
+	template<typename T>
+	double lineSegmentInterceptWithAxisY(LineSegment<T>& line)
+	{
+		return line.mPoint1->mPositionY - (line.gradient() * line.mPoint1->mPositionX);
+	}
+
+	/// <summary> Is point on line. </summary>
+	/// <param name="point"> Point. </param>
+	/// <returns>True if point lies on line. </returns>
+	template<typename T>
+	bool isPointOnLineSegment(LineSegment<T>& line, Point<T>& point)
+	{
+		return line.distancetoPoint(point) == 0;
+	}
+
+	/// <summary> Moves line by vector. </summary>
+	/// <param name="vector"> Vector. </param>
+	template<typename T>
+	LineSegment<T>& moveLineSegmentByVector(LineSegment<T>& line, Vector<T>& vector)
+	{
+		line.mPoint1->movePointByVector(vector);
+		line.mPoint2->movePointByVector(vector);
+	}
+
+	/// <summary> Directional vector of line. </summary>
+	/// <returns> Directional vector of line. </returns>
+	template<typename T>
+	Vector<T>* directionalVectorOfLineSegment(LineSegment<T>& line)
+	{
+		Vector<T>* pResultVector = new Vector<T>(line.mPoint2->mPositionX - line.mPoint1->mPositionX, line.mPoint2->mPositionY - line.mPoint1->mPositionY);
+		return pResultVector;
+	}
+
+	/// <summary> Normalized vector of line. </summary>
+	/// <returns> Normalized vector of line. </returns>
+	template<typename T>
+	Vector<T>* normalizedVectorOfLineSegment(LineSegment<T>& line)
+	{
+		Vector<T>* resultVector = new Vector<T>(*line.directionalVector());
+		T newDeltaX = resultVector.mDeltaY * -1;
+		resultVector.mDeltaY = resultVector.mDeltaX;
+		resultVector.mDeltaX = newDeltaX;
+		return resultVector;
+	}
+
+	/// <summary> Coefficient of line. </summary>
+	/// <returns> Coefficient of line. </returns>
+	template<typename T>
+	double coefficientOfLineSegment(LineSegment<T>& line)
+	{
+		return line.coefficientOfLineSegment();
+	}
+
+	/// <summary> Coefficient of line. </summary>
+	/// <returns> Coefficient of line. </returns>
+	template<typename T>
+	double distancePointToLineSegment(LineSegment<T>& line, Point<T>& point)
+	{
+		return line.distancetoPoint(point);
 	}
 }
