@@ -730,10 +730,7 @@ namespace Geometry2D
 	template<typename T>
 	double coefficientOfLine(Line<T>& line)
 	{
-		Vector<T>* normalizedVector = line.normalizedVector();
-		double result =  (normalizedVector->mDeltaX * line.mPoint1->mPositionX + normalizedVector->mDeltaY * line.mPoint1->mPositionY) * -1;
-		delete normalizedVector;
-		return result;
+		return line.coefficientOfLine();
 	}
 
 	/// <summary> Coefficient of line. </summary>
@@ -741,11 +738,7 @@ namespace Geometry2D
 	template<typename T>
 	double distancePointToLine(Line<T>& line, Point<T>& point)
 	{
-		Vector<T>* normalizedVector = line.normalizedVector();
-		double result = abs(normalizedVector->mDeltaX * point.mPositionX + normalizedVector->mDeltaY * point.mPositionY + line.coefficientOfLine()) /
-			sqrt(pow(normalizedVector->mDeltaX, 2) + pow(normalizedVector->mDeltaY, 2));
-		delete normalizedVector;
-		return result;
+		return line.distancetoPoint(point);
 	}
 
 	/// <summary> Struct representing vector. </summary>
@@ -978,5 +971,76 @@ namespace Geometry2D
 		delete pFirstPointAndPoint;
 		delete pSecondPointAndPoint;
 		return result;
+	}
+
+	/// <summary> Gradient of line. </summary>
+	/// <returns> Gradient of line. </returns>
+	template<typename T>
+	double gradient(LineSegment<T>& line)
+	{
+		return (line.mPoint2->mPositionY - line.mPoint1->mPositionY) / (line.mPoint2->mPositionX - line.mPoint1->mPositionX);
+	}
+
+	/// <summary> Y-intercept. </summary>
+	/// <returns> Y-intercept of line. </returns>
+	template<typename T>
+	double lineSegmentInterceptWithAxisY(LineSegment<T>& line)
+	{
+		return line.mPoint1->mPositionY - (line.gradient() * line.mPoint1->mPositionX);
+	}
+
+	/// <summary> Is point on line. </summary>
+	/// <param name="point"> Point. </param>
+	/// <returns>True if point lies on line. </returns>
+	template<typename T>
+	bool isPointOnLineSegment(LineSegment<T>& line, Point<T>& point)
+	{
+		return line.distancetoPoint(point) == 0;
+	}
+
+	/// <summary> Moves line by vector. </summary>
+	/// <param name="vector"> Vector. </param>
+	template<typename T>
+	LineSegment<T>& moveLineSegmentByVector(LineSegment<T>& line, Vector<T>& vector)
+	{
+		line.mPoint1->movePointByVector(vector);
+		line.mPoint2->movePointByVector(vector);
+	}
+
+	/// <summary> Directional vector of line. </summary>
+	/// <returns> Directional vector of line. </returns>
+	template<typename T>
+	Vector<T>* directionalVectorOfLineSegment(LineSegment<T>& line)
+	{
+		Vector<T>* pResultVector = new Vector<T>(line.mPoint2->mPositionX - line.mPoint1->mPositionX, line.mPoint2->mPositionY - line.mPoint1->mPositionY);
+		return pResultVector;
+	}
+
+	/// <summary> Normalized vector of line. </summary>
+	/// <returns> Normalized vector of line. </returns>
+	template<typename T>
+	Vector<T>* normalizedVectorOfLineSegment(LineSegment<T>& line)
+	{
+		Vector<T>* resultVector = new Vector<T>(*line.directionalVector());
+		T newDeltaX = resultVector.mDeltaY * -1;
+		resultVector.mDeltaY = resultVector.mDeltaX;
+		resultVector.mDeltaX = newDeltaX;
+		return resultVector;
+	}
+
+	/// <summary> Coefficient of line. </summary>
+	/// <returns> Coefficient of line. </returns>
+	template<typename T>
+	double coefficientOfLineSegment(LineSegment<T>& line)
+	{
+		return line.coefficientOfLineSegment();
+	}
+
+	/// <summary> Coefficient of line. </summary>
+	/// <returns> Coefficient of line. </returns>
+	template<typename T>
+	double distancePointToLineSegment(LineSegment<T>& line, Point<T>& point)
+	{
+		return line.distancetoPoint(point);
 	}
 }
