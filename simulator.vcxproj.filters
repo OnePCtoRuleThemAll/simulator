@@ -19,18 +19,64 @@
     <Filter Include="Agent\Source files">
       <UniqueIdentifier>{be45e4a5-819e-44cf-a095-218b7787827b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests">
+      <UniqueIdentifier>{c668649a-b29c-4b3d-ad70-ed06d5cc5c49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ui">
+      <UniqueIdentifier>{4a54d34e-75bc-4de8-b22c-ee8c98554451}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="logger">
+      <UniqueIdentifier>{2e8877a0-33ac-4e61-9c21-f2dcc10dd5b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ui\Header files">
+      <UniqueIdentifier>{978f2dc7-df8e-47e4-991f-d92787688e82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ui\Source files">
+      <UniqueIdentifier>{1744819e-92dd-4af3-916d-dcfe9b8c2695}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GeometryBase.h">
-      <Filter>Geometry\Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="Geometry2D.h">
-      <Filter>Geometry\Header files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="GeometryBase.cpp">
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Geometry2D\GeometryBase.cpp">
       <Filter>Geometry\Source files</Filter>
     </ClCompile>
+    <ClCompile Include="_logger\file_log_consumer.cpp">
+      <Filter>logger</Filter>
+    </ClCompile>
+    <ClCompile Include="_logger\logger.cpp">
+      <Filter>logger</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\test.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\console.cpp">
+      <Filter>ui\Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\ui_keeper.cpp">
+      <Filter>ui\Source files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Geometry2D\Geometry2D.h">
+      <Filter>Geometry\Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry2D\GeometryBase.h">
+      <Filter>Geometry\Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="_logger\file_log_consumer.h">
+      <Filter>logger</Filter>
+    </ClInclude>
+    <ClInclude Include="_logger\logger.h">
+      <Filter>logger</Filter>
+    </ClInclude>
+    <ClInclude Include="tests\test.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\console.h">
+      <Filter>ui\Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\ui_keeper.h">
+      <Filter>ui\Header files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

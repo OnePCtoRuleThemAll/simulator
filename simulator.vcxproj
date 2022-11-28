@@ -127,12 +127,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="GeometryBase.h" />
-    <ClInclude Include="Geometry2D.h" />
+    <ClCompile Include="Geometry2D\GeometryBase.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="tests\test.cpp" />
+    <ClCompile Include="tests\testGeometry\testGeometry.cpp" />
+    <ClCompile Include="ui\console.cpp" />
+    <ClCompile Include="ui\ui_keeper.cpp" />
+    <ClCompile Include="_logger\file_log_consumer.cpp" />
+    <ClCompile Include="_logger\logger.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GeometryBase.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClInclude Include="Geometry2D\Geometry2D.h" />
+    <ClInclude Include="Geometry2D\GeometryBase.h" />
+    <ClInclude Include="tests\test.h" />
+    <ClInclude Include="tests\testGeometry\testGeometry.h" />
+    <ClInclude Include="types.h" />
+    <ClInclude Include="ui\console.h" />
+    <ClInclude Include="ui\ui_keeper.h" />
+    <ClInclude Include="_logger\file_log_consumer.h" />
+    <ClInclude Include="_logger\logger.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
