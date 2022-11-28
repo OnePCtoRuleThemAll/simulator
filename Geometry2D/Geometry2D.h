@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GeometryBase.h"
+#include "../Geometry2D/GeometryBase.h"
 #include <cmath> 
 
 namespace Geometry2D 
