@@ -55,6 +55,7 @@
     <ClCompile Include="ui\ui_keeper.cpp">
       <Filter>ui\Source files</Filter>
     </ClCompile>
+    <ClCompile Include="tests\testGeometry\testGeometry.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Geometry2D\Geometry2D.h">
@@ -78,5 +79,7 @@
     <ClInclude Include="ui\ui_keeper.h">
       <Filter>ui\Header files</Filter>
     </ClInclude>
+    <ClInclude Include="tests\testGeometry\testGeometry.h" />
+    <ClInclude Include="types.h" />
   </ItemGroup>
 </Project>
