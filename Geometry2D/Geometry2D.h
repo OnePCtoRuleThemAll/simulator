@@ -1043,4 +1043,185 @@ namespace Geometry2D
 	{
 		return line.distancetoPoint(point);
 	}
+
+	/// <summary> Struct representing CircleLine. </summary>
+	/// <typeparam name = "T"> Data type to compute with. </typepram>
+	template<typename T>
+	struct CircleLine
+		: GeomteryBase
+	{
+		/// <summary> Constructor. </summary>
+		CircleLine();
+
+		/// <summary>Parameterized constructor. </summary>
+		/// <param name = "point1"> First point defining line. </param>
+		/// /// <param name = "point2"> Second point defining line. </param>
+		CircleLine(const Point<T>& point, const double radius);
+
+		/// <summary>Copy constructor. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		CircleLine(const CircleLine<T>& other);
+
+
+		/// <summary>Move constructor. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		CircleLine(CircleLine<T>&& other);
+
+		/// <summary>Destructor. </summary>
+		~CircleLine();
+
+		/// <summary> Assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		GeomteryBase& assign(const GeomteryBase& other) override;
+
+		/// <summary> Move assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		CircleLine<T>& operator=(CircleLine<T>&& other);
+
+		/// <summary> Assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		CircleLine<T>& assign(const CircleLine<T>& other);
+
+		/// <summary> Objcet equality. </summary>
+		/// <param name="other">Object to compare with. </param>
+		/// <returns>True if objects are equal both in types and in values. </returns>
+		bool equals(const GeomteryBase& other) override;
+
+		/// <summary> Center point. </summary>
+		Point<T>* mCenter;
+
+		/// <summary> Radius of circle line. </summary>
+		double mRadius;
+
+		/// <summary> Is point on line. </summary>
+		/// <param name="point"> Point. </param>
+		/// <returns>True if point lies on line. </returns>
+		bool isPointOnCircleLine(const Point<T>& point);
+
+		/// <summary> Moves line by vector. </summary>
+		/// <param name="vector"> Vector. </param>
+		void moveCircleLineByVector(const Vector<T>& vector);
+
+		/// <summary> Coefficient of line. </summary>
+		/// <returns> Coefficient of line. </returns>
+		double distancetoPoint(const Point<T>& point);
+
+		/// <summary> Intersection with line. </summary>
+		/// <param name="line"> Line. </param>
+		/// <returns>True if circle line intersects with line. </returns>
+		bool intersectionWithLine(const Line<T>& line);
+	};
+
+	template<typename T>
+	inline CircleLine<T>::CircleLine() :
+	
+		mCenter(Point<T>()),
+		mRadius(0)
+	{
+	}
+
+	template<typename T>
+	inline CircleLine<T>::CircleLine(const Point<T>& point, const double radius) :
+		mCenter(new Point<T>(point)),
+		mRadius(radius)
+	{
+	}
+
+	template<typename T>
+	inline CircleLine<T>::CircleLine(const CircleLine<T>& other) :
+		mCenter(new Point<T>(*(other.mCenter))),
+		mRadius(other.mRadius)
+	{
+	}
+
+	template<typename T>
+	inline CircleLine<T>::CircleLine(CircleLine<T>&& other) :
+		mCenter(*(other.mCenter)),
+		mRadius(other.mRadius)
+	{
+		other.mCenter = nullptr;
+	}
+
+	template<typename T>
+	inline CircleLine<T>::~CircleLine()
+	{
+		delete mCenter;
+		mCenter = nullptr;
+		mRadius = 0;
+	}
+
+	template<typename T>
+	inline GeomteryBase& CircleLine<T>::assign(const GeomteryBase& other)
+	{
+		if (this != &other)
+		{
+			const CircleLine<T>& otherLine = static_cast<const CircleLine<T>&>(other);
+			mCenter->assign(*(otherLine.mCenter));
+			mRadius = otherLine.mRadius;
+		}
+
+		return *this;
+	}
+
+	template<typename T>
+	inline CircleLine<T>& CircleLine<T>::operator=(CircleLine<T>&& other)
+	{
+		mCenter = other.mCenter;
+		mRadius = other.mRadius;
+		other.mCenter = nullptr;
+		other.mRadius = 0;
+		return *this;
+	}
+
+	template<typename T>
+	inline CircleLine<T>& CircleLine<T>::assign(const CircleLine<T>& other)
+	{
+		if (this != &other)
+		{
+			mCenter->assign(other.mCenter);
+			mRadius = other.mRadius;
+		}
+		return *this;
+	}
+
+	template<typename T>
+	inline bool CircleLine<T>::equals(const GeomteryBase& other)
+	{
+		if (this == &other) {
+			return true;
+		}
+		else {
+			const CircleLine<T>* otherLine = dynamic_cast<const CircleLine<T>*>(&other);
+			if (otherLine != nullptr && otherLine->mCenter->equals(*(mCenter)) && otherLine->mRadius = mRadius) {
+				return true;
+			}
+		}
+		return false;
+	}
+	template<typename T>
+	inline bool CircleLine<T>::isPointOnCircleLine(const Point<T>& point)
+	{
+		return distanceBetweenPoints(mCenter, point) == mRadius;
+	}
+
+	template<typename T>
+	inline void CircleLine<T>::moveCircleLineByVector(const Vector<T>& vector)
+	{
+		mCenter->movePointByVector(vector);
+	}
+
+	template<typename T>
+	inline double CircleLine<T>::distancetoPoint(const Point<T>& point)
+	{
+		return abs(distanceBetweenPoints(point, mCenter) - mRadius);
+	}
+
+	template<typename T>
+	inline bool CircleLine<T>::intersectionWithLine(const Line<T>& line)
+	{
+		return mRadius >= line.distancetoPoint(*mCenter);
+	}
 }
