@@ -1557,7 +1557,7 @@ namespace Geometry2D
 	/// <returns>True if point lies on line. </returns>
 	template<typename T>
 	bool isPointOnCircle(Circle<T>& circle, const Point<T>& point) {
-		return line.isPointOn(point);
+		return circle.isPointOn(point);
 	}
 
 	/// <summary> Moves circle line by vector. </summary>
