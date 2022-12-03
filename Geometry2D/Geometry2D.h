@@ -1200,7 +1200,7 @@ namespace Geometry2D
 	{
 		if (this != &other)
 		{
-			mCenter->assign(other.mCenter);
+			mCenter->assign(*other.mCenter);
 			mRadius = other.mRadius;
 		}
 		return *this;
@@ -1223,7 +1223,7 @@ namespace Geometry2D
 	template<typename T>
 	inline bool CircleLine<T>::isPointOn(const Point<T>& point)
 	{
-		return distanceBetweenPoints(mCenter, point) == mRadius;
+		return distanceBetweenPoints(*mCenter, point) == mRadius;
 	}
 
 	template<typename T>
@@ -1235,7 +1235,7 @@ namespace Geometry2D
 	template<typename T>
 	inline double CircleLine<T>::distanceToPoint(const Point<T>& point)
 	{
-		return abs(distanceBetweenPoints(point, mCenter) - mRadius);
+		return abs(distanceBetweenPoints(point, *mCenter) - mRadius);
 	}
 
 	template<typename T>
@@ -1317,5 +1317,225 @@ namespace Geometry2D
 	template<typename T>
 	bool intersectionCircleSegmentLineSegment(CircleLine<T>& circleLine, const LineSegment<T>& line) {
 		return circleLine.intersectionWithLineSegment(line);
+	}
+
+
+	/// <summary> Struct representing CircleLine. </summary>
+	/// <typeparam name = "T"> Data type to compute with. </typepram>
+	template<typename T>
+	struct Circle
+		: GeomteryBase
+	{
+		/// <summary> Constructor. </summary>
+		Circle();
+
+		/// <summary>Parameterized constructor. </summary>
+		/// <param name = "point1"> First point defining line. </param>
+		/// /// <param name = "point2"> Second point defining line. </param>
+		Circle(const Point<T>& point, const double radius);
+
+		/// <summary>Copy constructor. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		Circle(const Circle<T>& other);
+
+
+		/// <summary>Move constructor. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		Circle(Circle<T>&& other);
+
+		/// <summary>Destructor. </summary>
+		~Circle();
+
+		/// <summary> Assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		GeomteryBase& assign(const GeomteryBase& other) override;
+
+		/// <summary> Move assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		Circle<T>& operator=(Circle<T>&& other);
+
+		/// <summary> Assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		Circle<T>& assign(const Circle<T>& other);
+
+		/// <summary> Objcet equality. </summary>
+		/// <param name="other">Object to compare with. </param>
+		/// <returns>True if objects are equal both in types and in values. </returns>
+		bool equals(const GeomteryBase& other) override;
+
+		/// <summary> Center point. </summary>
+		Point<T>* mCenter;
+
+		/// <summary> Radius of circle. </summary>
+		double mRadius;
+
+		/// <summary> Is point on line. </summary>
+		/// <param name="point"> Point. </param>
+		/// <returns>True if point lies on line. </returns>
+		bool isPointOn(const Point<T>& point);
+
+		/// <summary> Moves circle line by vector. </summary>
+		/// <param name="vector"> Vector. </param>
+		void moveByVector(const Vector<T>& vector);
+
+		/// <summary> Distance to point. </summary>
+		/// <returns> Distance to point. </returns>
+		double distanceToPoint(const Point<T>& point);
+
+		/// <summary> Intersection with line. </summary>
+		/// <param name="line"> Line. </param>
+		/// <returns>True if circle line intersects with line. </returns>
+		bool intersectionWithLine(const Line<T>& line);
+
+		/// <summary> Intersection with line segment. </summary>
+		/// <param name="line"> Line segment. </param>
+		/// <returns>True if circle intersects with line segment. </returns>
+		bool intersectionWithLineSegment(const LineSegment<T>& line);
+	};
+
+	template<typename T>
+	inline Circle<T>::Circle() :
+
+		mCenter(Point<T>()),
+		mRadius(0)
+	{
+	}
+
+	template<typename T>
+	inline Circle<T>::Circle(const Point<T>& point, const double radius) :
+		mCenter(new Point<T>(point)),
+		mRadius(radius)
+	{
+	}
+
+	template<typename T>
+	inline Circle<T>::Circle(const Circle<T>& other) :
+		mCenter(new Point<T>(*(other.mCenter))),
+		mRadius(other.mRadius)
+	{
+	}
+
+	template<typename T>
+	inline Circle<T>::Circle(Circle<T>&& other) :
+		mCenter(*(other.mCenter)),
+		mRadius(other.mRadius)
+	{
+		other.mCenter = nullptr;
+	}
+
+	template<typename T>
+	inline Circle<T>::~Circle()
+	{
+		delete mCenter;
+		mCenter = nullptr;
+		mRadius = 0;
+	}
+
+	template<typename T>
+	inline GeomteryBase& Circle<T>::assign(const GeomteryBase& other)
+	{
+		if (this != &other)
+		{
+			const Circle<T>& otherCircle = static_cast<const Circle<T>&>(other);
+			mCenter->assign(*(otherCircle.mCenter));
+			mRadius = otherCircle.mRadius;
+		}
+
+		return *this;
+	}
+
+	template<typename T>
+	inline Circle<T>& Circle<T>::operator=(Circle<T>&& other)
+	{
+		mCenter = other.mCenter;
+		mRadius = other.mRadius;
+		other.mCenter = nullptr;
+		other.mRadius = 0;
+		return *this;
+	}
+
+	template<typename T>
+	inline Circle<T>& Circle<T>::assign(const Circle<T>& other)
+	{
+		if (this != &other)
+		{
+			mCenter->assign(*other.mCenter);
+			mRadius = other.mRadius;
+		}
+		return *this;
+	}
+
+	template<typename T>
+	inline bool Circle<T>::equals(const GeomteryBase& other)
+	{
+		if (this == &other) {
+			return true;
+		}
+		else {
+			const Circle<T>* - = dynamic_cast<const Circle<T>*>(&other);
+			if (otherCircle != nullptr && otherCircle->mCenter->equals(*(mCenter)) && otherCircle->mRadius = mRadius) {
+				return true;
+			}
+		}
+		return false;
+	}
+	template<typename T>
+	inline bool Circle<T>::isPointOn(const Point<T>& point)
+	{
+		return distanceBetweenPoints(*mCenter, point) <= mRadius;
+	}
+
+	template<typename T>
+	inline void Circle<T>::moveByVector(const Vector<T>& vector)
+	{
+		mCenter->movePointByVector(vector);
+	}
+
+	template<typename T>
+	inline double Circle<T>::distanceToPoint(const Point<T>& point)
+	{
+		double result = abs(distanceBetweenPoints(point, mCenter) - mRadius);
+		return result <= 0 ? 0 : result;
+	}
+
+	template<typename T>
+	inline bool Circle<T>::intersectionWithLine(const Line<T>& line)
+	{
+		return mRadius >= line.distancetoPoint(*mCenter);
+	}
+
+	//https://www.baeldung.com/cs/circle-line-segment-collision-detection
+	template<typename T>
+	inline bool Circle<T>::intersectionWithLineSegment(const LineSegment<T>& line)
+	{
+		if (this->isPointOn(*line.mPoint1) || this->isPointOn(*line.mPoint2)) {
+			return true;
+		}
+		double minDist = DBL_MAX;
+		double maxDist = max(distanceBetweenPoints(*mCenter, *line.mPoint1), distanceBetweenPoints(*mCenter, *line.mPoint2));
+		Vector<T>* pVector1 = new Vector<T>(*mCenter, *line.mPoint1);
+		Vector<T>* pVector2 = new Vector<T>(*line.mPoint2, *line.mPoint1);
+		Vector<T>* pVector3 = new Vector<T>(*mCenter, *line.mPoint2);
+		Vector<T>* pVector4 = new Vector<T>(*line.mPoint1, *line.mPoint2);
+		if (dotProduct(*pVector1, *pVector2) > 0 && dotProduct(*pVector3, *pVector4) > 0) {
+			Line<T>* pLine = new Line<T>(*line.mPoint1, *line.mPoint2);
+			minDist = pLine->distancetoPoint(*mCenter);
+			delete pLine;
+		}
+		else {
+			minDist = min(distanceBetweenPoints(*mCenter, *line.mPoint1), distanceBetweenPoints(*mCenter, *line.mPoint2));
+		}
+
+		delete pVector1;
+		delete pVector2;
+		delete pVector3;
+		delete pVector4;
+
+		if (minDist <= mRadius && maxDist >= mRadius)
+			return true;
+		return false;
 	}
 }
