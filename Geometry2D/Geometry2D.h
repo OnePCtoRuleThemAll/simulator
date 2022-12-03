@@ -2,6 +2,7 @@
 
 #include "../Geometry2D/GeometryBase.h"
 #include <cmath> 
+#include <float.h>
 
 namespace Geometry2D 
 {
@@ -180,6 +181,11 @@ namespace Geometry2D
 		/// /// <param name = "deltaY"> Delta Y  of vector. </param>
 		Vector(T deltaX, T deltaY);
 
+		/// <summary>Parameterized constructor. </summary>
+		/// <param name = "deltaX"> Delta X of vector. </param>
+		/// /// <param name = "deltaY"> Delta Y  of vector. </param>
+		Vector(const Point<T>& point1, const Point<T>& point2);
+
 		/// <summary>Copy constructor. </summary>
 		/// <param name = "other"> Source objcet of taken properties. </param>
 		Vector(const Vector<T>& other);
@@ -254,6 +260,13 @@ namespace Geometry2D
 	inline Vector<T>::Vector(T deltaX, T deltaY) :
 		mDeltaX(deltaX),
 		mDeltaY(deltaY)
+	{
+	}
+
+	template<typename T>
+	inline Vector<T>::Vector(const Point<T>& point1, const Point<T>& point2) :
+		mDeltaX(point2.mPositionX - point2.mPositionX),
+		mDeltaY(point2.mPositionY - point1.mPositionY)
 	{
 	}
 
@@ -1110,10 +1123,19 @@ namespace Geometry2D
 		/// <returns> Coefficient of line. </returns>
 		double distancetoPoint(const Point<T>& point);
 
+		/// <summary> Is point on line segment. </summary>
+		/// <returns> If point lies on line segment. </returns>
+		bool isPointOnLineSegment(const Point<T>& point);
+
 		/// <summary> Intersection with line. </summary>
 		/// <param name="line"> Line. </param>
 		/// <returns>True if circle line intersects with line. </returns>
 		bool intersectionWithLine(const Line<T>& line);
+
+		/// <summary> Intersection with line. </summary>
+		/// <param name="line"> Line. </param>
+		/// <returns>True if circle line intersects with line. </returns>
+		bool intersectionWithLineSegment(const LineSegment<T>& line);
 	};
 
 	template<typename T>
@@ -1221,8 +1243,43 @@ namespace Geometry2D
 	}
 
 	template<typename T>
+	inline bool CircleLine<T>::isPointOnLineSegment(const Point<T>& point)
+	{
+		return mRadius == distanceBetweenPoints(*mCenter, point);
+	}
+
+	template<typename T>
 	inline bool CircleLine<T>::intersectionWithLine(const Line<T>& line)
 	{
 		return mRadius >= line.distancetoPoint(*mCenter);
+	}
+
+	//https://www.baeldung.com/cs/circle-line-segment-collision-detection
+	template<typename T>
+	inline bool CircleLine<T>::intersectionWithLineSegment(const LineSegment<T>& line)
+	{
+		double minDist = DBL_MAX;
+		double maxDist = max(distanceBetweenPoints(*mCenter, *line.mPoint1), distanceBetweenPoints(*mCenter, *line.mPoint2));
+		Vector<T>* pVector1 = new Vector<T>(*mCenter, *line.mPoint1);
+		Vector<T>* pVector2 = new Vector<T>(*line.mPoint2, *line.mPoint1);
+		Vector<T>* pVector3 = new Vector<T>(*mCenter, *line.mPoint2);
+		Vector<T>* pVector4 = new Vector<T>(*line.mPoint1, *line.mPoint2);
+		if (dotProduct(*pVector1, *pVector2) > 0 && dotProduct(*pVector3, *pVector4) > 0) {
+			Line<T>* pLine = new Line<T>(*line.mPoint1, *line.mPoint2);
+			minDist = pLine->distancetoPoint(*mCenter);
+			delete pLine;
+		}
+		else {
+			minDist = min(distanceBetweenPoints(*mCenter, *line.mPoint1), distanceBetweenPoints(*mCenter, *line.mPoint2));
+		}
+
+		delete pVector1;
+		delete pVector2;
+		delete pVector3;
+		delete pVector4;
+
+		if (minDist <= mRadius && maxDist >= mRadius) 
+			return true;
+		return false;
 	}
 }
