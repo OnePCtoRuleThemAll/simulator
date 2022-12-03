@@ -1113,28 +1113,24 @@ namespace Geometry2D
 		/// <summary> Is point on line. </summary>
 		/// <param name="point"> Point. </param>
 		/// <returns>True if point lies on line. </returns>
-		bool isPointOnCircleLine(const Point<T>& point);
+		bool isPointOn(const Point<T>& point);
 
-		/// <summary> Moves line by vector. </summary>
+		/// <summary> Moves circle line by vector. </summary>
 		/// <param name="vector"> Vector. </param>
-		void moveCircleLineByVector(const Vector<T>& vector);
+		void moveByVector(const Vector<T>& vector);
 
-		/// <summary> Coefficient of line. </summary>
-		/// <returns> Coefficient of line. </returns>
-		double distancetoPoint(const Point<T>& point);
-
-		/// <summary> Is point on line segment. </summary>
-		/// <returns> If point lies on line segment. </returns>
-		bool isPointOnLineSegment(const Point<T>& point);
+		/// <summary> Distance to point. </summary>
+		/// <returns> Distance to point. </returns>
+		double distanceToPoint(const Point<T>& point);
 
 		/// <summary> Intersection with line. </summary>
 		/// <param name="line"> Line. </param>
 		/// <returns>True if circle line intersects with line. </returns>
 		bool intersectionWithLine(const Line<T>& line);
 
-		/// <summary> Intersection with line. </summary>
-		/// <param name="line"> Line. </param>
-		/// <returns>True if circle line intersects with line. </returns>
+		/// <summary> Intersection with line segment. </summary>
+		/// <param name="line"> Line segment. </param>
+		/// <returns>True if circle line intersects with line segment. </returns>
 		bool intersectionWithLineSegment(const LineSegment<T>& line);
 	};
 
@@ -1225,27 +1221,21 @@ namespace Geometry2D
 		return false;
 	}
 	template<typename T>
-	inline bool CircleLine<T>::isPointOnCircleLine(const Point<T>& point)
+	inline bool CircleLine<T>::isPointOn(const Point<T>& point)
 	{
 		return distanceBetweenPoints(mCenter, point) == mRadius;
 	}
 
 	template<typename T>
-	inline void CircleLine<T>::moveCircleLineByVector(const Vector<T>& vector)
+	inline void CircleLine<T>::moveByVector(const Vector<T>& vector)
 	{
 		mCenter->movePointByVector(vector);
 	}
 
 	template<typename T>
-	inline double CircleLine<T>::distancetoPoint(const Point<T>& point)
+	inline double CircleLine<T>::distanceToPoint(const Point<T>& point)
 	{
 		return abs(distanceBetweenPoints(point, mCenter) - mRadius);
-	}
-
-	template<typename T>
-	inline bool CircleLine<T>::isPointOnLineSegment(const Point<T>& point)
-	{
-		return mRadius == distanceBetweenPoints(*mCenter, point);
 	}
 
 	template<typename T>
@@ -1281,5 +1271,45 @@ namespace Geometry2D
 		if (minDist <= mRadius && maxDist >= mRadius) 
 			return true;
 		return false;
+	}
+
+	/// <summary> Is point on line. </summary>
+	/// <param name="point"> Point. </param>
+	/// <returns>True if point lies on line. </returns>
+	template<typename T>
+	bool isPointOnCircleLine(CircleLine<T>& line, const Point<T>& point) {
+		return line.isPointOn(point);
+	}
+
+	/// <summary> Moves circle line by vector. </summary>
+	/// <param name="vector"> Vector. </param>
+	template<typename T>
+	CircleLine<T>* moveCircleLineByVector(const CircleLine<T>& line, const Vector<T>& vector) {
+		CircleLine<T>* result = new CircleLine<T>(line);
+		result->moveByVector(vector);
+		return result;
+	}
+	
+	/// <summary> Distance to point. </summary>
+	/// <returns> Distance to point. </returns>
+	template<typename T>
+	double distanceFromCircleLineToPoint(CircleLine<T>& line, const Point<T>& point) {
+		return line.distanceToPoint(point);
+	}
+
+	/// <summary> Intersection with line. </summary>
+	/// <param name="line"> Line. </param>
+	/// <returns>True if circle line intersects with line. </returns>
+	template<typename T>
+	bool intersectionCircleSegmentLine(CircleLine<T>& circleLine, const Line<T>& line) {
+		return circleLine.intersectionWithLine(line);
+	}
+
+	/// <summary> Intersection with line segment. </summary>
+	/// <param name="line"> Line segment. </param>
+	/// <returns>True if circle line intersects with line segment. </returns>
+	template<typename T>
+	bool intersectionCircleSegmentLineSegment(CircleLine<T>& circleLine, const LineSegment<T>& line) {
+		return circleLine.intersectionWithLineSegment(line);
 	}
 }
