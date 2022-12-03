@@ -1511,9 +1511,8 @@ namespace Geometry2D
 	template<typename T>
 	inline bool Circle<T>::intersectionWithLineSegment(const LineSegment<T>& line)
 	{
-		if (this->isPointOn(*line.mPoint1) || this->isPointOn(*line.mPoint2)) {
+		if (this->isPointOn(*line.mPoint1) || this->isPointOn(*line.mPoint2))
 			return true;
-		}
 		double minDist = DBL_MAX;
 		double maxDist = max(distanceBetweenPoints(*mCenter, *line.mPoint1), distanceBetweenPoints(*mCenter, *line.mPoint2));
 		Vector<T>* pVector1 = new Vector<T>(*mCenter, *line.mPoint1);
