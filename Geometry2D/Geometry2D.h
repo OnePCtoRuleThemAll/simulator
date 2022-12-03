@@ -1475,7 +1475,7 @@ namespace Geometry2D
 			return true;
 		}
 		else {
-			const Circle<T>* - = dynamic_cast<const Circle<T>*>(&other);
+			const Circle<T>* otherCircle = dynamic_cast<const Circle<T>*>(&other);
 			if (otherCircle != nullptr && otherCircle->mCenter->equals(*(mCenter)) && otherCircle->mRadius = mRadius) {
 				return true;
 			}
