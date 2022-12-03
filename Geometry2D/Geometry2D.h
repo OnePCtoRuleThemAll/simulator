@@ -2,6 +2,7 @@
 
 #include "../Geometry2D/GeometryBase.h"
 #include <cmath> 
+#include <float.h>
 
 namespace Geometry2D 
 {
@@ -180,6 +181,11 @@ namespace Geometry2D
 		/// /// <param name = "deltaY"> Delta Y  of vector. </param>
 		Vector(T deltaX, T deltaY);
 
+		/// <summary>Parameterized constructor. </summary>
+		/// <param name = "deltaX"> Delta X of vector. </param>
+		/// /// <param name = "deltaY"> Delta Y  of vector. </param>
+		Vector(const Point<T>& point1, const Point<T>& point2);
+
 		/// <summary>Copy constructor. </summary>
 		/// <param name = "other"> Source objcet of taken properties. </param>
 		Vector(const Vector<T>& other);
@@ -254,6 +260,13 @@ namespace Geometry2D
 	inline Vector<T>::Vector(T deltaX, T deltaY) :
 		mDeltaX(deltaX),
 		mDeltaY(deltaY)
+	{
+	}
+
+	template<typename T>
+	inline Vector<T>::Vector(const Point<T>& point1, const Point<T>& point2) :
+		mDeltaX(point2.mPositionX - point2.mPositionX),
+		mDeltaY(point2.mPositionY - point1.mPositionY)
 	{
 	}
 
@@ -420,8 +433,9 @@ namespace Geometry2D
 	template<typename T>
 	inline void Geometry2D::Vector<T>::rotateVectorByAngle(double angle)
 	{
-		mDeltaX = mDeltaX * cos(angle) - mDeltaY * sin(angle);
-		mDeltaY = mDeltaX * sin(angle) + mDeltaY * cos(angle);
+		T deltaX = mDeltaX;
+		mDeltaX = deltaX * cos(angle) - mDeltaY * sin(angle);
+		mDeltaY = deltaX * sin(angle) + mDeltaY * cos(angle);
 	}
 
 	/// <summary> Rotate vector by angle. </summary>
@@ -1042,5 +1056,266 @@ namespace Geometry2D
 	double distancePointToLineSegment(LineSegment<T>& line, Point<T>& point)
 	{
 		return line.distancetoPoint(point);
+	}
+
+	/// <summary> Struct representing CircleLine. </summary>
+	/// <typeparam name = "T"> Data type to compute with. </typepram>
+	template<typename T>
+	struct CircleLine
+		: GeomteryBase
+	{
+		/// <summary> Constructor. </summary>
+		CircleLine();
+
+		/// <summary>Parameterized constructor. </summary>
+		/// <param name = "point1"> First point defining line. </param>
+		/// /// <param name = "point2"> Second point defining line. </param>
+		CircleLine(const Point<T>& point, const double radius);
+
+		/// <summary>Copy constructor. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		CircleLine(const CircleLine<T>& other);
+
+
+		/// <summary>Move constructor. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		CircleLine(CircleLine<T>&& other);
+
+		/// <summary>Destructor. </summary>
+		~CircleLine();
+
+		/// <summary> Assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		GeomteryBase& assign(const GeomteryBase& other) override;
+
+		/// <summary> Move assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		CircleLine<T>& operator=(CircleLine<T>&& other);
+
+		/// <summary> Assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		CircleLine<T>& assign(const CircleLine<T>& other);
+
+		/// <summary> Objcet equality. </summary>
+		/// <param name="other">Object to compare with. </param>
+		/// <returns>True if objects are equal both in types and in values. </returns>
+		bool equals(const GeomteryBase& other) override;
+
+		/// <summary> Center point. </summary>
+		Point<T>* mCenter;
+
+		/// <summary> Radius of circle line. </summary>
+		double mRadius;
+
+		/// <summary> Is point on line. </summary>
+		/// <param name="point"> Point. </param>
+		/// <returns>True if point lies on line. </returns>
+		bool isPointOn(const Point<T>& point);
+
+		/// <summary> Moves circle line by vector. </summary>
+		/// <param name="vector"> Vector. </param>
+		void moveByVector(const Vector<T>& vector);
+
+		/// <summary> Distance to point. </summary>
+		/// <returns> Distance to point. </returns>
+		double distanceToPoint(const Point<T>& point);
+
+		/// <summary> Intersection with line. </summary>
+		/// <param name="line"> Line. </param>
+		/// <returns>True if circle line intersects with line. </returns>
+		bool intersectionWithLine(const Line<T>& line);
+
+		/// <summary> Intersection with line segment. </summary>
+		/// <param name="line"> Line segment. </param>
+		/// <returns>True if circle line intersects with line segment. </returns>
+		bool intersectionWithLineSegment(const LineSegment<T>& line);
+	};
+
+	template<typename T>
+	inline CircleLine<T>::CircleLine() :
+	
+		mCenter(Point<T>()),
+		mRadius(0)
+	{
+	}
+
+	template<typename T>
+	inline CircleLine<T>::CircleLine(const Point<T>& point, const double radius) :
+		mCenter(new Point<T>(point)),
+		mRadius(radius)
+	{
+	}
+
+	template<typename T>
+	inline CircleLine<T>::CircleLine(const CircleLine<T>& other) :
+		mCenter(new Point<T>(*(other.mCenter))),
+		mRadius(other.mRadius)
+	{
+	}
+
+	template<typename T>
+	inline CircleLine<T>::CircleLine(CircleLine<T>&& other) :
+		mCenter(*(other.mCenter)),
+		mRadius(other.mRadius)
+	{
+		other.mCenter = nullptr;
+	}
+
+	template<typename T>
+	inline CircleLine<T>::~CircleLine()
+	{
+		delete mCenter;
+		mCenter = nullptr;
+		mRadius = 0;
+	}
+
+	template<typename T>
+	inline GeomteryBase& CircleLine<T>::assign(const GeomteryBase& other)
+	{
+		if (this != &other)
+		{
+			const CircleLine<T>& otherLine = static_cast<const CircleLine<T>&>(other);
+			mCenter->assign(*(otherLine.mCenter));
+			mRadius = otherLine.mRadius;
+		}
+
+		return *this;
+	}
+
+	template<typename T>
+	inline CircleLine<T>& CircleLine<T>::operator=(CircleLine<T>&& other)
+	{
+		mCenter = other.mCenter;
+		mRadius = other.mRadius;
+		other.mCenter = nullptr;
+		other.mRadius = 0;
+		return *this;
+	}
+
+	template<typename T>
+	inline CircleLine<T>& CircleLine<T>::assign(const CircleLine<T>& other)
+	{
+		if (this != &other)
+		{
+			mCenter->assign(other.mCenter);
+			mRadius = other.mRadius;
+		}
+		return *this;
+	}
+
+	template<typename T>
+	inline bool CircleLine<T>::equals(const GeomteryBase& other)
+	{
+		if (this == &other) {
+			return true;
+		}
+		else {
+			const CircleLine<T>* otherLine = dynamic_cast<const CircleLine<T>*>(&other);
+			if (otherLine != nullptr && otherLine->mCenter->equals(*(mCenter)) && otherLine->mRadius = mRadius) {
+				return true;
+			}
+		}
+		return false;
+	}
+	template<typename T>
+	inline bool CircleLine<T>::isPointOn(const Point<T>& point)
+	{
+		return distanceBetweenPoints(mCenter, point) == mRadius;
+	}
+
+	template<typename T>
+	inline void CircleLine<T>::moveByVector(const Vector<T>& vector)
+	{
+		mCenter->movePointByVector(vector);
+	}
+
+	template<typename T>
+	inline double CircleLine<T>::distanceToPoint(const Point<T>& point)
+	{
+		return abs(distanceBetweenPoints(point, mCenter) - mRadius);
+	}
+
+	template<typename T>
+	inline bool CircleLine<T>::intersectionWithLine(const Line<T>& line)
+	{
+		return mRadius >= line.distancetoPoint(*mCenter);
+	}
+
+	//https://www.baeldung.com/cs/circle-line-segment-collision-detection
+	template<typename T>
+	inline bool CircleLine<T>::intersectionWithLineSegment(const LineSegment<T>& line)
+	{
+		double minDist = DBL_MAX;
+		double maxDist = max(distanceBetweenPoints(*mCenter, *line.mPoint1), distanceBetweenPoints(*mCenter, *line.mPoint2));
+		Vector<T>* pVector1 = new Vector<T>(*mCenter, *line.mPoint1);
+		Vector<T>* pVector2 = new Vector<T>(*line.mPoint2, *line.mPoint1);
+		Vector<T>* pVector3 = new Vector<T>(*mCenter, *line.mPoint2);
+		Vector<T>* pVector4 = new Vector<T>(*line.mPoint1, *line.mPoint2);
+		if (dotProduct(*pVector1, *pVector2) > 0 && dotProduct(*pVector3, *pVector4) > 0) {
+			Line<T>* pLine = new Line<T>(*line.mPoint1, *line.mPoint2);
+			minDist = pLine->distancetoPoint(*mCenter);
+			delete pLine;
+		}
+		else {
+			minDist = min(distanceBetweenPoints(*mCenter, *line.mPoint1), distanceBetweenPoints(*mCenter, *line.mPoint2));
+		}
+
+		delete pVector1;
+		delete pVector2;
+		delete pVector3;
+		delete pVector4;
+
+		if (minDist <= mRadius && maxDist >= mRadius) 
+			return true;
+		return false;
+	}
+
+	/// <summary> Is point on line. </summary>
+	/// <param name="point"> Point. </param>
+	/// <returns>True if point lies on line. </returns>
+	template<typename T>
+	bool isPointOnCircleLine(CircleLine<T>& line, const Point<T>& point) {
+		return line.isPointOn(point);
+	}
+
+	/// <summary> Moves circle line by vector. </summary>
+	///<param name="line"> Circle line. </param>
+	///<param name="vector"> Vector. </param>
+	/// <returns> New circular line. </returns>
+	template<typename T>
+	CircleLine<T>* moveCircleLineByVector(const CircleLine<T>& line, const Vector<T>& vector) {
+		CircleLine<T>* pResult = new CircleLine<T>(line);
+		pResult->moveByVector(vector);
+		return pResult;
+	}
+	
+	/// <summary> Distance to point. </summary>
+	///<param name="line"> Circle line. </param>
+	///<param name="point"> Point. </param>
+	/// <returns> Distance to point. </returns>
+	template<typename T>
+	double distanceFromCircleLineToPoint(CircleLine<T>& line, const Point<T>& point) {
+		return line.distanceToPoint(point);
+	}
+
+	/// <summary> Intersection with line. </summary>
+	/// <param name="circleLine"> Circle line. </param>
+	/// <param name="line"> Line. </param>
+	/// <returns>True if circle line intersects with line. </returns>
+	template<typename T>
+	bool intersectionCircleSegmentLine(CircleLine<T>& circleLine, const Line<T>& line) {
+		return circleLine.intersectionWithLine(line);
+	}
+
+	/// <summary> Intersection with line segment. </summary>
+	/// <param name="circleLine"> Circle line. </param>
+	/// <param name="line"> Line segment. </param>
+	/// <returns>True if circle line intersects with line segment. </returns>
+	template<typename T>
+	bool intersectionCircleSegmentLineSegment(CircleLine<T>& circleLine, const LineSegment<T>& line) {
+		return circleLine.intersectionWithLineSegment(line);
 	}
 }
