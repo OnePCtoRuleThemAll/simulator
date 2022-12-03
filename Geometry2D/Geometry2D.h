@@ -1282,15 +1282,19 @@ namespace Geometry2D
 	}
 
 	/// <summary> Moves circle line by vector. </summary>
-	/// <param name="vector"> Vector. </param>
+	///<param name="line"> Circle line. </param>
+	///<param name="vector"> Vector. </param>
+	/// <returns> New circular line. </returns>
 	template<typename T>
 	CircleLine<T>* moveCircleLineByVector(const CircleLine<T>& line, const Vector<T>& vector) {
-		CircleLine<T>* result = new CircleLine<T>(line);
-		result->moveByVector(vector);
-		return result;
+		CircleLine<T>* pResult = new CircleLine<T>(line);
+		pResult->moveByVector(vector);
+		return pResult;
 	}
 	
 	/// <summary> Distance to point. </summary>
+	///<param name="line"> Circle line. </param>
+	///<param name="point"> Point. </param>
 	/// <returns> Distance to point. </returns>
 	template<typename T>
 	double distanceFromCircleLineToPoint(CircleLine<T>& line, const Point<T>& point) {
@@ -1298,6 +1302,7 @@ namespace Geometry2D
 	}
 
 	/// <summary> Intersection with line. </summary>
+	/// <param name="circleLine"> Circle line. </param>
 	/// <param name="line"> Line. </param>
 	/// <returns>True if circle line intersects with line. </returns>
 	template<typename T>
@@ -1306,6 +1311,7 @@ namespace Geometry2D
 	}
 
 	/// <summary> Intersection with line segment. </summary>
+	/// <param name="circleLine"> Circle line. </param>
 	/// <param name="line"> Line segment. </param>
 	/// <returns>True if circle line intersects with line segment. </returns>
 	template<typename T>
