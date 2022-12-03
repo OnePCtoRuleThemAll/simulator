@@ -608,8 +608,8 @@ namespace Geometry2D
 	{
 		if (this != &other)
 		{
-			mPoint1->assign(other.mPoint1);
-			mPoint2->assign(other.mPoint2);
+			mPoint1->assign(*other.mPoint1);
+			mPoint2->assign(*other.mPoint2);
 		}
 		return *this;
 	}
@@ -897,7 +897,7 @@ namespace Geometry2D
 	inline LineSegment<T>& LineSegment<T>::operator=(LineSegment<T>&& other)
 	{
 		mPoint1 = other.mPoint1;
-		mPoint2 - other.mPoint2;
+		mPoint2 = other.mPoint2;
 		other.mPoint1 = nullptr;
 		other.mPoint2 = nullptr;
 		return *this;
@@ -908,8 +908,8 @@ namespace Geometry2D
 	{
 		if (this != &other)
 		{
-			mPoint1->assign(other.mPoint1);
-			mPoint2->assign(other.mPoint2);
+			mPoint1->assign(*other.mPoint1);
+			mPoint2->assign(*other.mPoint2);
 		}
 		return *this;
 	}
