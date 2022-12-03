@@ -8,6 +8,8 @@ namespace Geometry2D
 {
 	template <typename T> struct Vector;
 
+#pragma region Point
+
 	/// <summary> Struct representing point. </summary>
 	/// <typeparam name = "T"> Data type to compute with. </typepram>
 	template<typename T>
@@ -166,7 +168,9 @@ namespace Geometry2D
 	double distanceBetweenPoints(Point<T>& point1, Point<T>& point2) {
 		return sqrt(pow(point1.mPositionX - point2.mPositionX, 2) + pow(point1.mPositionY - point2.mPositionY, 2));
 	}
+#pragma endregion
 
+#pragma region Vector
 	/// <summary> Struct representing vector. </summary>
 	/// <typeparam name = "T"> Data type to compute with. </typepram>
 	template<typename T>
@@ -448,7 +452,9 @@ namespace Geometry2D
 		pResultVector->rotateVectorByAngle(angle);
 		return pResultVector;
 	}
+#pragma endregion
 
+#pragma region Line
 	/// <summary> Struct representing vector. </summary>
 	/// <typeparam name = "T"> Data type to compute with. </typepram>
 	template<typename T>
@@ -754,7 +760,9 @@ namespace Geometry2D
 	{
 		return line.distancetoPoint(point);
 	}
+#pragma endregion
 
+#pragma region LineSegment
 	/// <summary> Struct representing vector. </summary>
 	/// <typeparam name = "T"> Data type to compute with. </typepram>
 	template<typename T>
@@ -1050,14 +1058,18 @@ namespace Geometry2D
 		return line.coefficientOfLineSegment();
 	}
 
-	/// <summary> Coefficient of line. </summary>
-	/// <returns> Coefficient of line. </returns>
+	/// <summary> Distance betweeen point and line segment. </summary>
+	/// <param name="line"> Line segment. </param>
+	/// <param name="point"> Point. </param> 
+	/// <returns> Distance betweeen point and line segment. </returns>
 	template<typename T>
 	double distancePointToLineSegment(LineSegment<T>& line, Point<T>& point)
 	{
 		return line.distancetoPoint(point);
 	}
+#pragma endregion
 
+#pragma region CircleLine
 	/// <summary> Struct representing CircleLine. </summary>
 	/// <typeparam name = "T"> Data type to compute with. </typepram>
 	template<typename T>
@@ -1306,7 +1318,7 @@ namespace Geometry2D
 	/// <param name="line"> Line. </param>
 	/// <returns>True if circle line intersects with line. </returns>
 	template<typename T>
-	bool intersectionCircleSegmentLine(CircleLine<T>& circleLine, const Line<T>& line) {
+	bool intersectionCircleLineLine(CircleLine<T>& circleLine, const Line<T>& line) {
 		return circleLine.intersectionWithLine(line);
 	}
 
@@ -1315,11 +1327,12 @@ namespace Geometry2D
 	/// <param name="line"> Line segment. </param>
 	/// <returns>True if circle line intersects with line segment. </returns>
 	template<typename T>
-	bool intersectionCircleSegmentLineSegment(CircleLine<T>& circleLine, const LineSegment<T>& line) {
+	bool intersectionCircleLineLineSegment(CircleLine<T>& circleLine, const LineSegment<T>& line) {
 		return circleLine.intersectionWithLineSegment(line);
 	}
+#pragma endregion
 
-
+#pragma region Circle
 	/// <summary> Struct representing CircleLine. </summary>
 	/// <typeparam name = "T"> Data type to compute with. </typepram>
 	template<typename T>
@@ -1537,4 +1550,53 @@ namespace Geometry2D
 			return true;
 		return false;
 	}
+
+	/// <summary> Is point on line. </summary>
+	///<param name="circle"> Circle. </param>
+	/// <param name="point"> Point. </param>
+	/// <returns>True if point lies on line. </returns>
+	template<typename T>
+	bool isPointOnCircle(Circle<T>& circle, const Point<T>& point) {
+		return line.isPointOn(point);
+	}
+
+	/// <summary> Moves circle line by vector. </summary>
+	///<param name="circle"> Circle. </param>
+	///<param name="vector"> Vector. </param>
+	/// <returns> New circular line. </returns>
+	template<typename T>
+	Circle<T>* moveCircleByVector(const Circle<T>& circle, const Vector<T>& vector) {
+		Circle<T>* pResult = new Circle<T>(circle);
+		pResult->moveByVector(vector);
+		return pResult;
+	}
+
+	/// <summary> Distance to point. </summary>
+	///<param name="circle"> Circle. </param>
+	///<param name="point"> Point. </param>
+	/// <returns> Distance to point. </returns>
+	template<typename T>
+	double distanceFromCircleToPoint(Circle<T>& circle, const Point<T>& point) {
+		return circle.distanceToPoint(point);
+	}
+
+	/// <summary> Intersection with line. </summary>
+	/// <param name="circle"> Circle. </param>
+	/// <param name="line"> Line. </param>
+	/// <returns>True if circle line intersects with line. </returns>
+	template<typename T>
+	bool intersectionCircleLine(Circle<T>& circle, const Line<T>& line) {
+		return circle.intersectionWithLine(line);
+	}
+
+	/// <summary> Intersection with line segment. </summary>
+	/// <param name="circle"> Circle. </param>
+	/// <param name="line"> Line segment. </param>
+	/// <returns>True if circle line intersects with line segment. </returns>
+	template<typename T>
+	bool intersectionCircleLineSegment(Circle<T>& circle, const LineSegment<T>& line) {
+		return circle.intersectionWithLineSegment(line);
+	}
+
+#pragma endregion
 }
