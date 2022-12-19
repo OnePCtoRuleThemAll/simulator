@@ -7,6 +7,7 @@
 namespace Geometry2D 
 {
 	template <typename T> struct Vector;
+	template <typename T> class PolySegment;
 
 #pragma region Point
 
@@ -167,6 +168,20 @@ namespace Geometry2D
 	template<typename T>
 	double distanceBetweenPoints(Point<T>& point1, Point<T>& point2) {
 		return sqrt(pow(point1.mPositionX - point2.mPositionX, 2) + pow(point1.mPositionY - point2.mPositionY, 2));
+	}
+
+	/// <summary>Distance between two points. </summary>
+	/// <param name = "point1"> First point. </param>
+	/// <param name = "point2"> Second point. </param>
+	/// <returns> Returns distance between two points. </returns>
+	template<typename T>
+	double orientationOfPoints(Point<T>& point1, Point<T>& point2, Point<T>& point3) {
+		double number = (point2.mPositionY - point1.mPositionY) * (point3.mPositionX - point2.mPositionX) -
+			(point2.mPositionX - point1.mPositionX) * (point3.mPositionY - point2.mPositionY;
+
+		if (number == 0) return 0;
+
+		return (number > 0) ? 1 : 2;
 	}
 #pragma endregion
 
@@ -767,7 +782,7 @@ namespace Geometry2D
 	/// <typeparam name = "T"> Data type to compute with. </typepram>
 	template<typename T>
 	struct LineSegment
-		: GeomteryBase
+		: GeomteryBase, PolySegment<T>
 	{
 		/// <summary> Constructor. </summary>
 		LineSegment();
@@ -787,7 +802,7 @@ namespace Geometry2D
 		LineSegment(LineSegment<T>&& other);
 
 		/// <summary>Destructor. </summary>
-		~LineSegment();
+		~LineSegment() override;
 
 		/// <summary> Assign of object. </summary>
 		/// <param name = "other"> Source objcet of taken properties. </param>
@@ -818,11 +833,11 @@ namespace Geometry2D
 		/// <summary> Is point on line. </summary>
 		/// <param name="point"> Point. </param>
 		/// <returns>True if point lies on line. </returns>
-		bool isPointOnLineSegment(const Point<T>& point);
+		bool isPointOn(const Point<T>& point) override;
 
 		/// <summary> Moves line by vector. </summary>
 		/// <param name="vector"> Vector. </param>
-		void moveLineSegmentByVector(const Vector<T>& vector);
+		void moveByVector(const Vector<T>& vector) override;
 
 		/// <summary> Directional vector of line. </summary>
 		/// <returns> Directional vector of line. </returns>
@@ -834,11 +849,13 @@ namespace Geometry2D
 
 		/// <summary> Coefficient of line. </summary>
 		/// <returns> Coefficient of line. </returns>
-		double coefficientOfLineSegment();
+		double coefficient();
 
 		/// <summary> Coefficient of line. </summary>
 		/// <returns> Coefficient of line. </returns>
-		double distancetoPoint(const Point<T>& point);
+		double distancetoPoint(const Point<T>& point) override;
+
+		bool intersectionWithLineSegment(const LineSegment<T>& line);
 	};
 
 	template<typename T>
@@ -930,13 +947,13 @@ namespace Geometry2D
 	}
 
 	template<typename T>
-	inline bool LineSegment<T>::isPointOnLineSegment(const Point<T>& point)
+	inline bool LineSegment<T>::isPointOn(const Point<T>& point)
 	{
 		return this->distancetoPoint(point) == 0;
 	}
 
 	template<typename T>
-	inline void LineSegment<T>::moveLineSegmentByVector(const Vector<T>& vector)
+	inline void LineSegment<T>::moveByVector(const Vector<T>& vector)
 	{
 		mPoint1->movePointByVector(vector);
 		mPoint2->movePointByVector(vector);
@@ -960,7 +977,7 @@ namespace Geometry2D
 	}
 
 	template<typename T>
-	inline double LineSegment<T>::coefficientOfLineSegment()
+	inline double LineSegment<T>::coefficient()
 	{
 		Vector<T>* normalizedVector = this->normalizedVector();
 		double result = (normalizedVector->mDeltaX * mPoint1->mPositionX + normalizedVector->mDeltaY * mPoint1->mPositionY) * -1;
@@ -993,6 +1010,28 @@ namespace Geometry2D
 		delete pFirstPointAndPoint;
 		delete pSecondPointAndPoint;
 		return result;
+	}
+
+	template<typename T>
+	inline bool LineSegment<T>::intersectionWithLineSegment(const LineSegment<T>& line)
+	{
+		int orientation1 = orientationOfPoints(*mPoint1, *mPoint2, *line.mPoint1);
+		int orientation2 = orientationOfPoints(*mPoint1, *mPoint2, *line.mPoint2);
+		int orientation3 = orientationOfPoints(*line.mPoint1, *line.mPoint2, *mPoint1);
+		int orientation4 = orientationOfPoints(*line.mPoint1, *line.mPoint2, *mPoint2);
+
+		if (orientation1 != orientation2 && orientation3 != orientation4)
+			return true;
+
+		if (orientation1 == 0 && isPointOn(*line.mPoint1)) return true;
+
+		if (orientation2 == 0 && isPointOn(*line.mPoint2)) return true;
+
+		if (orientation3 == 0 && isPointOnLineSegment(line, *mPoint1)) return true;
+
+		if (orientation4 == 0 && isPointOnLineSegment(line, *mPoint2)) return true;
+
+		return false;
 	}
 
 	/// <summary> Gradient of line. </summary>
@@ -1055,7 +1094,7 @@ namespace Geometry2D
 	template<typename T>
 	double coefficientOfLineSegment(LineSegment<T>& line)
 	{
-		return line.coefficientOfLineSegment();
+		return line.coefficient();
 	}
 
 	/// <summary> Distance betweeen point and line segment. </summary>
@@ -1642,7 +1681,7 @@ namespace Geometry2D
 	/// <typeparam name = "T"> Data type to compute with. </typepram>
 	template<typename T>
 	struct Arc
-		: GeomteryBase
+		: GeomteryBase, PolySegment<T>
 	{
 		/// <summary> Constructor. </summary>
 		Arc();
@@ -1663,7 +1702,7 @@ namespace Geometry2D
 		Arc(Arc<T>&& other);
 
 		/// <summary>Destructor. </summary>
-		~Arc();
+		~Arc() override;
 
 		/// <summary> Assign of object. </summary>
 		/// <param name = "other"> Source objcet of taken properties. </param>
@@ -1708,15 +1747,15 @@ namespace Geometry2D
 		/// <summary> Is point on line. </summary>
 		/// <param name="point"> Point. </param>
 		/// <returns>True if point lies on line. </returns>
-		bool isPointOn(const Point<T>& point);
+		bool isPointOn(const Point<T>& point) override;
 
 		/// <summary> Moves circle line by vector. </summary>
 		/// <param name="vector"> Vector. </param>
-		void moveByVector(const Vector<T>& vector);
+		void moveByVector(const Vector<T>& vector) override;
 
 		/// <summary> Distance to point. </summary>
 		/// <returns> Distance to point. </returns>
-		double distanceToPoint(const Point<T>& point);
+		double distanceToPoint(const Point<T>& point) override;
 
 		/// <summary> Intersection with line. </summary>
 		/// <param name="line"> Line. </param>
@@ -1950,7 +1989,7 @@ namespace Geometry2D
 		Line<T>* helpLine = new Line<T>(line.mPoint1, line.mPoint2);
 		if (circle->pointsOfIntersectionWithLine(*helpLine, pPoint1, pPoint2)) {
 			if (pPoint1 != nullptr) {
-				if (isPointOn(*pPoint1) && line.isPointOnLineSegment(*pPoint1)) {
+				if (isPointOn(*pPoint1) && line.isPointOn(*pPoint1)) {
 					delete pPoint1;
 					delete pPoint2;
 					delete circle;
@@ -1958,7 +1997,7 @@ namespace Geometry2D
 					return true;
 				}
 				if (pPoint2 != nullptr) {
-					if (isPointOn(*pPoint2) && line.isPointOnLineSegment(*pPoint2)) {
+					if (isPointOn(*pPoint2) && line.isPointOn(*pPoint2)) {
 						delete pPoint1;
 						delete pPoint2;
 						delete circle;
@@ -1975,4 +2014,19 @@ namespace Geometry2D
 	}
 
 #pragma endregion
+
+	/// <summary> Abstract parent class of segments of Polyline and Polygon. </summary>
+	template<typename T>
+	class PolySegment
+	{
+	public:
+
+		virtual bool isPointOn(const Point<T>& point) = 0;
+
+		virtual double distancetoPoint(const Point<T>& point) = 0;
+
+		virtual void moveByVector(const Vector<T>& vector) = 0;
+
+		virtual bool intersectionWithLineSegment(const LineSegment<T>& line) = 0;
+	};
 }
