@@ -1814,4 +1814,32 @@ namespace Geometry2D
 		}
 		return false;
 	}
+
+	template<typename T>
+	inline bool Arc<T>::isPointOn(const Point<T>& point)
+	{
+		if (distanceBetweenPoints(*(mCenter, point)) = mRadius) {
+			Vector<T>* pAxisXVector = new Vector<T>(1, 0);
+			Vector<T>* pFirstPoint = new Vector<T>(*(mCenter), *(mPoint1));
+			Vector<T>* pSecondPoint = new Vector<T>(*(mCenter), *(mPoint2));
+			Vector<T>* pCheckingPoint = new Vector<T>(*(mCenter),point);
+			
+			double angleFirstVector = angleBetweenVectors(*(pAxisXVector), *(pFirstPoint));
+			double angleSecondVector = angleBetweenVectors(*(pAxisXVector), *(pSecondPoint));
+			double angleCheckingVector = angleBetweenVectors(*(pAxisXVector), *(pCheckingPoint));
+			
+			delete pAxisXVector;
+			delete pFirstPoint;
+			delete pSecondPoint;
+			delete pCheckingPoint;
+
+			if (angleFirstVector < angleSecondVector) {
+				return angleFirstVector >= angleCheckingVector && angleSecondVector >= angleCheckingVector;
+			}
+			else {
+				return angleFirstVector >= angleCheckingVector && angleSecondVector <= angleCheckingVector;
+			}
+		}
+		return false;
+	}
 }
