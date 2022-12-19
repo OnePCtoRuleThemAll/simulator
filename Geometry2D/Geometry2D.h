@@ -176,8 +176,8 @@ namespace Geometry2D
 	/// <returns> Returns distance between two points. </returns>
 	template<typename T>
 	double orientationOfPoints(Point<T>& point1, Point<T>& point2, Point<T>& point3) {
-		double number = (point2.mPositionY - point1.mPositionY) * (point3.mPositionX - point2.mPositionX) -
-			(point2.mPositionX - point1.mPositionX) * (point3.mPositionY - point2.mPositionY;
+		double number = (point2.mPositionY - point1.mPositionY) * (point3.mPositionX - point2.mPositionX) - 
+			(point2.mPositionX - point1.mPositionX) * (point3.mPositionY - point2.mPositionY);
 
 		if (number == 0) return 0;
 
@@ -1699,7 +1699,7 @@ namespace Geometry2D
 #pragma endregion
 
 #pragma region Arc
-	/// <summary> Struct representing Circle. </summary>
+	/// <summary> Struct representing Arc. </summary>
 	/// <typeparam name = "T"> Data type to compute with. </typepram>
 	template<typename T>
 	struct Arc
@@ -1832,9 +1832,9 @@ namespace Geometry2D
 
 	template<typename T>
 	inline Arc<T>::Arc(Arc<T>&& other) :
-		mPoint1(new Point<T>(*(other.mPoint1))),
-		mPoint2(new Point<T>(*(other.mPoint2))),
-		mCenter(new Point<T>(*(other.mCenter))),
+		mPoint1(other.mPoint1),
+		mPoint2(other.mPoint2),
+		mCenter(other.mCenter),
 		mRadius(other.mRadius),
 		mAltitude(other.mAltitude)
 	{
@@ -1902,6 +1902,7 @@ namespace Geometry2D
 		}
 		return *this;
 	}
+
 	template<typename T>
 	inline bool Arc<T>::equals(const GeomteryBase& other)
 	{
@@ -2053,4 +2054,144 @@ namespace Geometry2D
 
 		virtual bool intersectionWithLine(const Line<T>& line) = 0;
 	};
+
+	/// <summary> Struct representing vector. </summary>
+	/// <typeparam name = "T"> Data type to compute with. </typepram>
+	template<typename T>
+	struct Polyline
+		: GeomteryBase
+	{
+		/// <summary> Constructor. </summary>
+		Polyline();
+
+		/// <summary>Parameterized constructor. </summary>
+		/// <param name = "segments"> Array of segments. </param>
+		Polyline(const PolySegment<T>* segments[]);
+
+		/// <summary>Copy constructor. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		Polyline(const Polyline<T>& other);
+
+
+		/// <summary>Move constructor. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		Polyline(Polyline<T>&& other);
+
+		/// <summary>Destructor. </summary>
+		~Polyline();
+
+		/// <summary> Assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		GeomteryBase& assign(const GeomteryBase& other) override;
+
+		/// <summary> Move assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		Polyline<T>& operator=(Polyline<T>&& other);
+
+		/// <summary> Assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		Polyline<T>& assign(const Polyline<T>& other);
+
+		/// <summary> Objcet equality. </summary>
+		/// <param name="other">Object to compare with. </param>
+		/// <returns>True if objects are equal both in types and in values. </returns>
+		bool equals(const GeomteryBase& other) override;
+
+		/// <summary> Array of segments. </summary>
+		PolySegment<T>* mSegments;
+
+		/// <summary> Size of segments. </summary>
+		int mSize;
+
+		/// <summary> Is point on line. </summary>
+		/// <param name="point"> Point. </param>
+		/// <returns>True if point lies on line. </returns>
+		bool isPointOn(const Point<T>& point);
+
+		/// <summary> Moves line by vector. </summary>
+		/// <param name="vector"> Vector. </param>
+		void moveByVector(const Vector<T>& vector);
+
+		/// <summary> Coefficient of line. </summary>
+		/// <returns> Coefficient of line. </returns>
+		double distancetoPoint(const Point<T>& point);
+	};
+	template<typename T>
+	inline Polyline<T>::Polyline() :
+		mSegments(PolySegment<T>* mSegments[5]),
+		mSize(5)
+	{
+	}
+
+	template<typename T>
+	inline Polyline<T>::Polyline(const PolySegment<T>* segments[])
+	{
+		int size = sizeof(segments) / sizeof(PolySegment<T>*);
+		mSize = size;
+		PolySegment<T>* newSegments[mSize];
+		mSegments = newSegments;
+		for (int i = 0; i < mSize; i++) {
+			mSegments[i] = segments[i];
+		}
+	}
+
+	template<typename T>
+	inline Polyline<T>::Polyline(const Polyline<T>& other)
+	{
+		int size = sizeof(other.mSegments) / sizeof(PolySegment<T>*);
+		mSize = size;
+		PolySegment<T>* newSegments[mSize];
+		mSegments = newSegments;
+		for (int i = 0; i < mSize; i++) {
+			mSegments[i] = other.mSegments[i];
+		}
+	}
+
+	template<typename T>
+	inline Polyline<T>::Polyline(Polyline<T>&& other) :
+		mSegments(other.mSegments),
+		mSize(other.mSize)
+	{
+		other.mSegments = nullptr;
+		other.mSize = 0;
+	}
+
+	template<typename T>
+	inline Polyline<T>::~Polyline()
+	{
+		for (int i = 0; i < mSize; i++) {
+			delete mSegments[i];
+		}
+		mSegments = nullptr;
+		mSize = 0;
+	}
+	template<typename T>
+	inline GeomteryBase& Polyline<T>::assign(const GeomteryBase& other)
+	{
+		if (this != &other)
+		{
+			const Polyline<T>& otherPolyline = static_cast<const Polyline<T>&>(other);
+			int size = sizeof(otherPolyline.mSegments) / sizeof(PolySegment<T>*);
+			mSize = size;
+			PolySegment<T>* newSegments[mSize];
+			mSegments = newSegments;
+			for (int i = 0; i < mSize; i++) {
+				mSegments[i] = otherPolyline.mSegments[i];
+			}
+		}
+
+		return *this;
+	}
+
+	template<typename T>
+	inline Polyline<T>& Polyline<T>::operator=(Polyline<T>&& other)
+	{
+		mSegments = other.mSegments;
+		mSize = other.mSize;
+		other.mSegments = nullptr;
+		other.mSize = 0;
+	}
 }
