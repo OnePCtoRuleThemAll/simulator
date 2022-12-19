@@ -1920,13 +1920,57 @@ namespace Geometry2D
 		if (circle->pointsOfIntersectionWithLine(line, pPoint1, pPoint2)) {
 			if (pPoint1 != nullptr) {
 				if (isPointOn(*pPoint1)) {
+					delete pPoint1;
+					delete pPoint2;
+					delete circle;
 					return true;
 				}
 				if (pPoint2 != nullptr) {
-					return isPointOn(*pPoint2);
+					if (isPointOn(*pPoint2)) {
+						delete pPoint1;
+						delete pPoint2;
+						delete circle;
+						return true;
+					}
 				}
 			}
 		}
+		delete pPoint1;
+		delete pPoint2;
+		delete circle;
+		return false;
+	}
+
+	template<typename T>
+	inline bool Arc<T>::intersectionWithLineSegment(const LineSegment<T>& line)
+	{
+		Point<T>* pPoint1 = new Point<T>();
+		Point<T>* pPoint2 = new Point<T>();
+		CircleLine<T>* circle = new CircleLine<T>(*mCenter, mRadius);
+		Line<T>* helpLine = new Line<T>(line.mPoint1, line.mPoint2);
+		if (circle->pointsOfIntersectionWithLine(*helpLine, pPoint1, pPoint2)) {
+			if (pPoint1 != nullptr) {
+				if (isPointOn(*pPoint1) && line.isPointOnLineSegment(*pPoint1)) {
+					delete pPoint1;
+					delete pPoint2;
+					delete circle;
+					delete helpLine;
+					return true;
+				}
+				if (pPoint2 != nullptr) {
+					if (isPointOn(*pPoint2) && line.isPointOnLineSegment(*pPoint2)) {
+						delete pPoint1;
+						delete pPoint2;
+						delete circle;
+						delete helpLine;
+						return true;
+					}
+				}
+			}
+		}
+		delete pPoint1;
+		delete pPoint2;
+		delete circle;
 		return false;
 	}
 
