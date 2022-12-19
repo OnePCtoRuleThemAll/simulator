@@ -1226,7 +1226,7 @@ namespace Geometry2D
 		}
 		else {
 			const CircleLine<T>* otherLine = dynamic_cast<const CircleLine<T>*>(&other);
-			if (otherLine != nullptr && otherLine->mCenter->equals(*(mCenter)) && otherLine->mRadius = mRadius) {
+			if (otherLine != nullptr && otherLine->mCenter->equals(*(mCenter)) && otherLine->mRadius == mRadius) {
 				return true;
 			}
 		}
@@ -1333,7 +1333,7 @@ namespace Geometry2D
 #pragma endregion
 
 #pragma region Circle
-	/// <summary> Struct representing CircleLine. </summary>
+	/// <summary> Struct representing Circle. </summary>
 	/// <typeparam name = "T"> Data type to compute with. </typepram>
 	template<typename T>
 	struct Circle
@@ -1489,7 +1489,7 @@ namespace Geometry2D
 		}
 		else {
 			const Circle<T>* otherCircle = dynamic_cast<const Circle<T>*>(&other);
-			if (otherCircle != nullptr && otherCircle->mCenter->equals(*(mCenter)) && otherCircle->mRadius = mRadius) {
+			if (otherCircle != nullptr && otherCircle->mCenter->equals(*(mCenter)) && otherCircle->mRadius == mRadius) {
 				return true;
 			}
 		}
@@ -1599,4 +1599,219 @@ namespace Geometry2D
 	}
 
 #pragma endregion
+
+#pragma region Arc
+	/// <summary> Struct representing Circle. </summary>
+	/// <typeparam name = "T"> Data type to compute with. </typepram>
+	template<typename T>
+	struct Arc
+		: GeomteryBase
+	{
+		/// <summary> Constructor. </summary>
+		Arc();
+
+		/// <summary>Parameterized constructor. </summary>
+		/// <param name = "point1"> First point defining line. </param>
+		/// <param name = "point2"> Second point defining line. </param>
+		/// /// <param name = "altitude"> Altitude of center point. </param>
+		Arc(const Point<T>& point1, const Point<T>& point2, const double altitude);
+
+		/// <summary>Copy constructor. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		Arc(const Arc<T>& other);
+
+
+		/// <summary>Move constructor. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		Arc(Arc<T>&& other);
+
+		/// <summary>Destructor. </summary>
+		~Arc();
+
+		/// <summary> Assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		GeomteryBase& assign(const GeomteryBase& other) override;
+
+		/// <summary> Move assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		Arc<T>& operator=(Arc<T>&& other);
+
+		/// <summary> Assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		Arc<T>& assign(const Arc<T>& other);
+
+		/// <summary> Objcet equality. </summary>
+		/// <param name="other">Object to compare with. </param>
+		/// <returns>True if objects are equal both in types and in values. </returns>
+		bool equals(const GeomteryBase& other) override;
+
+		/// <summary> Center point. </summary>
+		Point<T>* mCenter;
+
+		/// <summary> First point. </summary>
+		Point<T>* mPoint1;
+
+		/// <summary> Second point. </summary>
+		Point<T>* mPoint2;
+
+		/// <summary> Radius of arc. </summary>
+		double mRadius;
+
+		/// <summary> Altitude of center point. </summary>
+		double mAltitude;
+
+		/// <summary> Is point on line. </summary>
+		/// <param name="point"> Point. </param>
+		/// <returns>True if point lies on line. </returns>
+		bool isPointOn(const Point<T>& point);
+
+		/// <summary> Moves circle line by vector. </summary>
+		/// <param name="vector"> Vector. </param>
+		void moveByVector(const Vector<T>& vector);
+
+		/// <summary> Distance to point. </summary>
+		/// <returns> Distance to point. </returns>
+		double distanceToPoint(const Point<T>& point);
+
+		/// <summary> Intersection with line. </summary>
+		/// <param name="line"> Line. </param>
+		/// <returns>True if circle line intersects with line. </returns>
+		bool intersectionWithLine(const Line<T>& line);
+
+		/// <summary> Intersection with line segment. </summary>
+		/// <param name="line"> Line segment. </param>
+		/// <returns>True if circle intersects with line segment. </returns>
+		bool intersectionWithLineSegment(const LineSegment<T>& line);
+	};
+#pragma endregion
+	template<typename T>
+	inline Arc<T>::Arc() :
+		mPoint1(Point<T>(-1, 0)),
+		mPoint2(Point<T>(1, 0)),
+		mCenter(Point<T>(0, 0)),
+		mRadius(1),
+		mAltitude(0)
+	{
+	}
+
+	template<typename T>
+	inline Arc<T>::Arc(const Point<T>& point1, const Point<T>& point2, const double altitude) :
+		mPoint1(new Point<T>(point1)),
+		mPoint2(new Point<T>(point2)),
+		mAltitude(altitude)
+	{
+		Vector<T>* pLineVector = new Vector<T>(point1, point2);
+		Line<T>* pLine = new Line<T>(point1, point2);
+		Vector<T>* pNormVector = pLine->normalizedVector();
+		pLineVector->vectorMultiplication(0.5);
+		pNormVector->vectorMultiplication(1/pNormVector->sizeOfVector());
+		pNormVector->vectorMultiplication(altitude);
+		mCenter = movePointByVector(*pLineVector, point1);
+		mCenter->movePointByVector(*pNormVector);
+		mRadius = distanceBetweenPoints(*mPoint1, *mCenter);
+		delete pLineVector;
+		delete pLine;
+		delete pNormVector;
+	}
+
+	template<typename T>
+	inline Arc<T>::Arc(const Arc<T>& other) :
+		mPoint1(new Point<T>(*(other.mPoint1))),
+		mPoint2(new Point<T>(*(other.mPoint2))),
+		mCenter(new Point<T>(*(other.mCenter))),
+		mRadius(other.mRadius),
+		mAltitude(other.mAltitude)
+	{
+	}
+
+	template<typename T>
+	inline Arc<T>::Arc(Arc<T>&& other) :
+		mPoint1(new Point<T>(*(other.mPoint1))),
+		mPoint2(new Point<T>(*(other.mPoint2))),
+		mCenter(new Point<T>(*(other.mCenter))),
+		mRadius(other.mRadius),
+		mAltitude(other.mAltitude)
+	{
+		other.mPoint1 = nullptr;
+		other.mPoint2 = nullptr;
+		other.mCenter = nullptr;
+	}
+
+	template<typename T>
+	inline Arc<T>::~Arc()
+	{
+		delete mPoint1;
+		delete mPoint2;
+		delete mCenter;
+		mRadius = 0;
+		mAltitude = 0;
+
+		mPoint1 = nullptr;
+		mPoint2 = nullptr;
+		mCenter = nullptr;
+	}
+
+	template<typename T>
+	inline GeomteryBase& Arc<T>::assign(const GeomteryBase& other)
+	{
+		if (this != &other)
+		{
+			const Arc<T>& otherArc = static_cast<const Arc<T>&>(other);
+			mPoint1->assign(*(otherArc.mPoint1));
+			mPoint2->assign(*(otherArc.mPoint2));
+			mCenter->assign(*(otherArc.mCenter));
+			mRadius = otherArc.mRadius;
+			mAltitude = otherArc.mAltitude;
+		}
+
+		return *this;
+	}
+
+	template<typename T>
+	inline Arc<T>& Arc<T>::operator=(Arc<T>&& other)
+	{
+		mPoint1 = other.mPoint1;
+		mPOint2 = other.mPoint2;
+		mCenter = other.mCenter;
+		mRadius = other.mRadius;
+		mAltitude = other.mAltitude;
+		other.mPoint1 = nullptr;
+		other.mPoint2 = nullptr;
+		other.mCenter = nullptr;
+		other.mRadius = 0;
+		other.mAltitude = 0;
+		return *this;
+	}
+
+	template<typename T>
+	inline Arc<T>& Arc<T>::assign(const Arc<T>& other)
+	{
+		if (this != &other)
+		{
+			mPoint1->assign(*(other.mPoint1));
+			mPoint2->assign(*(other.mPoint2));
+			mCenter->assign(*(other.mCenter));
+			mRadius = other.mRadius;
+			mAltitude = other.mAltitude;
+		}
+		return *this;
+	}
+	template<typename T>
+	inline bool Arc<T>::equals(const GeomteryBase& other)
+	{
+		if (this == &other) {
+			return true;
+		}
+		else {
+			const Arc<T>* otherArc = dynamic_cast<const Arc<T>*>(&other);
+			if (otherArc != nullptr && otherArc->mPoint1->equals(*(mPoint1)) && otherArc->mPoint2->equals(*(mPoint2)) 
+				&& otherArc->mCenter->equals(*(mCenter)) && otherArc->mRadius == mRadius && otherArc->mAltitude == mAltitude) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
