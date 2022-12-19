@@ -1140,6 +1140,11 @@ namespace Geometry2D
 		/// <returns>True if circle line intersects with line. </returns>
 		bool intersectionWithLine(const Line<T>& line);
 
+		/// <summary> Intersection with line. </summary>
+		/// <param name="line"> Line. </param>
+		/// <returns>True if circle line intersects with line. </returns>
+		bool pointsOfIntersectionWithLine(const Line<T>& line, Point<T>* point1, Point<T>* point2);
+
 		/// <summary> Intersection with line segment. </summary>
 		/// <param name="line"> Line segment. </param>
 		/// <returns>True if circle line intersects with line segment. </returns>
@@ -1254,6 +1259,38 @@ namespace Geometry2D
 	inline bool CircleLine<T>::intersectionWithLine(const Line<T>& line)
 	{
 		return mRadius >= line.distancetoPoint(*mCenter);
+	}
+
+	template<typename T>
+	inline bool CircleLine<T>::pointsOfIntersectionWithLine(const Line<T>& line, Point<T>* point1, Point<T>* point2)
+	{
+		double distToCenter = distancePointToLine(line, *(mCenter));
+		Vector<T>* pVector = normalizedVectorOfLine(line);
+		pVector->vectorMultiplication(distToCenter/pVector->sizeOfVector());
+		double coefficient = coefficientOfLine(line);
+		double x0 = -1 * ((pVector->mDeltaX * coefficient) / (pow(pVector->mDeltaX, 2) + pow(pVector->mDeltaY, 2)));
+		double y0 = -1 * ((pVector->mDeltaY * coefficient) / (pow(pVector->mDeltaX, 2) + pow(pVector->mDeltaY, 2)));
+		Point<T>* pPoint0 = new Point<T>(x0, y0);
+		distToCenter = distanceBetweenPoints(*(pPoint0), *(mCenter));
+		if (distToCenter > mRadius) {
+			point1 = nullptr;
+			point2 = nullptr;
+			return false;
+		}
+		else if (distToCenter == mRadius) {
+			point1->assign(*(pPoint0));
+			point2 = nullptr;
+			return true;
+		}
+		else {
+			distToCenter = sqrt(pow(mRadius, 2) - (pow(coefficient, 2) / (pow(pVector->mDeltaX, 2) + pow(pVector->mDeltaY, 2))));
+			double scalary = sqrt(distToCenter / (pow(pVector->mDeltaX, 2) + pow(pVector->mDeltaY, 2)));
+			point1->mPositionX = pPoint0->mPositionX + pVector->mDeltaY * scalary;
+			point2->mPositionX = pPoint0->mPositionX - pVector->mDeltaY * scalary;
+			point1->mPositionY = pPoint0->mPositionY - pVector->mDeltaY * scalary;
+			point1->mPositionY = pPoint0->mPositionY + pVector->mDeltaY * scalary;
+			return true;
+		}
 	}
 
 	//https://www.baeldung.com/cs/circle-line-segment-collision-detection
@@ -1872,6 +1909,25 @@ namespace Geometry2D
 		double distToPoint1 = distanceBetweenPoints(*(mPoint1), point);
 		double distToPoint2 = distanceBetweenPoints(*(mPoint2), point);
 		return distToPoint1 < distToPoint2 ? distToPoint1 : distToPoint2;
+	}
+
+	template<typename T>
+	inline bool Arc<T>::intersectionWithLine(const Line<T>& line)
+	{
+		Point<T>* pPoint1 = new Point<T>();
+		Point<T>* pPoint2 = new Point<T>();
+		CircleLine<T>* circle = new CircleLine<T>(*mCenter, mRadius);
+		if (circle->pointsOfIntersectionWithLine(line, pPoint1, pPoint2)) {
+			if (pPoint1 != nullptr) {
+				if (isPointOn(*pPoint1)) {
+					return true;
+				}
+				if (pPoint2 != nullptr) {
+					return isPointOn(*pPoint2);
+				}
+			}
+		}
+		return false;
 	}
 
 #pragma endregion
