@@ -855,7 +855,15 @@ namespace Geometry2D
 		/// <returns> Coefficient of line. </returns>
 		double distancetoPoint(const Point<T>& point) override;
 
-		bool intersectionWithLineSegment(const LineSegment<T>& line);
+		/// <summary> Intersection with line. </summary>
+		/// <param name="line"> Line. </param>
+		/// <returns>True if circle line intersects with line. </returns>
+		bool intersectionWithLineSegment(const LineSegment<T>& line) override;
+
+		/// <summary> Intersection with line segment. </summary>
+		/// <param name="line"> Line. </param>
+		/// <returns>True if line segment line intersects with line. </returns>
+		bool intersectionWithLine(const Line<T>& line) override;
 	};
 
 	template<typename T>
@@ -1032,6 +1040,20 @@ namespace Geometry2D
 		if (orientation4 == 0 && isPointOnLineSegment(line, *mPoint2)) return true;
 
 		return false;
+	}
+
+	template<typename T>
+	inline bool LineSegment<T>::intersectionWithLine(const Line<T>& line)
+	{
+		Vector<T>* pNormVector = normalizedVector();
+		Vector<T>* pVector1 = new Vector<T>(*line.mPoint1, *mPoint1);
+		Vector<T>* pVector2 = new Vector<T>(*line.mPoint1, *mPoint2);
+		double dotProduct1 = dotProduct(*pNormVector, *pVector1);
+		double dotProduct2 = dotProduct(*pNormVector, *pVector2);
+		delete pNormVector;
+		delete pVector1;
+		delete pVector2;
+		return (!(dotProduct1 >= 0 && dotProduct2 >= 0) || (dotProduct1 < 0 && dotProduct2 < 0));
 	}
 
 	/// <summary> Gradient of line. </summary>
@@ -1760,12 +1782,12 @@ namespace Geometry2D
 		/// <summary> Intersection with line. </summary>
 		/// <param name="line"> Line. </param>
 		/// <returns>True if circle line intersects with line. </returns>
-		bool intersectionWithLine(const Line<T>& line);
+		bool intersectionWithLine(const Line<T>& line) override;
 
 		/// <summary> Intersection with line segment. </summary>
 		/// <param name="line"> Line segment. </param>
 		/// <returns>True if circle intersects with line segment. </returns>
-		bool intersectionWithLineSegment(const LineSegment<T>& line);
+		bool intersectionWithLineSegment(const LineSegment<T>& line) override;
 	};
 
 	template<typename T>
@@ -2028,5 +2050,7 @@ namespace Geometry2D
 		virtual void moveByVector(const Vector<T>& vector) = 0;
 
 		virtual bool intersectionWithLineSegment(const LineSegment<T>& line) = 0;
+
+		virtual bool intersectionWithLine(const Line<T>& line) = 0;
 	};
 }
