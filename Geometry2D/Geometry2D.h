@@ -1663,6 +1663,11 @@ namespace Geometry2D
 		/// <summary> Altitude of center point. </summary>
 		double mAltitude;
 
+		/// <summary> Is point in cone defined by 3 main points. </summary>
+		/// <param name="point"> Point. </param>
+		/// <returns>True if point lies in cone defined by 3 main points. </returns>
+		bool isPointInCone(const Point<T>& point);
+
 		/// <summary> Is point on line. </summary>
 		/// <param name="point"> Point. </param>
 		/// <returns>True if point lies on line. </returns>
@@ -1686,7 +1691,7 @@ namespace Geometry2D
 		/// <returns>True if circle intersects with line segment. </returns>
 		bool intersectionWithLineSegment(const LineSegment<T>& line);
 	};
-#pragma endregion
+
 	template<typename T>
 	inline Arc<T>::Arc() :
 		mPoint1(Point<T>(-1, 0)),
@@ -1774,7 +1779,7 @@ namespace Geometry2D
 	inline Arc<T>& Arc<T>::operator=(Arc<T>&& other)
 	{
 		mPoint1 = other.mPoint1;
-		mPOint2 = other.mPoint2;
+		mPoint2 = other.mPoint2;
 		mCenter = other.mCenter;
 		mRadius = other.mRadius;
 		mAltitude = other.mAltitude;
@@ -1816,30 +1821,58 @@ namespace Geometry2D
 	}
 
 	template<typename T>
+	inline bool Arc<T>::isPointInCone(const Point<T>& point)
+	{
+		Vector<T>* pAxisXVector = new Vector<T>(1, 0);
+		Vector<T>* pFirstPoint = new Vector<T>(*(mCenter), *(mPoint1));
+		Vector<T>* pSecondPoint = new Vector<T>(*(mCenter), *(mPoint2));
+		Vector<T>* pCheckingPoint = new Vector<T>(*(mCenter), point);
+
+		double angleFirstVector = angleBetweenVectors(*(pAxisXVector), *(pFirstPoint));
+		double angleSecondVector = angleBetweenVectors(*(pAxisXVector), *(pSecondPoint));
+		double angleCheckingVector = angleBetweenVectors(*(pAxisXVector), *(pCheckingPoint));
+
+		delete pAxisXVector;
+		delete pFirstPoint;
+		delete pSecondPoint;
+		delete pCheckingPoint;
+
+		if (angleFirstVector < angleSecondVector) {
+			return angleFirstVector >= angleCheckingVector && angleSecondVector >= angleCheckingVector;
+		}
+		else {
+			return angleFirstVector >= angleCheckingVector && angleSecondVector <= angleCheckingVector;
+		}
+	}
+
+	template<typename T>
 	inline bool Arc<T>::isPointOn(const Point<T>& point)
 	{
 		if (distanceBetweenPoints(*(mCenter, point)) = mRadius) {
-			Vector<T>* pAxisXVector = new Vector<T>(1, 0);
-			Vector<T>* pFirstPoint = new Vector<T>(*(mCenter), *(mPoint1));
-			Vector<T>* pSecondPoint = new Vector<T>(*(mCenter), *(mPoint2));
-			Vector<T>* pCheckingPoint = new Vector<T>(*(mCenter),point);
-			
-			double angleFirstVector = angleBetweenVectors(*(pAxisXVector), *(pFirstPoint));
-			double angleSecondVector = angleBetweenVectors(*(pAxisXVector), *(pSecondPoint));
-			double angleCheckingVector = angleBetweenVectors(*(pAxisXVector), *(pCheckingPoint));
-			
-			delete pAxisXVector;
-			delete pFirstPoint;
-			delete pSecondPoint;
-			delete pCheckingPoint;
-
-			if (angleFirstVector < angleSecondVector) {
-				return angleFirstVector >= angleCheckingVector && angleSecondVector >= angleCheckingVector;
-			}
-			else {
-				return angleFirstVector >= angleCheckingVector && angleSecondVector <= angleCheckingVector;
-			}
+			return this->isPointInCone(point);
 		}
 		return false;
 	}
+
+	template<typename T>
+	inline void Arc<T>::moveByVector(const Vector<T>& vector)
+	{
+		mPoint1->movePointByVector(vector);
+		mPoint2->movePointByVector(vector);
+		mCenter->movePointByVector(vector);
+	}
+
+	template<typename T>
+	inline double Arc<T>::distanceToPoint(const Point<T>& point)
+	{
+		if (this->isPointInCone(point)) {
+			return abs(distanceBetweenPoints(point, *mCenter) - mRadius);
+		}
+
+		double distToPoint1 = distanceBetweenPoints(*(mPoint1), point);
+		double distToPoint2 = distanceBetweenPoints(*(mPoint2), point);
+		return distToPoint1 < distToPoint2 ? distToPoint1 : distToPoint2;
+	}
+
+#pragma endregion
 }
