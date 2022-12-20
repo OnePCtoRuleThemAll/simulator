@@ -2043,6 +2043,9 @@ namespace Geometry2D
 	class PolySegment
 	{
 	public:
+		virtual ~PolySegment();
+
+		virtual bool equals(const GeomteryBase& other) = 0;
 
 		virtual bool isPointOn(const Point<T>& point) = 0;
 
@@ -2053,6 +2056,10 @@ namespace Geometry2D
 		virtual bool intersectionWithLineSegment(const LineSegment<T>& line) = 0;
 
 		virtual bool intersectionWithLine(const Line<T>& line) = 0;
+
+		PolySegment<T>* mNext;
+
+		PolySegment<T>* mPrevious;
 	};
 
 	/// <summary> Struct representing vector. </summary>
@@ -2064,14 +2071,9 @@ namespace Geometry2D
 		/// <summary> Constructor. </summary>
 		Polyline();
 
-		/// <summary>Parameterized constructor. </summary>
-		/// <param name = "segments"> Array of segments. </param>
-		Polyline(const PolySegment<T>* segments[]);
-
 		/// <summary>Copy constructor. </summary>
 		/// <param name = "other"> Source objcet of taken properties. </param>
 		Polyline(const Polyline<T>& other);
-
 
 		/// <summary>Move constructor. </summary>
 		/// <param name = "other"> Source objcet of taken properties. </param>
@@ -2100,11 +2102,21 @@ namespace Geometry2D
 		/// <returns>True if objects are equal both in types and in values. </returns>
 		bool equals(const GeomteryBase& other) override;
 
-		/// <summary> Array of segments. </summary>
-		PolySegment<T>* mSegments;
+		/// <summary> Start of segments list. </summary>
+		PolySegment<T>* mFirst;
+
+		/// <summary> End of segments list. </summary>
+		PolySegment<T>* mLast;
 
 		/// <summary> Size of segments. </summary>
 		int mSize;
+
+		/// <summary> Size of segments. </summary>
+		void clear();
+
+		/// <summary> Size of segments. </summary>
+		/// <param name="polySegment"> Pointer to polySegment. </param>
+		void add(PolySegment<T>* polySegment);
 
 		/// <summary> Is point on line. </summary>
 		/// <param name="point"> Point. </param>
@@ -2118,68 +2130,62 @@ namespace Geometry2D
 		/// <summary> Coefficient of line. </summary>
 		/// <returns> Coefficient of line. </returns>
 		double distancetoPoint(const Point<T>& point);
+
+		/// <summary> Intersection with line. </summary>
+		/// <param name="line"> Line. </param>
+		/// <returns>True if polyline  intersects with line. </returns>
+		bool intersectionWithLine(const Line<T>& line);
+
+		/// <summary> Intersection with line segment. </summary>
+		/// <param name="line"> Line segment. </param>
+		/// <returns>True if polyline intersects with line segment. </returns>
+		bool intersectionWithLineSegment(const LineSegment<T>& line);
 	};
 	template<typename T>
 	inline Polyline<T>::Polyline() :
-		mSegments(PolySegment<T>* mSegments[5]),
-		mSize(5)
+		mFirst(nullptr),
+		mLast(nullptr),
+		mSize(0)
 	{
-	}
-
-	template<typename T>
-	inline Polyline<T>::Polyline(const PolySegment<T>* segments[])
-	{
-		int size = sizeof(segments) / sizeof(PolySegment<T>*);
-		mSize = size;
-		PolySegment<T>* newSegments[mSize];
-		mSegments = newSegments;
-		for (int i = 0; i < mSize; i++) {
-			mSegments[i] = segments[i];
-		}
 	}
 
 	template<typename T>
 	inline Polyline<T>::Polyline(const Polyline<T>& other)
 	{
-		int size = sizeof(other.mSegments) / sizeof(PolySegment<T>*);
-		mSize = size;
-		PolySegment<T>* newSegments[mSize];
-		mSegments = newSegments;
-		for (int i = 0; i < mSize; i++) {
-			mSegments[i] = other.mSegments[i];
-		}
+		assign(other);
 	}
 
 	template<typename T>
 	inline Polyline<T>::Polyline(Polyline<T>&& other) :
-		mSegments(other.mSegments),
+		mFirst(other.mFirst),
+		mLast(other.mLast),
 		mSize(other.mSize)
 	{
-		other.mSegments = nullptr;
+		other.mFirst = nullptr;
+		other.mLast = nullptr;
 		other.mSize = 0;
 	}
 
 	template<typename T>
 	inline Polyline<T>::~Polyline()
 	{
-		for (int i = 0; i < mSize; i++) {
-			delete mSegments[i];
-		}
-		mSegments = nullptr;
-		mSize = 0;
+		clear();
 	}
+
 	template<typename T>
 	inline GeomteryBase& Polyline<T>::assign(const GeomteryBase& other)
 	{
 		if (this != &other)
 		{
 			const Polyline<T>& otherPolyline = static_cast<const Polyline<T>&>(other);
-			int size = sizeof(otherPolyline.mSegments) / sizeof(PolySegment<T>*);
-			mSize = size;
-			PolySegment<T>* newSegments[mSize];
-			mSegments = newSegments;
-			for (int i = 0; i < mSize; i++) {
-				mSegments[i] = otherPolyline.mSegments[i];
+			
+			clear();
+
+			PolySegment<T>* current = otherPolyline.mFirst;
+
+			while (current != nullptr) {
+				add(current);
+				current = current->mNext;
 			}
 		}
 
@@ -2189,9 +2195,158 @@ namespace Geometry2D
 	template<typename T>
 	inline Polyline<T>& Polyline<T>::operator=(Polyline<T>&& other)
 	{
-		mSegments = other.mSegments;
+		mFirst = other.mFirst;
+		mLast = other.mLast;
 		mSize = other.mSize;
-		other.mSegments = nullptr;
+		other.mFirst = nullptr;
+		other.mLast = nullptr;
 		other.mSize = 0;
+	}
+
+	template<typename T>
+	inline Polyline<T>& Polyline<T>::assign(const Polyline<T>& other)
+	{
+		if (this != &other)
+		{
+			clear();
+
+			PolySegment<T>* current = other.mFirst;
+
+			while (current != nullptr) {
+				add(current);
+				current = current->mNext;
+			}
+		}
+		return *this;
+	}
+
+	template<typename T>
+	inline bool Polyline<T>::equals(const GeomteryBase& other)
+	{
+		if (this == &other) {
+			return true;
+		}
+
+		const Polyline<T>* otherPolyline = dynamic_cast<const Polyline<T>*>(&other);
+
+		if (otherPolyline == nullptr) {
+			return false;
+		}
+
+		if (mSize != otherPolyline->mSize) {
+			return false;
+		}
+
+		PolySegment<T>* curThis = mFirst;
+		PolySegment<T>* curOther = otherPolyline->mFirst;
+
+		while (curThis != nullptr) {
+			if (!curThis->equals(*curOther)) {
+				return false;
+			}
+			curThis = curThis->getNext();
+			curOther = curOther->getNext();
+		}
+		return true;
+	}
+
+	template<typename T>
+	inline void Polyline<T>::clear()
+	{
+		PolySegment<T>* current = mFirst;
+
+		while (current != nullptr) {
+			current = current->mNext;
+			delete first_;
+			first_ = current;
+		}
+
+		last_ = nullptr;
+		size_ = 0;
+	}
+
+	template<typename T>
+	inline void Polyline<T>::add(PolySegment<T>* polySegment)
+	{
+		mSize++;
+
+		if (mFirst == nullptr) {
+			mFirst = polySegment;
+		}
+		else {
+			mLast->setNext(polySegment);
+			polySegment->mPrevious = mLast;
+		}
+		mLast = polySegment;
+	}
+
+	template<typename T>
+	inline bool Polyline<T>::isPointOn(const Point<T>& point)
+	{
+		PolySegment<T>* current = mFirst;
+
+		while (current != nullptr) {
+			if (current->isPointOn(point)) {
+				return true;
+			}
+			current = current->mNext;
+		}
+		return false;
+	}
+
+	template<typename T>
+	inline void Polyline<T>::moveByVector(const Vector<T>& vector)
+	{
+		PolySegment<T>* current = mFirst;
+
+		while (current != nullptr) {
+			current->moveByVector(vector);
+			current = current->mNext;
+		}
+	}
+
+	template<typename T>
+	inline double Polyline<T>::distancetoPoint(const Point<T>& point)
+	{
+		double min = DBL_MAX;
+		double dist = 0;
+
+		PolySegment<T>* current = mFirst;
+
+		while (current != nullptr) {
+			dist = current->distancetoPoint(point);
+			if (dist < min) {
+				min = dist;
+			}
+			current = current->mNext;
+		}
+		return min;
+	}
+	template<typename T>
+	inline bool Polyline<T>::intersectionWithLine(const Line<T>& line)
+	{
+		PolySegment<T>* current = mFirst;
+
+		while (current != nullptr) {
+			if (current->intersectionWithLine(line)) {
+				return true;
+			}
+			current = current->mNext;
+		}
+		return false;
+	}
+
+	template<typename T>
+	inline bool Polyline<T>::intersectionWithLineSegment(const LineSegment<T>& line)
+	{
+		PolySegment<T>* current = mFirst;
+
+		while (current != nullptr) {
+			if (current->intersectionWithLineSegment(line)) {
+				return true;
+			}
+			current = current->mNext;
+		}
+		return false;
 	}
 }
