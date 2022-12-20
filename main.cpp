@@ -1,4 +1,4 @@
-#include "../simulator/Geometry2D/Geometry2D.h"
+#include "Geometry2D/Geometry2D.h"
 #include "tests/testGeometry/testGeometry.h"
 #include "ui/ui_keeper.h"
 #include "ui/console.h"
