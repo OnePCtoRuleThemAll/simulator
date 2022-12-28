@@ -149,6 +149,12 @@
     <ClCompile Include="_logger\logger.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Dependencies\glew-2.1.0\include\GL\eglew.h" />
+    <ClInclude Include="Dependencies\glew-2.1.0\include\GL\glew.h" />
+    <ClInclude Include="Dependencies\glew-2.1.0\include\GL\glxew.h" />
+    <ClInclude Include="Dependencies\glew-2.1.0\include\GL\wglew.h" />
+    <ClInclude Include="Dependencies\GLFW\include\GLFW\glfw3.h" />
+    <ClInclude Include="Dependencies\GLFW\include\GLFW\glfw3native.h" />
     <ClInclude Include="Geometry2D\Geometry2D.h" />
     <ClInclude Include="Geometry2D\GeometryBase.h" />
     <ClInclude Include="tests\test.h" />
@@ -158,6 +164,46 @@
     <ClInclude Include="ui\ui_keeper.h" />
     <ClInclude Include="_logger\file_log_consumer.h" />
     <ClInclude Include="_logger\logger.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="Dependencies\glew-2.1.0\lib\Release\Win32\glew32.lib" />
+    <Library Include="Dependencies\glew-2.1.0\lib\Release\Win32\glew32s.lib" />
+    <Library Include="Dependencies\glew-2.1.0\lib\Release\x64\glew32.lib" />
+    <Library Include="Dependencies\glew-2.1.0\lib\Release\x64\glew32s.lib" />
+    <Library Include="Dependencies\GLFW\lib-vc2022\glfw3.lib" />
+    <Library Include="Dependencies\GLFW\lib-vc2022\glfw3_mt.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Dependencies\glew-2.1.0\bin\Release\Win32\glew32.dll" />
+    <None Include="Dependencies\glew-2.1.0\bin\Release\Win32\glewinfo.exe" />
+    <None Include="Dependencies\glew-2.1.0\bin\Release\Win32\visualinfo.exe" />
+    <None Include="Dependencies\glew-2.1.0\bin\Release\x64\glew32.dll" />
+    <None Include="Dependencies\glew-2.1.0\bin\Release\x64\glewinfo.exe" />
+    <None Include="Dependencies\glew-2.1.0\bin\Release\x64\visualinfo.exe" />
+    <None Include="Dependencies\glew-2.1.0\doc\advanced.html" />
+    <None Include="Dependencies\glew-2.1.0\doc\basic.html" />
+    <None Include="Dependencies\glew-2.1.0\doc\build.html" />
+    <None Include="Dependencies\glew-2.1.0\doc\credits.html" />
+    <None Include="Dependencies\glew-2.1.0\doc\glew.css" />
+    <None Include="Dependencies\glew-2.1.0\doc\glew.html" />
+    <None Include="Dependencies\glew-2.1.0\doc\glxew.html" />
+    <None Include="Dependencies\glew-2.1.0\doc\index.html" />
+    <None Include="Dependencies\glew-2.1.0\doc\install.html" />
+    <None Include="Dependencies\glew-2.1.0\doc\log.html" />
+    <None Include="Dependencies\glew-2.1.0\doc\wglew.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Dependencies\glew-2.1.0\doc\github.png" />
+    <Image Include="Dependencies\glew-2.1.0\doc\glew.png" />
+    <Image Include="Dependencies\glew-2.1.0\doc\new.png" />
+    <Image Include="Dependencies\glew-2.1.0\doc\ogl_sm.jpg" />
+    <Image Include="Dependencies\glew-2.1.0\doc\travis.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Dependencies\glew-2.1.0\doc\glew.txt" />
+    <Text Include="Dependencies\glew-2.1.0\doc\gpl.txt" />
+    <Text Include="Dependencies\glew-2.1.0\doc\khronos.txt" />
+    <Text Include="Dependencies\glew-2.1.0\doc\mesa.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
