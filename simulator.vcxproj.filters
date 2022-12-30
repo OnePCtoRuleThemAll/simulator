@@ -34,6 +34,57 @@
     <Filter Include="ui\Source files">
       <UniqueIdentifier>{1744819e-92dd-4af3-916d-dcfe9b8c2695}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Dependencies">
+      <UniqueIdentifier>{5faec894-9678-4a06-b2b4-9c04b27257ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\GLFW">
+      <UniqueIdentifier>{d5c2168c-09de-4c24-b7fb-5e991365e6ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\glew-2.1.0">
+      <UniqueIdentifier>{95acbfa0-53ac-472f-9f57-4c0278842ef7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\GLFW\32bit">
+      <UniqueIdentifier>{bcc37274-459d-41d4-b13b-2785a036ba65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\GLFW\64bit">
+      <UniqueIdentifier>{c76ab5e4-a24d-44d2-9435-082b702195d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\GLFW\32bit\include">
+      <UniqueIdentifier>{245b6b24-62b3-4086-936d-079cdd16763d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\GLFW\32bit\lib-vc2022">
+      <UniqueIdentifier>{3565002a-91a5-4fa4-bf7e-1eefb45dc647}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\GLFW\64bit\include">
+      <UniqueIdentifier>{00cb3941-218e-4b75-b453-2d4be468f718}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\GLFW\64bit\lib-vc2022">
+      <UniqueIdentifier>{3e767367-0c92-448e-8b23-2c1aae0e672d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\GLFW\32bit\include\GLFW">
+      <UniqueIdentifier>{60a6acfe-997b-4060-a36b-56569fab517b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\GLFW\64bit\include\GLFW">
+      <UniqueIdentifier>{6f06a226-51e7-4ccb-88ee-9d5133058cdc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\glew-2.1.0\include">
+      <UniqueIdentifier>{d2573141-2f21-4d3b-be58-29c9620614c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\glew-2.1.0\lib">
+      <UniqueIdentifier>{42678fe9-6f6e-4cd0-aaf2-76c4af0333ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\glew-2.1.0\lib\Release">
+      <UniqueIdentifier>{97dc4e20-7614-4225-a7e1-407f5981856e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\glew-2.1.0\lib\Release\Win32">
+      <UniqueIdentifier>{40c3b534-b792-46ad-a861-62c836e4253c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\glew-2.1.0\lib\Release\x64">
+      <UniqueIdentifier>{14be9007-96ca-44b3-8b4a-af2cf926f09a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\glew-2.1.0\include\GL">
+      <UniqueIdentifier>{91cac475-5363-498c-9ad6-18cd6a5d681d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -55,6 +106,7 @@
     <ClCompile Include="ui\ui_keeper.cpp">
       <Filter>ui\Source files</Filter>
     </ClCompile>
+    <ClCompile Include="tests\testGeometry\testGeometry.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Geometry2D\Geometry2D.h">
@@ -78,5 +130,57 @@
     <ClInclude Include="ui\ui_keeper.h">
       <Filter>ui\Header files</Filter>
     </ClInclude>
+    <ClInclude Include="tests\testGeometry\testGeometry.h" />
+    <ClInclude Include="types.h" />
+    <ClInclude Include="Dependencies\GLFW\32bit\include\GLFW\glfw3.h">
+      <Filter>Dependencies\GLFW\32bit\include\GLFW</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\GLFW\32bit\include\GLFW\glfw3native.h">
+      <Filter>Dependencies\GLFW\32bit\include\GLFW</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\GLFW\64bit\include\GLFW\glfw3.h">
+      <Filter>Dependencies\GLFW\64bit\include\GLFW</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\GLFW\64bit\include\GLFW\glfw3native.h">
+      <Filter>Dependencies\GLFW\64bit\include\GLFW</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\glew-2.1.0\include\GL\eglew.h">
+      <Filter>Dependencies\glew-2.1.0\include\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\glew-2.1.0\include\GL\glew.h">
+      <Filter>Dependencies\glew-2.1.0\include\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\glew-2.1.0\include\GL\glxew.h">
+      <Filter>Dependencies\glew-2.1.0\include\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\glew-2.1.0\include\GL\wglew.h">
+      <Filter>Dependencies\glew-2.1.0\include\GL</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="Dependencies\GLFW\32bit\lib-vc2022\glfw3.lib">
+      <Filter>Dependencies\GLFW\32bit\lib-vc2022</Filter>
+    </Library>
+    <Library Include="Dependencies\GLFW\32bit\lib-vc2022\glfw3_mt.lib">
+      <Filter>Dependencies\GLFW\32bit\lib-vc2022</Filter>
+    </Library>
+    <Library Include="Dependencies\GLFW\64bit\lib-vc2022\glfw3.lib">
+      <Filter>Dependencies\GLFW\64bit\lib-vc2022</Filter>
+    </Library>
+    <Library Include="Dependencies\GLFW\64bit\lib-vc2022\glfw3_mt.lib">
+      <Filter>Dependencies\GLFW\64bit\lib-vc2022</Filter>
+    </Library>
+    <Library Include="Dependencies\glew-2.1.0\lib\Release\x64\glew32.lib">
+      <Filter>Dependencies\glew-2.1.0\lib\Release\x64</Filter>
+    </Library>
+    <Library Include="Dependencies\glew-2.1.0\lib\Release\x64\glew32s.lib">
+      <Filter>Dependencies\glew-2.1.0\lib\Release\x64</Filter>
+    </Library>
+    <Library Include="Dependencies\glew-2.1.0\lib\Release\Win32\glew32.lib">
+      <Filter>Dependencies\glew-2.1.0\lib\Release\Win32</Filter>
+    </Library>
+    <Library Include="Dependencies\glew-2.1.0\lib\Release\Win32\glew32s.lib">
+      <Filter>Dependencies\glew-2.1.0\lib\Release\Win32</Filter>
+    </Library>
   </ItemGroup>
 </Project>
