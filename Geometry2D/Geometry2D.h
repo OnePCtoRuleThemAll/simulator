@@ -830,6 +830,8 @@ namespace Geometry2D
 		/// <summary> Second vector defining line. </summary>
 		Point<T>* mPoint2;
 
+		Point<T>* getPoint1() override;
+
 		/// <summary> Is point on line. </summary>
 		/// <param name="point"> Point. </param>
 		/// <returns>True if point lies on line. </returns>
@@ -952,6 +954,12 @@ namespace Geometry2D
 			}
 		}
 		return false;
+	}
+
+	template<typename T>
+	inline Point<T>* LineSegment<T>::getPoint1()
+	{
+		return this->mPoint1;
 	}
 
 	template<typename T>
@@ -1761,6 +1769,8 @@ namespace Geometry2D
 		/// <summary> Altitude of center point. </summary>
 		double mAltitude;
 
+		Point<T>* getPoint1() override;
+
 		/// <summary> Is point in cone defined by 3 main points. </summary>
 		/// <param name="point"> Point. </param>
 		/// <returns>True if point lies in cone defined by 3 main points. </returns>
@@ -1920,6 +1930,12 @@ namespace Geometry2D
 	}
 
 	template<typename T>
+	inline Point<T>* Arc<T>::getPoint1()
+	{
+		return this->mPoint1;
+	}
+
+	template<typename T>
 	inline bool Arc<T>::isPointInCone(const Point<T>& point)
 	{
 		Vector<T>* pAxisXVector = new Vector<T>(1, 0);
@@ -2046,6 +2062,8 @@ namespace Geometry2D
 		virtual ~PolySegment();
 
 		virtual bool equals(const GeomteryBase& other) = 0;
+
+		virtual Point<T>* getPoint1() = 0;
 
 		virtual bool isPointOn(const Point<T>& point) = 0;
 
@@ -2349,4 +2367,36 @@ namespace Geometry2D
 		}
 		return false;
 	}
+
+	/// <summary> Struct representing polygon. </summary>
+	/// <typeparam name = "T"> Data type to compute with. </typepram>
+	template<typename T>
+	struct Polygon
+		: Polyline
+	{
+		/// <summary> Is point in polygon. </summary>
+		/// <param name="point"> Point. </param>
+		/// <returns>True if point lies on line. </returns>
+		bool isPointIn(const Point<T>& point);
+	};
+
+	template<typename T>
+	inline bool Polygon<T>::isPointIn(const Point<T>& point)
+	{     
+		Point<T>* p1 = new Point<T>(9999, point.mPositionY);
+		Line<T>* exline = new Line<T>(point, *p1);
+		int count = 0;
+		PolySegment<T>* current = mFirst;
+		do {
+			LineSegment<T>* side = new LineSegment<T>*(*current->getPoint1(), *current->mNext->getPoint1());
+			if (side->intersectionWithLine(*exline)) {
+				if (orientationOfPoints(*side->mPoint1, point, *side->mPoint2) == 0)
+					return side->isPointOn(point);
+				count++;
+			}
+			current = current->mNext;
+		} while (current != mLast);
+		return count&1;
+	}
 }
+
