@@ -7,6 +7,7 @@
 namespace Geometry2D 
 {
 	template <typename T> struct Vector;
+	template <typename T> class PolySegment;
 
 #pragma region Point
 
@@ -167,6 +168,20 @@ namespace Geometry2D
 	template<typename T>
 	double distanceBetweenPoints(Point<T>& point1, Point<T>& point2) {
 		return sqrt(pow(point1.mPositionX - point2.mPositionX, 2) + pow(point1.mPositionY - point2.mPositionY, 2));
+	}
+
+	/// <summary>Distance between two points. </summary>
+	/// <param name = "point1"> First point. </param>
+	/// <param name = "point2"> Second point. </param>
+	/// <returns> Returns distance between two points. </returns>
+	template<typename T>
+	double orientationOfPoints(Point<T>& point1, Point<T>& point2, Point<T>& point3) {
+		double number = (point2.mPositionY - point1.mPositionY) * (point3.mPositionX - point2.mPositionX) - 
+			(point2.mPositionX - point1.mPositionX) * (point3.mPositionY - point2.mPositionY);
+
+		if (number == 0) return 0;
+
+		return (number > 0) ? 1 : 2;
 	}
 #pragma endregion
 
@@ -767,7 +782,7 @@ namespace Geometry2D
 	/// <typeparam name = "T"> Data type to compute with. </typepram>
 	template<typename T>
 	struct LineSegment
-		: GeomteryBase
+		: GeomteryBase, PolySegment<T>
 	{
 		/// <summary> Constructor. </summary>
 		LineSegment();
@@ -787,7 +802,7 @@ namespace Geometry2D
 		LineSegment(LineSegment<T>&& other);
 
 		/// <summary>Destructor. </summary>
-		~LineSegment();
+		~LineSegment() override;
 
 		/// <summary> Assign of object. </summary>
 		/// <param name = "other"> Source objcet of taken properties. </param>
@@ -815,14 +830,16 @@ namespace Geometry2D
 		/// <summary> Second vector defining line. </summary>
 		Point<T>* mPoint2;
 
+		Point<T>* getPoint1() override;
+
 		/// <summary> Is point on line. </summary>
 		/// <param name="point"> Point. </param>
 		/// <returns>True if point lies on line. </returns>
-		bool isPointOnLineSegment(const Point<T>& point);
+		bool isPointOn(const Point<T>& point) override;
 
 		/// <summary> Moves line by vector. </summary>
 		/// <param name="vector"> Vector. </param>
-		void moveLineSegmentByVector(const Vector<T>& vector);
+		void moveByVector(const Vector<T>& vector) override;
 
 		/// <summary> Directional vector of line. </summary>
 		/// <returns> Directional vector of line. </returns>
@@ -834,11 +851,21 @@ namespace Geometry2D
 
 		/// <summary> Coefficient of line. </summary>
 		/// <returns> Coefficient of line. </returns>
-		double coefficientOfLineSegment();
+		double coefficient();
 
 		/// <summary> Coefficient of line. </summary>
 		/// <returns> Coefficient of line. </returns>
-		double distancetoPoint(const Point<T>& point);
+		double distancetoPoint(const Point<T>& point) override;
+
+		/// <summary> Intersection with line. </summary>
+		/// <param name="line"> Line. </param>
+		/// <returns>True if circle line intersects with line. </returns>
+		bool intersectionWithLineSegment(const LineSegment<T>& line) override;
+
+		/// <summary> Intersection with line segment. </summary>
+		/// <param name="line"> Line. </param>
+		/// <returns>True if line segment line intersects with line. </returns>
+		bool intersectionWithLine(const Line<T>& line) override;
 	};
 
 	template<typename T>
@@ -930,13 +957,19 @@ namespace Geometry2D
 	}
 
 	template<typename T>
-	inline bool LineSegment<T>::isPointOnLineSegment(const Point<T>& point)
+	inline Point<T>* LineSegment<T>::getPoint1()
+	{
+		return this->mPoint1;
+	}
+
+	template<typename T>
+	inline bool LineSegment<T>::isPointOn(const Point<T>& point)
 	{
 		return this->distancetoPoint(point) == 0;
 	}
 
 	template<typename T>
-	inline void LineSegment<T>::moveLineSegmentByVector(const Vector<T>& vector)
+	inline void LineSegment<T>::moveByVector(const Vector<T>& vector)
 	{
 		mPoint1->movePointByVector(vector);
 		mPoint2->movePointByVector(vector);
@@ -960,7 +993,7 @@ namespace Geometry2D
 	}
 
 	template<typename T>
-	inline double LineSegment<T>::coefficientOfLineSegment()
+	inline double LineSegment<T>::coefficient()
 	{
 		Vector<T>* normalizedVector = this->normalizedVector();
 		double result = (normalizedVector->mDeltaX * mPoint1->mPositionX + normalizedVector->mDeltaY * mPoint1->mPositionY) * -1;
@@ -993,6 +1026,42 @@ namespace Geometry2D
 		delete pFirstPointAndPoint;
 		delete pSecondPointAndPoint;
 		return result;
+	}
+
+	template<typename T>
+	inline bool LineSegment<T>::intersectionWithLineSegment(const LineSegment<T>& line)
+	{
+		int orientation1 = orientationOfPoints(*mPoint1, *mPoint2, *line.mPoint1);
+		int orientation2 = orientationOfPoints(*mPoint1, *mPoint2, *line.mPoint2);
+		int orientation3 = orientationOfPoints(*line.mPoint1, *line.mPoint2, *mPoint1);
+		int orientation4 = orientationOfPoints(*line.mPoint1, *line.mPoint2, *mPoint2);
+
+		if (orientation1 != orientation2 && orientation3 != orientation4)
+			return true;
+
+		if (orientation1 == 0 && isPointOn(*line.mPoint1)) return true;
+
+		if (orientation2 == 0 && isPointOn(*line.mPoint2)) return true;
+
+		if (orientation3 == 0 && isPointOnLineSegment(line, *mPoint1)) return true;
+
+		if (orientation4 == 0 && isPointOnLineSegment(line, *mPoint2)) return true;
+
+		return false;
+	}
+
+	template<typename T>
+	inline bool LineSegment<T>::intersectionWithLine(const Line<T>& line)
+	{
+		Vector<T>* pNormVector = normalizedVector();
+		Vector<T>* pVector1 = new Vector<T>(*line.mPoint1, *mPoint1);
+		Vector<T>* pVector2 = new Vector<T>(*line.mPoint1, *mPoint2);
+		double dotProduct1 = dotProduct(*pNormVector, *pVector1);
+		double dotProduct2 = dotProduct(*pNormVector, *pVector2);
+		delete pNormVector;
+		delete pVector1;
+		delete pVector2;
+		return (!(dotProduct1 >= 0 && dotProduct2 >= 0) || (dotProduct1 < 0 && dotProduct2 < 0));
 	}
 
 	/// <summary> Gradient of line. </summary>
@@ -1055,7 +1124,7 @@ namespace Geometry2D
 	template<typename T>
 	double coefficientOfLineSegment(LineSegment<T>& line)
 	{
-		return line.coefficientOfLineSegment();
+		return line.coefficient();
 	}
 
 	/// <summary> Distance betweeen point and line segment. </summary>
@@ -1139,6 +1208,11 @@ namespace Geometry2D
 		/// <param name="line"> Line. </param>
 		/// <returns>True if circle line intersects with line. </returns>
 		bool intersectionWithLine(const Line<T>& line);
+
+		/// <summary> Intersection with line. </summary>
+		/// <param name="line"> Line. </param>
+		/// <returns>True if circle line intersects with line. </returns>
+		bool pointsOfIntersectionWithLine(const Line<T>& line, Point<T>* point1, Point<T>* point2);
 
 		/// <summary> Intersection with line segment. </summary>
 		/// <param name="line"> Line segment. </param>
@@ -1226,7 +1300,7 @@ namespace Geometry2D
 		}
 		else {
 			const CircleLine<T>* otherLine = dynamic_cast<const CircleLine<T>*>(&other);
-			if (otherLine != nullptr && otherLine->mCenter->equals(*(mCenter)) && otherLine->mRadius = mRadius) {
+			if (otherLine != nullptr && otherLine->mCenter->equals(*(mCenter)) && otherLine->mRadius == mRadius) {
 				return true;
 			}
 		}
@@ -1254,6 +1328,38 @@ namespace Geometry2D
 	inline bool CircleLine<T>::intersectionWithLine(const Line<T>& line)
 	{
 		return mRadius >= line.distancetoPoint(*mCenter);
+	}
+
+	template<typename T>
+	inline bool CircleLine<T>::pointsOfIntersectionWithLine(const Line<T>& line, Point<T>* point1, Point<T>* point2)
+	{
+		double distToCenter = distancePointToLine(line, *(mCenter));
+		Vector<T>* pVector = normalizedVectorOfLine(line);
+		pVector->vectorMultiplication(distToCenter/pVector->sizeOfVector());
+		double coefficient = coefficientOfLine(line);
+		double x0 = -1 * ((pVector->mDeltaX * coefficient) / (pow(pVector->mDeltaX, 2) + pow(pVector->mDeltaY, 2)));
+		double y0 = -1 * ((pVector->mDeltaY * coefficient) / (pow(pVector->mDeltaX, 2) + pow(pVector->mDeltaY, 2)));
+		Point<T>* pPoint0 = new Point<T>(x0, y0);
+		distToCenter = distanceBetweenPoints(*(pPoint0), *(mCenter));
+		if (distToCenter > mRadius) {
+			point1 = nullptr;
+			point2 = nullptr;
+			return false;
+		}
+		else if (distToCenter == mRadius) {
+			point1->assign(*(pPoint0));
+			point2 = nullptr;
+			return true;
+		}
+		else {
+			distToCenter = sqrt(pow(mRadius, 2) - (pow(coefficient, 2) / (pow(pVector->mDeltaX, 2) + pow(pVector->mDeltaY, 2))));
+			double scalary = sqrt(distToCenter / (pow(pVector->mDeltaX, 2) + pow(pVector->mDeltaY, 2)));
+			point1->mPositionX = pPoint0->mPositionX + pVector->mDeltaY * scalary;
+			point2->mPositionX = pPoint0->mPositionX - pVector->mDeltaY * scalary;
+			point1->mPositionY = pPoint0->mPositionY - pVector->mDeltaY * scalary;
+			point1->mPositionY = pPoint0->mPositionY + pVector->mDeltaY * scalary;
+			return true;
+		}
 	}
 
 	//https://www.baeldung.com/cs/circle-line-segment-collision-detection
@@ -1333,7 +1439,7 @@ namespace Geometry2D
 #pragma endregion
 
 #pragma region Circle
-	/// <summary> Struct representing CircleLine. </summary>
+	/// <summary> Struct representing Circle. </summary>
 	/// <typeparam name = "T"> Data type to compute with. </typepram>
 	template<typename T>
 	struct Circle
@@ -1489,7 +1595,7 @@ namespace Geometry2D
 		}
 		else {
 			const Circle<T>* otherCircle = dynamic_cast<const Circle<T>*>(&other);
-			if (otherCircle != nullptr && otherCircle->mCenter->equals(*(mCenter)) && otherCircle->mRadius = mRadius) {
+			if (otherCircle != nullptr && otherCircle->mCenter->equals(*(mCenter)) && otherCircle->mRadius == mRadius) {
 				return true;
 			}
 		}
@@ -1599,4 +1705,698 @@ namespace Geometry2D
 	}
 
 #pragma endregion
+
+#pragma region Arc
+	/// <summary> Struct representing Arc. </summary>
+	/// <typeparam name = "T"> Data type to compute with. </typepram>
+	template<typename T>
+	struct Arc
+		: GeomteryBase, PolySegment<T>
+	{
+		/// <summary> Constructor. </summary>
+		Arc();
+
+		/// <summary>Parameterized constructor. </summary>
+		/// <param name = "point1"> First point defining line. </param>
+		/// <param name = "point2"> Second point defining line. </param>
+		/// /// <param name = "altitude"> Altitude of center point. </param>
+		Arc(const Point<T>& point1, const Point<T>& point2, const double altitude);
+
+		/// <summary>Copy constructor. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		Arc(const Arc<T>& other);
+
+
+		/// <summary>Move constructor. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		Arc(Arc<T>&& other);
+
+		/// <summary>Destructor. </summary>
+		~Arc() override;
+
+		/// <summary> Assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		GeomteryBase& assign(const GeomteryBase& other) override;
+
+		/// <summary> Move assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		Arc<T>& operator=(Arc<T>&& other);
+
+		/// <summary> Assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		Arc<T>& assign(const Arc<T>& other);
+
+		/// <summary> Objcet equality. </summary>
+		/// <param name="other">Object to compare with. </param>
+		/// <returns>True if objects are equal both in types and in values. </returns>
+		bool equals(const GeomteryBase& other) override;
+
+		/// <summary> Center point. </summary>
+		Point<T>* mCenter;
+
+		/// <summary> First point. </summary>
+		Point<T>* mPoint1;
+
+		/// <summary> Second point. </summary>
+		Point<T>* mPoint2;
+
+		/// <summary> Radius of arc. </summary>
+		double mRadius;
+
+		/// <summary> Altitude of center point. </summary>
+		double mAltitude;
+
+		Point<T>* getPoint1() override;
+
+		/// <summary> Is point in cone defined by 3 main points. </summary>
+		/// <param name="point"> Point. </param>
+		/// <returns>True if point lies in cone defined by 3 main points. </returns>
+		bool isPointInCone(const Point<T>& point);
+
+		/// <summary> Is point on line. </summary>
+		/// <param name="point"> Point. </param>
+		/// <returns>True if point lies on line. </returns>
+		bool isPointOn(const Point<T>& point) override;
+
+		/// <summary> Moves circle line by vector. </summary>
+		/// <param name="vector"> Vector. </param>
+		void moveByVector(const Vector<T>& vector) override;
+
+		/// <summary> Distance to point. </summary>
+		/// <returns> Distance to point. </returns>
+		double distanceToPoint(const Point<T>& point) override;
+
+		/// <summary> Intersection with line. </summary>
+		/// <param name="line"> Line. </param>
+		/// <returns>True if circle line intersects with line. </returns>
+		bool intersectionWithLine(const Line<T>& line) override;
+
+		/// <summary> Intersection with line segment. </summary>
+		/// <param name="line"> Line segment. </param>
+		/// <returns>True if circle intersects with line segment. </returns>
+		bool intersectionWithLineSegment(const LineSegment<T>& line) override;
+	};
+
+	template<typename T>
+	inline Arc<T>::Arc() :
+		mPoint1(Point<T>(-1, 0)),
+		mPoint2(Point<T>(1, 0)),
+		mCenter(Point<T>(0, 0)),
+		mRadius(1),
+		mAltitude(0)
+	{
+	}
+
+	template<typename T>
+	inline Arc<T>::Arc(const Point<T>& point1, const Point<T>& point2, const double altitude) :
+		mPoint1(new Point<T>(point1)),
+		mPoint2(new Point<T>(point2)),
+		mAltitude(altitude)
+	{
+		Vector<T>* pLineVector = new Vector<T>(point1, point2);
+		Line<T>* pLine = new Line<T>(point1, point2);
+		Vector<T>* pNormVector = pLine->normalizedVector();
+		pLineVector->vectorMultiplication(0.5);
+		pNormVector->vectorMultiplication(1/pNormVector->sizeOfVector());
+		pNormVector->vectorMultiplication(altitude);
+		mCenter = movePointByVector(*pLineVector, point1);
+		mCenter->movePointByVector(*pNormVector);
+		mRadius = distanceBetweenPoints(*mPoint1, *mCenter);
+		delete pLineVector;
+		delete pLine;
+		delete pNormVector;
+	}
+
+	template<typename T>
+	inline Arc<T>::Arc(const Arc<T>& other) :
+		mPoint1(new Point<T>(*(other.mPoint1))),
+		mPoint2(new Point<T>(*(other.mPoint2))),
+		mCenter(new Point<T>(*(other.mCenter))),
+		mRadius(other.mRadius),
+		mAltitude(other.mAltitude)
+	{
+	}
+
+	template<typename T>
+	inline Arc<T>::Arc(Arc<T>&& other) :
+		mPoint1(other.mPoint1),
+		mPoint2(other.mPoint2),
+		mCenter(other.mCenter),
+		mRadius(other.mRadius),
+		mAltitude(other.mAltitude)
+	{
+		other.mPoint1 = nullptr;
+		other.mPoint2 = nullptr;
+		other.mCenter = nullptr;
+	}
+
+	template<typename T>
+	inline Arc<T>::~Arc()
+	{
+		delete mPoint1;
+		delete mPoint2;
+		delete mCenter;
+		mRadius = 0;
+		mAltitude = 0;
+
+		mPoint1 = nullptr;
+		mPoint2 = nullptr;
+		mCenter = nullptr;
+	}
+
+	template<typename T>
+	inline GeomteryBase& Arc<T>::assign(const GeomteryBase& other)
+	{
+		if (this != &other)
+		{
+			const Arc<T>& otherArc = static_cast<const Arc<T>&>(other);
+			mPoint1->assign(*(otherArc.mPoint1));
+			mPoint2->assign(*(otherArc.mPoint2));
+			mCenter->assign(*(otherArc.mCenter));
+			mRadius = otherArc.mRadius;
+			mAltitude = otherArc.mAltitude;
+		}
+
+		return *this;
+	}
+
+	template<typename T>
+	inline Arc<T>& Arc<T>::operator=(Arc<T>&& other)
+	{
+		mPoint1 = other.mPoint1;
+		mPoint2 = other.mPoint2;
+		mCenter = other.mCenter;
+		mRadius = other.mRadius;
+		mAltitude = other.mAltitude;
+		other.mPoint1 = nullptr;
+		other.mPoint2 = nullptr;
+		other.mCenter = nullptr;
+		other.mRadius = 0;
+		other.mAltitude = 0;
+		return *this;
+	}
+
+	template<typename T>
+	inline Arc<T>& Arc<T>::assign(const Arc<T>& other)
+	{
+		if (this != &other)
+		{
+			mPoint1->assign(*(other.mPoint1));
+			mPoint2->assign(*(other.mPoint2));
+			mCenter->assign(*(other.mCenter));
+			mRadius = other.mRadius;
+			mAltitude = other.mAltitude;
+		}
+		return *this;
+	}
+
+	template<typename T>
+	inline bool Arc<T>::equals(const GeomteryBase& other)
+	{
+		if (this == &other) {
+			return true;
+		}
+		else {
+			const Arc<T>* otherArc = dynamic_cast<const Arc<T>*>(&other);
+			if (otherArc != nullptr && otherArc->mPoint1->equals(*(mPoint1)) && otherArc->mPoint2->equals(*(mPoint2)) 
+				&& otherArc->mCenter->equals(*(mCenter)) && otherArc->mRadius == mRadius && otherArc->mAltitude == mAltitude) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	template<typename T>
+	inline Point<T>* Arc<T>::getPoint1()
+	{
+		return this->mPoint1;
+	}
+
+	template<typename T>
+	inline bool Arc<T>::isPointInCone(const Point<T>& point)
+	{
+		Vector<T>* pAxisXVector = new Vector<T>(1, 0);
+		Vector<T>* pFirstPoint = new Vector<T>(*(mCenter), *(mPoint1));
+		Vector<T>* pSecondPoint = new Vector<T>(*(mCenter), *(mPoint2));
+		Vector<T>* pCheckingPoint = new Vector<T>(*(mCenter), point);
+
+		double angleFirstVector = angleBetweenVectors(*(pAxisXVector), *(pFirstPoint));
+		double angleSecondVector = angleBetweenVectors(*(pAxisXVector), *(pSecondPoint));
+		double angleCheckingVector = angleBetweenVectors(*(pAxisXVector), *(pCheckingPoint));
+
+		delete pAxisXVector;
+		delete pFirstPoint;
+		delete pSecondPoint;
+		delete pCheckingPoint;
+
+		if (angleFirstVector < angleSecondVector) {
+			return angleFirstVector >= angleCheckingVector && angleSecondVector >= angleCheckingVector;
+		}
+		else {
+			return angleFirstVector >= angleCheckingVector && angleSecondVector <= angleCheckingVector;
+		}
+	}
+
+	template<typename T>
+	inline bool Arc<T>::isPointOn(const Point<T>& point)
+	{
+		if (distanceBetweenPoints(*(mCenter, point)) = mRadius) {
+			return this->isPointInCone(point);
+		}
+		return false;
+	}
+
+	template<typename T>
+	inline void Arc<T>::moveByVector(const Vector<T>& vector)
+	{
+		mPoint1->movePointByVector(vector);
+		mPoint2->movePointByVector(vector);
+		mCenter->movePointByVector(vector);
+	}
+
+	template<typename T>
+	inline double Arc<T>::distanceToPoint(const Point<T>& point)
+	{
+		if (this->isPointInCone(point)) {
+			return abs(distanceBetweenPoints(point, *mCenter) - mRadius);
+		}
+
+		double distToPoint1 = distanceBetweenPoints(*(mPoint1), point);
+		double distToPoint2 = distanceBetweenPoints(*(mPoint2), point);
+		return distToPoint1 < distToPoint2 ? distToPoint1 : distToPoint2;
+	}
+
+	template<typename T>
+	inline bool Arc<T>::intersectionWithLine(const Line<T>& line)
+	{
+		Point<T>* pPoint1 = new Point<T>();
+		Point<T>* pPoint2 = new Point<T>();
+		CircleLine<T>* circle = new CircleLine<T>(*mCenter, mRadius);
+		if (circle->pointsOfIntersectionWithLine(line, pPoint1, pPoint2)) {
+			if (pPoint1 != nullptr) {
+				if (isPointOn(*pPoint1)) {
+					delete pPoint1;
+					delete pPoint2;
+					delete circle;
+					return true;
+				}
+				if (pPoint2 != nullptr) {
+					if (isPointOn(*pPoint2)) {
+						delete pPoint1;
+						delete pPoint2;
+						delete circle;
+						return true;
+					}
+				}
+			}
+		}
+		delete pPoint1;
+		delete pPoint2;
+		delete circle;
+		return false;
+	}
+
+	template<typename T>
+	inline bool Arc<T>::intersectionWithLineSegment(const LineSegment<T>& line)
+	{
+		Point<T>* pPoint1 = new Point<T>();
+		Point<T>* pPoint2 = new Point<T>();
+		CircleLine<T>* circle = new CircleLine<T>(*mCenter, mRadius);
+		Line<T>* helpLine = new Line<T>(line.mPoint1, line.mPoint2);
+		if (circle->pointsOfIntersectionWithLine(*helpLine, pPoint1, pPoint2)) {
+			if (pPoint1 != nullptr) {
+				if (isPointOn(*pPoint1) && line.isPointOn(*pPoint1)) {
+					delete pPoint1;
+					delete pPoint2;
+					delete circle;
+					delete helpLine;
+					return true;
+				}
+				if (pPoint2 != nullptr) {
+					if (isPointOn(*pPoint2) && line.isPointOn(*pPoint2)) {
+						delete pPoint1;
+						delete pPoint2;
+						delete circle;
+						delete helpLine;
+						return true;
+					}
+				}
+			}
+		}
+		delete pPoint1;
+		delete pPoint2;
+		delete circle;
+		return false;
+	}
+
+#pragma endregion
+
+	/// <summary> Abstract parent class of segments of Polyline and Polygon. </summary>
+	template<typename T>
+	class PolySegment
+	{
+	public:
+		virtual ~PolySegment();
+
+		virtual bool equals(const GeomteryBase& other) = 0;
+
+		virtual Point<T>* getPoint1() = 0;
+
+		virtual bool isPointOn(const Point<T>& point) = 0;
+
+		virtual double distancetoPoint(const Point<T>& point) = 0;
+
+		virtual void moveByVector(const Vector<T>& vector) = 0;
+
+		virtual bool intersectionWithLineSegment(const LineSegment<T>& line) = 0;
+
+		virtual bool intersectionWithLine(const Line<T>& line) = 0;
+
+		PolySegment<T>* mNext;
+
+		PolySegment<T>* mPrevious;
+	};
+
+	/// <summary> Struct representing vector. </summary>
+	/// <typeparam name = "T"> Data type to compute with. </typepram>
+	template<typename T>
+	struct Polyline
+		: GeomteryBase
+	{
+		/// <summary> Constructor. </summary>
+		Polyline();
+
+		/// <summary>Copy constructor. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		Polyline(const Polyline<T>& other);
+
+		/// <summary>Move constructor. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		Polyline(Polyline<T>&& other);
+
+		/// <summary>Destructor. </summary>
+		~Polyline();
+
+		/// <summary> Assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		GeomteryBase& assign(const GeomteryBase& other) override;
+
+		/// <summary> Move assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		Polyline<T>& operator=(Polyline<T>&& other);
+
+		/// <summary> Assign of object. </summary>
+		/// <param name = "other"> Source objcet of taken properties. </param>
+		/// <returns> Adress of the object. </returns>
+		Polyline<T>& assign(const Polyline<T>& other);
+
+		/// <summary> Objcet equality. </summary>
+		/// <param name="other">Object to compare with. </param>
+		/// <returns>True if objects are equal both in types and in values. </returns>
+		bool equals(const GeomteryBase& other) override;
+
+		/// <summary> Start of segments list. </summary>
+		PolySegment<T>* mFirst;
+
+		/// <summary> End of segments list. </summary>
+		PolySegment<T>* mLast;
+
+		/// <summary> Size of segments. </summary>
+		int mSize;
+
+		/// <summary> Size of segments. </summary>
+		void clear();
+
+		/// <summary> Size of segments. </summary>
+		/// <param name="polySegment"> Pointer to polySegment. </param>
+		void add(PolySegment<T>* polySegment);
+
+		/// <summary> Is point on line. </summary>
+		/// <param name="point"> Point. </param>
+		/// <returns>True if point lies on line. </returns>
+		bool isPointOn(const Point<T>& point);
+
+		/// <summary> Moves line by vector. </summary>
+		/// <param name="vector"> Vector. </param>
+		void moveByVector(const Vector<T>& vector);
+
+		/// <summary> Coefficient of line. </summary>
+		/// <returns> Coefficient of line. </returns>
+		double distancetoPoint(const Point<T>& point);
+
+		/// <summary> Intersection with line. </summary>
+		/// <param name="line"> Line. </param>
+		/// <returns>True if polyline  intersects with line. </returns>
+		bool intersectionWithLine(const Line<T>& line);
+
+		/// <summary> Intersection with line segment. </summary>
+		/// <param name="line"> Line segment. </param>
+		/// <returns>True if polyline intersects with line segment. </returns>
+		bool intersectionWithLineSegment(const LineSegment<T>& line);
+	};
+	template<typename T>
+	inline Polyline<T>::Polyline() :
+		mFirst(nullptr),
+		mLast(nullptr),
+		mSize(0)
+	{
+	}
+
+	template<typename T>
+	inline Polyline<T>::Polyline(const Polyline<T>& other)
+	{
+		assign(other);
+	}
+
+	template<typename T>
+	inline Polyline<T>::Polyline(Polyline<T>&& other) :
+		mFirst(other.mFirst),
+		mLast(other.mLast),
+		mSize(other.mSize)
+	{
+		other.mFirst = nullptr;
+		other.mLast = nullptr;
+		other.mSize = 0;
+	}
+
+	template<typename T>
+	inline Polyline<T>::~Polyline()
+	{
+		clear();
+	}
+
+	template<typename T>
+	inline GeomteryBase& Polyline<T>::assign(const GeomteryBase& other)
+	{
+		if (this != &other)
+		{
+			const Polyline<T>& otherPolyline = static_cast<const Polyline<T>&>(other);
+			
+			clear();
+
+			PolySegment<T>* current = otherPolyline.mFirst;
+
+			while (current != nullptr) {
+				add(current);
+				current = current->mNext;
+			}
+		}
+
+		return *this;
+	}
+
+	template<typename T>
+	inline Polyline<T>& Polyline<T>::operator=(Polyline<T>&& other)
+	{
+		mFirst = other.mFirst;
+		mLast = other.mLast;
+		mSize = other.mSize;
+		other.mFirst = nullptr;
+		other.mLast = nullptr;
+		other.mSize = 0;
+	}
+
+	template<typename T>
+	inline Polyline<T>& Polyline<T>::assign(const Polyline<T>& other)
+	{
+		if (this != &other)
+		{
+			clear();
+
+			PolySegment<T>* current = other.mFirst;
+
+			while (current != nullptr) {
+				add(current);
+				current = current->mNext;
+			}
+		}
+		return *this;
+	}
+
+	template<typename T>
+	inline bool Polyline<T>::equals(const GeomteryBase& other)
+	{
+		if (this == &other) {
+			return true;
+		}
+
+		const Polyline<T>* otherPolyline = dynamic_cast<const Polyline<T>*>(&other);
+
+		if (otherPolyline == nullptr) {
+			return false;
+		}
+
+		if (mSize != otherPolyline->mSize) {
+			return false;
+		}
+
+		PolySegment<T>* curThis = mFirst;
+		PolySegment<T>* curOther = otherPolyline->mFirst;
+
+		while (curThis != nullptr) {
+			if (!curThis->equals(*curOther)) {
+				return false;
+			}
+			curThis = curThis->getNext();
+			curOther = curOther->getNext();
+		}
+		return true;
+	}
+
+	template<typename T>
+	inline void Polyline<T>::clear()
+	{
+		PolySegment<T>* current = mFirst;
+
+		while (current != nullptr) {
+			current = current->mNext;
+			delete first_;
+			first_ = current;
+		}
+
+		last_ = nullptr;
+		size_ = 0;
+	}
+
+	template<typename T>
+	inline void Polyline<T>::add(PolySegment<T>* polySegment)
+	{
+		mSize++;
+
+		if (mFirst == nullptr) {
+			mFirst = polySegment;
+		}
+		else {
+			mLast->setNext(polySegment);
+			polySegment->mPrevious = mLast;
+		}
+		mLast = polySegment;
+	}
+
+	template<typename T>
+	inline bool Polyline<T>::isPointOn(const Point<T>& point)
+	{
+		PolySegment<T>* current = mFirst;
+
+		while (current != nullptr) {
+			if (current->isPointOn(point)) {
+				return true;
+			}
+			current = current->mNext;
+		}
+		return false;
+	}
+
+	template<typename T>
+	inline void Polyline<T>::moveByVector(const Vector<T>& vector)
+	{
+		PolySegment<T>* current = mFirst;
+
+		while (current != nullptr) {
+			current->moveByVector(vector);
+			current = current->mNext;
+		}
+	}
+
+	template<typename T>
+	inline double Polyline<T>::distancetoPoint(const Point<T>& point)
+	{
+		double min = DBL_MAX;
+		double dist = 0;
+
+		PolySegment<T>* current = mFirst;
+
+		while (current != nullptr) {
+			dist = current->distancetoPoint(point);
+			if (dist < min) {
+				min = dist;
+			}
+			current = current->mNext;
+		}
+		return min;
+	}
+	template<typename T>
+	inline bool Polyline<T>::intersectionWithLine(const Line<T>& line)
+	{
+		PolySegment<T>* current = mFirst;
+
+		while (current != nullptr) {
+			if (current->intersectionWithLine(line)) {
+				return true;
+			}
+			current = current->mNext;
+		}
+		return false;
+	}
+
+	template<typename T>
+	inline bool Polyline<T>::intersectionWithLineSegment(const LineSegment<T>& line)
+	{
+		PolySegment<T>* current = mFirst;
+
+		while (current != nullptr) {
+			if (current->intersectionWithLineSegment(line)) {
+				return true;
+			}
+			current = current->mNext;
+		}
+		return false;
+	}
+
+	/// <summary> Struct representing polygon. </summary>
+	/// <typeparam name = "T"> Data type to compute with. </typepram>
+	template<typename T>
+	struct Polygon
+		: Polyline
+	{
+		/// <summary> Is point in polygon. </summary>
+		/// <param name="point"> Point. </param>
+		/// <returns>True if point lies on line. </returns>
+		bool isPointIn(const Point<T>& point);
+	};
+
+	template<typename T>
+	inline bool Polygon<T>::isPointIn(const Point<T>& point)
+	{     
+		Point<T>* p1 = new Point<T>(9999, point.mPositionY);
+		Line<T>* exline = new Line<T>(point, *p1);
+		int count = 0;
+		PolySegment<T>* current = mFirst;
+		do {
+			LineSegment<T>* side = new LineSegment<T>*(*current->getPoint1(), *current->mNext->getPoint1());
+			if (side->intersectionWithLine(*exline)) {
+				if (orientationOfPoints(*side->mPoint1, point, *side->mPoint2) == 0)
+					return side->isPointOn(point);
+				count++;
+			}
+			current = current->mNext;
+		} while (current != mLast);
+		return count&1;
+	}
 }
+
