@@ -4,7 +4,7 @@
 #include <cmath> 
 #include <float.h>
 
-namespace Geometry2D 
+namespace Geometry2D
 {
 	template <typename T> struct Vector;
 	template <typename T> class PolySegment;
@@ -14,7 +14,7 @@ namespace Geometry2D
 	/// <summary> Struct representing point. </summary>
 	/// <typeparam name = "T"> Data type to compute with. </typepram>
 	template<typename T>
-	struct Point 
+	struct Point
 		: GeomteryBase
 	{
 		/// <summary> Constructor. </summary>
@@ -106,7 +106,7 @@ namespace Geometry2D
 	template<typename T>
 	inline GeomteryBase& Point<T>::assign(const GeomteryBase& other)
 	{
-		if(this != &other)
+		if (this != &other)
 		{
 			const Point<T>& otherPoint = static_cast<const Point<T>&>(other);
 			mPositionX = otherPoint.mPositionX;
@@ -147,7 +147,7 @@ namespace Geometry2D
 		else {
 			const Point<T>* otherPoint = dynamic_cast<const Point<T>*>(&other);
 			if (otherPoint != nullptr && otherPoint->mPositionX == mPositionX && otherPoint->mPositionY == mPositionY) {
-			return true;
+				return true;
 			}
 		}
 		return false;
@@ -176,7 +176,7 @@ namespace Geometry2D
 	/// <returns> Returns distance between two points. </returns>
 	template<typename T>
 	double orientationOfPoints(Point<T>& point1, Point<T>& point2, Point<T>& point3) {
-		double number = (point2.mPositionY - point1.mPositionY) * (point3.mPositionX - point2.mPositionX) - 
+		double number = (point2.mPositionY - point1.mPositionY) * (point3.mPositionX - point2.mPositionX) -
 			(point2.mPositionX - point1.mPositionX) * (point3.mPositionY - point2.mPositionY);
 
 		if (number == 0) return 0;
@@ -384,7 +384,7 @@ namespace Geometry2D
 	/// <param name = "Vector"> Vector. </param>
 	/// <returns> Returns size of vector. </returns>
 	template<typename T>
-	double sizeOfVector(Vector<T> vector) 
+	double sizeOfVector(Vector<T> vector)
 	{
 		return vector.sizeOfVector();
 	}
@@ -394,7 +394,7 @@ namespace Geometry2D
 	/// <param name = "vector2"> Second vector. </param>
 	/// <returns> Returns result vector. </returns>
 	template<typename T>
-	Vector<T>* vectorAddition(Vector<T>& vector1, Vector<T>& vector2) 
+	Vector<T>* vectorAddition(Vector<T>& vector1, Vector<T>& vector2)
 	{
 		Vector<T>* pResultVector = new Vector<T>(vector1.mDeltaX + vector2.mDeltaX, vector1.mDeltaY + vector2.mDeltaY);
 		return pResultVector;
@@ -404,7 +404,7 @@ namespace Geometry2D
 	/// <param name = "vector"> First vector. </param>
 	/// <param name = "scalary"> Value of scalary. </param>
 	template<typename T>
-	Vector<T>* vectorMultiplication(const Vector<T>& vector, T scalary) 
+	Vector<T>* vectorMultiplication(const Vector<T>& vector, T scalary)
 	{
 		Vector<T>* pResultVector = new Vector<T>(vector);
 		pResultVector->vectorMultiplication(scalary);
@@ -416,9 +416,9 @@ namespace Geometry2D
 	/// <param name = "vector2"> Second vector. </param>
 	/// <returns> Returns dot product. </returns>
 	template<typename T>
-	T dotProduct(Vector<T>& vector1, Vector<T>& vector2) 
+	T dotProduct(Vector<T>& vector1, Vector<T>& vector2)
 	{
-		 return vector1.mDeltaX * vector2.mDeltaX + vector1.mDeltaY * vector2.mDeltaY;
+		return vector1.mDeltaX * vector2.mDeltaX + vector1.mDeltaY * vector2.mDeltaY;
 	}
 
 
@@ -426,7 +426,7 @@ namespace Geometry2D
 	/// <param name = "vector"> Vector. </param>
 	/// <param name = "point"> Point. </param>
 	template<typename T>
-	Point<T>* movePointByVector(const Vector<T>& vector, const Point<T>& point) 
+	Point<T>* movePointByVector(const Vector<T>& vector, const Point<T>& point)
 	{
 		Point<T>* pResultPoint = new Point<T>(point);
 		pResultPoint->movePointByVector(vector);
@@ -444,7 +444,7 @@ namespace Geometry2D
 	/// <param name = "vector2"> Second vector. </param>
 	/// <returns> Returns angle between vectors in radians. </returns>
 	template<typename T>
-	double angleBetweenVectors(Vector<T>& vector1, Vector<T>& vector2) 
+	double angleBetweenVectors(Vector<T>& vector1, Vector<T>& vector2)
 	{
 		return acos(dotProduct(vector1, vector2) / sqrt(sizeOfVector(vector1) * sizeOfVector(vector2)));
 	}
@@ -461,7 +461,7 @@ namespace Geometry2D
 	/// <param name = "vector"> Vector. </param>
 	/// <param name = "degrees"> Angle in radians. </param>
 	template<typename T>
-	Vector<T>* rotateVectorByAngle(Vector<T>& vector, double angle) 
+	Vector<T>* rotateVectorByAngle(Vector<T>& vector, double angle)
 	{
 		Vector<T>* pResultVector = new Vector<T>(vector);
 		pResultVector->rotateVectorByAngle(angle);
@@ -555,7 +555,7 @@ namespace Geometry2D
 		/// <returns> Coefficient of line. </returns>
 		double distancetoPoint(const Point<T>& point);
 	};
-	
+
 	template<typename T>
 	inline Line<T>::Line() :
 		mPoint1(Point<T>()),
@@ -708,7 +708,7 @@ namespace Geometry2D
 	/// <summary> Gradient of line. </summary>
 	/// <returns> Gradient of line. </returns>
 	template<typename T>
-	double gradient(Line<T>& line) 
+	double gradient(Line<T>& line)
 	{
 		return (line.mPoint2->mPositionY - line.mPoint1->mPositionY) / (line.mPoint2->mPositionX - line.mPoint1->mPositionX);
 	}
@@ -716,7 +716,7 @@ namespace Geometry2D
 	/// <summary> Y-intercept. </summary>
 	/// <returns> Y-intercept of line. </returns>
 	template<typename T>
-	double lineInterceptWithAxisY(Line<T>& line) 
+	double lineInterceptWithAxisY(Line<T>& line)
 	{
 		return line.mPoint1->mPositionY - (line.gradient() * line.mPoint1->mPositionX);
 	}
@@ -725,7 +725,7 @@ namespace Geometry2D
 	/// <param name="point"> Point. </param>
 	/// <returns>True if point lies on line. </returns>
 	template<typename T>
-	bool isPointOnLine(Line<T>& line, Point<T>& point) 
+	bool isPointOnLine(Line<T>& line, Point<T>& point)
 	{
 		return line.distancetoPoint(point) == 0;
 	}
@@ -733,7 +733,7 @@ namespace Geometry2D
 	/// <summary> Moves line by vector. </summary>
 	/// <param name="vector"> Vector. </param>
 	template<typename T>
-	Line<T>& moveLineByVector(Line<T>& line, Vector<T>& vector) 
+	Line<T>& moveLineByVector(Line<T>& line, Vector<T>& vector)
 	{
 		line.mPoint1->movePointByVector(vector);
 		line.mPoint2->movePointByVector(vector);
@@ -1031,21 +1031,23 @@ namespace Geometry2D
 	template<typename T>
 	inline bool LineSegment<T>::intersectionWithLineSegment(const LineSegment<T>& line)
 	{
-		int orientation1 = orientationOfPoints(*mPoint1, *mPoint2, *line.mPoint1);
-		int orientation2 = orientationOfPoints(*mPoint1, *mPoint2, *line.mPoint2);
-		int orientation3 = orientationOfPoints(*line.mPoint1, *line.mPoint2, *mPoint1);
-		int orientation4 = orientationOfPoints(*line.mPoint1, *line.mPoint2, *mPoint2);
+		double orientation1 = orientationOfPoints(*mPoint1, *mPoint2, *line.mPoint1);
+		double orientation2 = orientationOfPoints(*mPoint1, *mPoint2, *line.mPoint2);
+		double orientation3 = orientationOfPoints(*line.mPoint1, *line.mPoint2, *mPoint1);
+		double orientation4 = orientationOfPoints(*line.mPoint1, *line.mPoint2, *mPoint2);
+
+		LineSegment<T> line1 = static_cast<LineSegment<T>>(line);
 
 		if (orientation1 != orientation2 && orientation3 != orientation4)
 			return true;
 
-		if (orientation1 == 0 && isPointOn(*line.mPoint1)) return true;
+		if (orientation1 == 0 && isPointOn(*line1.mPoint1)) return true;
 
-		if (orientation2 == 0 && isPointOn(*line.mPoint2)) return true;
+		if (orientation2 == 0 && isPointOn(*line1.mPoint2)) return true;
 
-		if (orientation3 == 0 && isPointOnLineSegment(line, *mPoint1)) return true;
+		if (orientation3 == 0 && isPointOnLineSegment(line1, *mPoint1)) return true;
 
-		if (orientation4 == 0 && isPointOnLineSegment(line, *mPoint2)) return true;
+		if (orientation4 == 0 && isPointOnLineSegment(line1, *mPoint2)) return true;
 
 		return false;
 	}
@@ -1222,7 +1224,7 @@ namespace Geometry2D
 
 	template<typename T>
 	inline CircleLine<T>::CircleLine() :
-	
+
 		mCenter(Point<T>()),
 		mRadius(0)
 	{
@@ -1335,7 +1337,7 @@ namespace Geometry2D
 	{
 		double distToCenter = distancePointToLine(line, *(mCenter));
 		Vector<T>* pVector = normalizedVectorOfLine(line);
-		pVector->vectorMultiplication(distToCenter/pVector->sizeOfVector());
+		pVector->vectorMultiplication(distToCenter / pVector->sizeOfVector());
 		double coefficient = coefficientOfLine(line);
 		double x0 = -1 * ((pVector->mDeltaX * coefficient) / (pow(pVector->mDeltaX, 2) + pow(pVector->mDeltaY, 2)));
 		double y0 = -1 * ((pVector->mDeltaY * coefficient) / (pow(pVector->mDeltaX, 2) + pow(pVector->mDeltaY, 2)));
@@ -1386,7 +1388,7 @@ namespace Geometry2D
 		delete pVector3;
 		delete pVector4;
 
-		if (minDist <= mRadius && maxDist >= mRadius) 
+		if (minDist <= mRadius && maxDist >= mRadius)
 			return true;
 		return false;
 	}
@@ -1409,7 +1411,7 @@ namespace Geometry2D
 		pResult->moveByVector(vector);
 		return pResult;
 	}
-	
+
 	/// <summary> Distance to point. </summary>
 	///<param name="line"> Circle line. </param>
 	///<param name="point"> Point. </param>
@@ -1820,7 +1822,7 @@ namespace Geometry2D
 		Line<T>* pLine = new Line<T>(point1, point2);
 		Vector<T>* pNormVector = pLine->normalizedVector();
 		pLineVector->vectorMultiplication(0.5);
-		pNormVector->vectorMultiplication(1/pNormVector->sizeOfVector());
+		pNormVector->vectorMultiplication(1 / pNormVector->sizeOfVector());
 		pNormVector->vectorMultiplication(altitude);
 		mCenter = movePointByVector(*pLineVector, point1);
 		mCenter->movePointByVector(*pNormVector);
@@ -1921,7 +1923,7 @@ namespace Geometry2D
 		}
 		else {
 			const Arc<T>* otherArc = dynamic_cast<const Arc<T>*>(&other);
-			if (otherArc != nullptr && otherArc->mPoint1->equals(*(mPoint1)) && otherArc->mPoint2->equals(*(mPoint2)) 
+			if (otherArc != nullptr && otherArc->mPoint1->equals(*(mPoint1)) && otherArc->mPoint2->equals(*(mPoint2))
 				&& otherArc->mCenter->equals(*(mCenter)) && otherArc->mRadius == mRadius && otherArc->mAltitude == mAltitude) {
 				return true;
 			}
@@ -2196,7 +2198,7 @@ namespace Geometry2D
 		if (this != &other)
 		{
 			const Polyline<T>& otherPolyline = static_cast<const Polyline<T>&>(other);
-			
+
 			clear();
 
 			PolySegment<T>* current = otherPolyline.mFirst;
@@ -2275,12 +2277,12 @@ namespace Geometry2D
 
 		while (current != nullptr) {
 			current = current->mNext;
-			delete first_;
-			first_ = current;
+			delete mFirst;
+			mFirst = current;
 		}
 
-		last_ = nullptr;
-		size_ = 0;
+		mLast = nullptr;
+		mSize = 0;
 	}
 
 	template<typename T>
@@ -2372,7 +2374,7 @@ namespace Geometry2D
 	/// <typeparam name = "T"> Data type to compute with. </typepram>
 	template<typename T>
 	struct Polygon
-		: Polyline
+		: Polyline<T>
 	{
 		/// <summary> Is point in polygon. </summary>
 		/// <param name="point"> Point. </param>
@@ -2382,11 +2384,11 @@ namespace Geometry2D
 
 	template<typename T>
 	inline bool Polygon<T>::isPointIn(const Point<T>& point)
-	{     
+	{
 		Point<T>* p1 = new Point<T>(9999, point.mPositionY);
 		Line<T>* exline = new Line<T>(point, *p1);
 		int count = 0;
-		PolySegment<T>* current = mFirst;
+		PolySegment<T>* current = this->mFirst;
 		do {
 			LineSegment<T>* side = new LineSegment<T>*(*current->getPoint1(), *current->mNext->getPoint1());
 			if (side->intersectionWithLine(*exline)) {
@@ -2395,8 +2397,8 @@ namespace Geometry2D
 				count++;
 			}
 			current = current->mNext;
-		} while (current != mLast);
-		return count&1;
+		} while (current != this->mLast);
+		return count & 1;
 	}
 }
 
