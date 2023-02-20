@@ -453,8 +453,8 @@ namespace Geometry2D
 	inline void Geometry2D::Vector<T>::rotateVectorByAngle(double angle)
 	{
 		T deltaX = mDeltaX;
-		mDeltaX = deltaX * cos(angle) - mDeltaY * sin(angle);
-		mDeltaY = deltaX * sin(angle) + mDeltaY * cos(angle);
+		mDeltaX = (T)(deltaX * cos(angle) - mDeltaY * sin(angle));
+		mDeltaY = (T)(deltaX * sin(angle) + mDeltaY * cos(angle));
 	}
 
 	/// <summary> Rotate vector by angle. </summary>
