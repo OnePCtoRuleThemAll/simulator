@@ -160,6 +160,8 @@
     <ClInclude Include="Geometry2D\Geometry2D.h" />
     <ClInclude Include="Geometry2D\GeometryBase.h" />
     <ClInclude Include="PolySegment.h" />
+    <ClInclude Include="Shapes\Shape.h" />
+    <ClInclude Include="Shapes\Triangle.h" />
     <ClInclude Include="tests\test.h" />
     <ClInclude Include="tests\testGeometry\testGeometry.h" />
     <ClInclude Include="types.h" />

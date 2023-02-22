@@ -85,6 +85,12 @@
     <Filter Include="Dependencies\glew-2.1.0\include\GL">
       <UniqueIdentifier>{91cac475-5363-498c-9ad6-18cd6a5d681d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shapes">
+      <UniqueIdentifier>{d38ae9e0-952e-402b-b984-1db3ffe19f26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shapes\Header files">
+      <UniqueIdentifier>{6474e808-1960-40d9-9162-22c6411af362}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -155,6 +161,13 @@
     </ClInclude>
     <ClInclude Include="Dependencies\glew-2.1.0\include\GL\wglew.h">
       <Filter>Dependencies\glew-2.1.0\include\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="PolySegment.h" />
+    <ClInclude Include="Shapes\Shape.h">
+      <Filter>Shapes\Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shapes\Triangle.h">
+      <Filter>Shapes\Header files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
