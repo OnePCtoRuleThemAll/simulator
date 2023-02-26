@@ -107,6 +107,9 @@
       <Filter>ui\Source files</Filter>
     </ClCompile>
     <ClCompile Include="tests\testGeometry\testGeometry.cpp" />
+    <ClCompile Include="Agent.cpp">
+      <Filter>Agent\Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Geometry2D\Geometry2D.h">

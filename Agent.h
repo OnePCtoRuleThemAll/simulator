@@ -36,6 +36,12 @@ public:
 
 	void moveTo(Geometry2D::Point<T>& newPosition);
 
+	Geometry2D::Point<T>* getPosition();
+
+	Geometry2D::Vector<T>* getDirection();
+
+	void setDirection(Geometry2D::Vector<T>& direction);
+
 private:
 	Geometry2D::Point<T>* mPosition;
 
