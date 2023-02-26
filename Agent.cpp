@@ -33,3 +33,15 @@ Geometry2D::Point<T>* Agent<T>::getPosition()
 {
 	return this->mPosition;
 }
+
+template<typename T>
+Geometry2D::Vector<T>* Agent<T>::getDirection()
+{
+	return this->mDirection;
+}
+
+template<typename T>
+void Agent<T>::setDirection(Geometry2D::Vector<T>& direction)
+{
+	this->mDirection = *direction;
+}
