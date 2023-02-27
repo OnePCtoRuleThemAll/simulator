@@ -166,6 +166,7 @@
     <ClInclude Include="types.h" />
     <ClInclude Include="ui\console.h" />
     <ClInclude Include="ui\ui_keeper.h" />
+    <ClInclude Include="World.h" />
     <ClInclude Include="_logger\file_log_consumer.h" />
     <ClInclude Include="_logger\logger.h" />
   </ItemGroup>

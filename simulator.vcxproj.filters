@@ -85,6 +85,9 @@
     <Filter Include="Dependencies\glew-2.1.0\include\GL">
       <UniqueIdentifier>{91cac475-5363-498c-9ad6-18cd6a5d681d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="World">
+      <UniqueIdentifier>{60920157-c695-495a-8d62-fe0e8d65920f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -159,6 +162,9 @@
     <ClInclude Include="PolySegment.h" />
     <ClInclude Include="Agent.h">
       <Filter>Agent\Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="World.h">
+      <Filter>World</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
