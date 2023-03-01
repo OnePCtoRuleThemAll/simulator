@@ -3,7 +3,6 @@
 #include <vector>
 #include "Agent.h"
 
-template<typename T>
 class World
 {
 public:
@@ -16,7 +15,9 @@ public:
 	/// <summary>Destructor. </summary>
 	~World();
 
-	
+	void insert(Agent* pAgent);
+
+	bool remove(Agent* pAgent);
 private:
 	std::vector<std::list<Agent*>*>* matrix;
 
@@ -31,8 +32,7 @@ private:
 	unsigned int mapping(Geometry2D::MyFloat posX, Geometry2D::MyFloat posY);
 };
 
-template<typename T>
-inline World<T>::World(const Geometry2D::MyPoint& point1,const Geometry2D::MyPoint& point2, float granulate) :
+inline World::World(const Geometry2D::MyPoint& point1,const Geometry2D::MyPoint& point2, float granulate) :
 	mPointTop(new Geometry2D::MyPoint(point1)),
 	mPointBottom(new Geometry2D::MyPoint(point2))
 {
@@ -47,11 +47,10 @@ inline World<T>::World(const Geometry2D::MyPoint& point1,const Geometry2D::MyPoi
 	}
 }
 
-template<typename T>
-inline World<T>::~World()
+inline World::~World()
 {
 	for (int i = 0; i < matrix->size(); i++) {
-		for (Agent* agent : matrix->at(i)) {
+		for (Agent* agent : *(matrix->at(i))) {
 			delete agent;
 		}
 	}
@@ -63,21 +62,42 @@ inline World<T>::~World()
 	matrix = nullptr;
 }
 
-template<typename T>
-inline unsigned int World<T>::mapping(Geometry2D::MyFloat posX, Geometry2D::MyFloat posY)
+inline void World::insert(Agent* pAgent)
 {
+	int spotVector = mapping(pAgent->getPosition()->mPositionX, pAgent->getPosition()->mPositionY);
+	matrix->at(spotVector)->push_back(new Agent(*pAgent));
+}
+
+inline bool World::remove(Agent* pAgent)
+{
+	int spotVector = mapping(pAgent->getPosition()->mPositionX, pAgent->getPosition()->mPositionY);
+	auto itr = matrix->at(spotVector)->begin();
+	for (Agent* agent : *(matrix->at(spotVector))) {
+		if (agent->equals(*pAgent)) {
+			matrix->at(spotVector)->erase(itr);
+			return true;
+		}
+		itr++;
+	}
+	return false;
+}
+
+inline unsigned int World::mapping(Geometry2D::MyFloat posX, Geometry2D::MyFloat posY)
+{
+	unsigned int columns = 0;
+	unsigned int rows = 0;
 	if (mPointTop->mPositionX < 0) {
-		unsigned int columns = ceil((posX - mPointTop->mPositionX) / mMatrixColumns);
+		columns = ceil((posX - mPointTop->mPositionX) / mMatrixColumns);
 	}
 	else {
-		unsigned int columns = ceil((posX) / mMatrixColumns);
+		columns = ceil((posX) / mMatrixColumns);
 	}
 
 	if (mPointBottom->mPositionY < 0) {
-		unsigned int rows = ceil((posY - mPointBottom->mPositionY) / mMatrixRows);
+		rows = ceil((posY - mPointBottom->mPositionY) / mMatrixRows);
 	}
 	else {
-		unsigned int rows = ceil((posY) / mMatrixRows);
+		rows = ceil((posY) / mMatrixRows);
 	}
 
 	return rows * mMatrixColumns + columns;
