@@ -3,7 +3,6 @@
 #include "Geometry2D/Geometry2D.h"
 
 /// <summary> Abstract parent class of all agents. </summary>
-template<typename T>
 class Agent
 {
 public:
@@ -13,43 +12,42 @@ public:
 	/// <summary> Assign operator. </summary>
 	/// <param name = "other"> Source objcet of taken properties.</param>
 	/// <returns> Adress of the object. </returns>
-	Agent<T>& operator=(const Agent<T>& other);
+	Agent& operator=(const Agent& other);
 
 	/// <summary>  Assigning object. </summary>
 	/// <param name = "other"> Source objcet of taken properties. </param>
 	/// <returns> Adress of the object. </returns>
-	virtual Agent<T>& assign(const Agent<T>& other) = 0;
+	virtual Agent& assign(const Agent& other) = 0;
 
 	/// <summary> Equals operator. </summary>
 	/// <param name="other">Object to compare with. </param>
 	/// <returns>True if objects are equal. </returns>
-	bool operator==(const Agent<T>& other);
+	bool operator==(const Agent& other);
 
 	/// <summary> Objcet equality. </summary>
 	/// <param name="other">Object to compare with. </param>
 	/// <returns>True if objects are equal. </returns>
-	virtual bool equals(const Agent<T>& other) = 0;
+	virtual bool equals(const Agent& other) = 0;
 
 	virtual void execute() = 0;
 
 	virtual void act() = 0;
 
-	void moveTo(Geometry2D::Point<T>& newPosition);
+	void moveTo(Geometry2D::MyPoint& newPosition);
 
-	Geometry2D::Point<T>* getPosition();
+	Geometry2D::MyPoint* getPosition();
 
-	Geometry2D::Vector<T>* getDirection();
+	Geometry2D::MyVector* getDirection();
 
-	void setDirection(Geometry2D::Vector<T>& direction);
+	void setDirection(Geometry2D::MyVector& direction);
 
 private:
-	Geometry2D::Point<T>* mPosition;
+	Geometry2D::MyPoint* mPosition;
 
-	Geometry2D::Vector<T>* mDirection;
+	Geometry2D::MyVector* mDirection;
 };
 
-template<typename T>
-inline Agent<T>::~Agent()
+inline Agent::~Agent()
 {
 	delete this->mPosition;
 	delete this->mDirection;
@@ -58,40 +56,32 @@ inline Agent<T>::~Agent()
 	this->mDirection = nullptr;
 }
 
-template<typename T>
-inline Agent<T>& Agent<T>::operator=(const Agent<T>& other)
+inline Agent& Agent::operator=(const Agent& other)
 {
 	return this->assign(other);
 }
 
-template<typename T>
-inline bool Agent<T>::operator==(const Agent<T>& other)
+inline bool Agent::operator==(const Agent& other)
 {
 	return this->equals(other);;
 }
 
-template<typename T>
-inline void Agent<T>::moveTo(Geometry2D::Point<T>& newPosition)
+inline void Agent::moveTo(Geometry2D::MyPoint& newPosition)
 {
-	delete this->mPosition;
-	this->mPosition = *newPosition;
+	this->mPosition->assign(newPosition);
 }
 
-template<typename T>
-inline Geometry2D::Point<T>* Agent<T>::getPosition()
+inline Geometry2D::MyPoint* Agent::getPosition()
 {
 	return this->mPosition;
 }
 
-template<typename T>
-inline Geometry2D::Vector<T>* Agent<T>::getDirection()
+inline Geometry2D::MyVector* Agent::getDirection()
 {
 	return this->mDirection;
 }
 
-template<typename T>
-inline void Agent<T>::setDirection(Geometry2D::Vector<T>& direction)
+inline void Agent::setDirection(Geometry2D::MyVector& direction)
 {
-	delete this->mDirection;
-	this->mDirection = *direction;
+	this->mDirection->assign(direction);
 }

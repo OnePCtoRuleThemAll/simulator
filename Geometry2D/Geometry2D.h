@@ -2400,5 +2400,9 @@ namespace Geometry2D
 		} while (current != this->mLast);
 		return count & 1;
 	}
+
+	using MyFloat = float;
+	using MyPoint = Point<MyFloat>;
+	using MyVector = Vector<MyFloat>;
 }
 
