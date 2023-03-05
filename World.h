@@ -65,7 +65,7 @@ inline World::~World()
 inline void World::insert(Agent* pAgent)
 {
 	int spotVector = mapping(pAgent->getPosition()->mPositionX, pAgent->getPosition()->mPositionY);
-	matrix->at(spotVector)->push_back(new Agent(*pAgent));
+	matrix->at(spotVector)->push_back(pAgent);
 }
 
 inline bool World::remove(Agent* pAgent)
