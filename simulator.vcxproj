@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="Geometry2D\GeometryBase.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Rendering\Shader.cpp" />
     <ClCompile Include="tests\test.cpp" />
     <ClCompile Include="tests\testGeometry\testGeometry.cpp" />
     <ClCompile Include="ui\console.cpp" />
@@ -160,8 +161,10 @@
     <ClInclude Include="Geometry2D\Geometry2D.h" />
     <ClInclude Include="Geometry2D\GeometryBase.h" />
     <ClInclude Include="PolySegment.h" />
+    <ClInclude Include="Rendering\Shader.h" />
+    <ClInclude Include="Shapes\CircleDrawer.h" />
     <ClInclude Include="Shapes\Shape.h" />
-    <ClInclude Include="Shapes\Triangle.h" />
+    <ClInclude Include="Shapes\TriangleDrawer.h" />
     <ClInclude Include="tests\test.h" />
     <ClInclude Include="tests\testGeometry\testGeometry.h" />
     <ClInclude Include="types.h" />
@@ -179,6 +182,9 @@
     <Library Include="Dependencies\GLFW\32bit\lib-vc2022\glfw3_mt.lib" />
     <Library Include="Dependencies\GLFW\64bit\lib-vc2022\glfw3.lib" />
     <Library Include="Dependencies\GLFW\64bit\lib-vc2022\glfw3_mt.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Shaders\Shader.shader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

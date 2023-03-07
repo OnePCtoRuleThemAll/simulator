@@ -2,6 +2,7 @@
 #include "../Geometry2D/Geometry2D.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <cstddef>
 
 namespace Shapes 
 {
@@ -9,13 +10,13 @@ namespace Shapes
 	class Shape
 	{
 	public:
-		virtual ~Shape();
+		virtual ~Shape() = 0;
 
 		virtual void rotate(const Geometry2D::Vector<T>& vector) = 0;
 		virtual void translate(const Geometry2D::Point<T>& point) = 0;
 
 	private:
-		Geometry2D::Point<T>* position;
-		Geometry2D::Vector<T>* direction;
+		float* positions[];
+		virtual void scale(Geometry2D::Point<T>& point) = 0;
 	};
 }

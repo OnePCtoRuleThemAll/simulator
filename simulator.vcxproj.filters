@@ -91,6 +91,15 @@
     <Filter Include="Shapes\Header files">
       <UniqueIdentifier>{6474e808-1960-40d9-9162-22c6411af362}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Rendering">
+      <UniqueIdentifier>{fb99d85c-20a5-4a40-a472-61c94d591ab4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{bc4e6559-d9c2-4e39-a96e-2fe5461bf883}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Shaders">
+      <UniqueIdentifier>{7deb8466-d6df-4180-b976-8af21a3acb42}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -113,6 +122,9 @@
       <Filter>ui\Source files</Filter>
     </ClCompile>
     <ClCompile Include="tests\testGeometry\testGeometry.cpp" />
+    <ClCompile Include="Rendering\Shader.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Geometry2D\Geometry2D.h">
@@ -166,8 +178,14 @@
     <ClInclude Include="Shapes\Shape.h">
       <Filter>Shapes\Header files</Filter>
     </ClInclude>
-    <ClInclude Include="Shapes\Triangle.h">
+    <ClInclude Include="Shapes\TriangleDrawer.h">
       <Filter>Shapes\Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shapes\CircleDrawer.h">
+      <Filter>Shapes\Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\Shader.h">
+      <Filter>Rendering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -195,5 +213,10 @@
     <Library Include="Dependencies\glew-2.1.0\lib\Release\Win32\glew32s.lib">
       <Filter>Dependencies\glew-2.1.0\lib\Release\Win32</Filter>
     </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Shaders\Shader.shader">
+      <Filter>Resources\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
