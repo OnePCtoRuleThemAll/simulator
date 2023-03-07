@@ -215,7 +215,10 @@
     </Library>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Shaders\Shader.shader">
+    <None Include="Resources\Shaders\Triangle.shader">
+      <Filter>Resources\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\Circle.shader">
       <Filter>Resources\Shaders</Filter>
     </None>
   </ItemGroup>

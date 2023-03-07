@@ -5,6 +5,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "Rendering/Shader.h"
+#include "Shapes/TriangleDrawer.h"
+#include "Shapes/CircleDrawer.h"
 
 #include <iostream>
 
@@ -52,10 +54,19 @@ int main(int argc, char* argv[]) {
         cout << "Error!";
     }
 
+    Geometry2D::Point<float>* point = new Geometry2D::Point<float>(0.4f, 0.5f);
+    Geometry2D::Point<float>* point2 = new Geometry2D::Point<float>(0.2f, -0.2f);
+    Geometry2D::Point<float>* point3 = new Geometry2D::Point<float>(-0.4f, -0.5f);
+    Geometry2D::Vector<float>* vector = new Geometry2D::Vector<float>(0.5f, 0.5f);
+
+    Geometry2D::Circle<float>* circle1 = new Geometry2D::Circle<float>(*point, 0.2);
+    Geometry2D::Circle<float>* circle2 = new Geometry2D::Circle<float>(*point2, 0.2);
+    Geometry2D::Circle<float>* circle3 = new Geometry2D::Circle<float>(*point3, 0.2);
+
     //const int maxAgents = 10000;
     //float verticies[maxAgents * 6];
 
-    float positions[] = {
+    /*float positions[] = {
         -0.015f, -0.005f,
         -0.005f, 0.045f,
         0.005f, -0.005f,
@@ -76,7 +87,7 @@ int main(int argc, char* argv[]) {
     unsigned int vertexBuffer;
     glGenBuffers(1, &vertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions, GL_DYNAMIC_DRAW);
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
@@ -86,13 +97,13 @@ int main(int argc, char* argv[]) {
     unsigned int indexBuffer;
     glCreateBuffers(1, &indexBuffer);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indicies), indicies, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indicies), indicies, GL_DYNAMIC_DRAW);
 
     Shader shaderO;
-    ShaderProgramSource source = shaderO.ParseShader("Resources/Shaders/Shader.shader");
+    ShaderProgramSource source = shaderO.ParseShader("Resources/Shaders/Triangle.shader");
 
     unsigned int shader = shaderO.CreateShader(source.VertexSource, source.FragmentSource);
-    glUseProgram(shader);
+    glUseProgram(shader);*/
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
@@ -100,9 +111,12 @@ int main(int argc, char* argv[]) {
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glBindVertexArray(vao);
-        glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, nullptr);
-
+       /* glBindVertexArray(vao);
+        glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, nullptr);*/
+        Shapes::TriangleDrawer<float>* triangle = new Shapes::TriangleDrawer<float>(*point, *vector);
+        Shapes::CircleDrawer<float>* circleDraw = new Shapes::CircleDrawer<float>(*circle1);
+        Shapes::CircleDrawer<float>* circleDraw2 = new Shapes::CircleDrawer<float>(*circle2);
+        Shapes::CircleDrawer<float>* circleDraw3 = new Shapes::CircleDrawer<float>(*circle3);
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
 
@@ -110,7 +124,7 @@ int main(int argc, char* argv[]) {
         glfwPollEvents();
     }
 
-    glDeleteProgram(shader);
+    //glDeleteProgram(shader);
 
     glfwTerminate();
 
