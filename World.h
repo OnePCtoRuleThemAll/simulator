@@ -18,6 +18,12 @@ public:
 	void insert(Agent* pAgent);
 
 	bool remove(Agent* pAgent);
+
+	std::list<Agent*>* search(Agent* pAgent, Geometry2D::MyFloat distance);
+
+	Geometry2D::MyPoint* getTopPoint();
+
+	Geometry2D::MyPoint* getBottomPoint();
 private:
 	std::vector<std::list<Agent*>*>* matrix;
 
@@ -80,6 +86,16 @@ inline bool World::remove(Agent* pAgent)
 		itr++;
 	}
 	return false;
+}
+
+inline Geometry2D::MyPoint* World::getTopPoint()
+{
+	return mPointTop;
+}
+
+inline Geometry2D::MyPoint* World::getBottomPoint()
+{
+	return mPointBottom;
 }
 
 inline unsigned int World::mapping(Geometry2D::MyFloat posX, Geometry2D::MyFloat posY)

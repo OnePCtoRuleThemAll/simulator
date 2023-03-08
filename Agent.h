@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Geometry2D/Geometry2D.h"
+#include "World.h"
 
 /// <summary> Abstract parent class of all agents. </summary>
 class Agent
@@ -41,10 +42,16 @@ public:
 
 	void setDirection(Geometry2D::MyVector& direction);
 
+	World* getWorld();
+
+	void setWorld(World* world);
+
 private:
 	Geometry2D::MyPoint* mPosition;
 
 	Geometry2D::MyVector* mDirection;
+
+	World* mWorld;
 };
 
 inline Agent::~Agent()
@@ -84,4 +91,14 @@ inline Geometry2D::MyVector* Agent::getDirection()
 inline void Agent::setDirection(Geometry2D::MyVector& direction)
 {
 	this->mDirection->assign(direction);
+}
+
+inline World* Agent::getWorld()
+{
+	return mWorld;
+}
+
+inline void Agent::setWorld(World* world)
+{
+	mWorld = world;
 }
