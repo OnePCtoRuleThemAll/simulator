@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="Geometry2D\GeometryBase.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Rendering\DrawTriangles.cpp" />
     <ClCompile Include="Rendering\Shader.cpp" />
     <ClCompile Include="tests\test.cpp" />
     <ClCompile Include="tests\testGeometry\testGeometry.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="Geometry2D\Geometry2D.h" />
     <ClInclude Include="Geometry2D\GeometryBase.h" />
     <ClInclude Include="PolySegment.h" />
+    <ClInclude Include="Rendering\DrawTriangles.h" />
     <ClInclude Include="Rendering\Shader.h" />
     <ClInclude Include="Shapes\CircleDrawer.h" />
     <ClInclude Include="Shapes\Shape.h" />

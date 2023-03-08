@@ -7,6 +7,7 @@
 #include "Rendering/Shader.h"
 #include "Shapes/TriangleDrawer.h"
 #include "Shapes/CircleDrawer.h"
+#include "Rendering/DrawTriangles.h"
 
 #include <iostream>
 
@@ -59,9 +60,34 @@ int main(int argc, char* argv[]) {
     Geometry2D::Point<float>* point3 = new Geometry2D::Point<float>(-0.4f, -0.5f);
     Geometry2D::Vector<float>* vector = new Geometry2D::Vector<float>(0.5f, 0.5f);
 
-    Geometry2D::Circle<float>* circle1 = new Geometry2D::Circle<float>(*point, 0.2);
+    Geometry2D::Circle<float>* circle1 = new Geometry2D::Circle<float>(*point, 0.1);
     Geometry2D::Circle<float>* circle2 = new Geometry2D::Circle<float>(*point2, 0.2);
-    Geometry2D::Circle<float>* circle3 = new Geometry2D::Circle<float>(*point3, 0.2);
+    Geometry2D::Circle<float>* circle3 = new Geometry2D::Circle<float>(*point3, 0.15);
+
+    DrawTriangles* drawer = new DrawTriangles();
+    
+    float positions[] = {
+        -0.015f, -0.005f,
+        -0.005f, 0.045f,
+        0.005f, -0.005f,
+
+        0.055f, 0.05f,
+        0.045f, 0.1f,
+        0.035f, 0.05f,
+
+        0.095f, 0.095f,
+        0.085f, 0.045f,
+        0.075f, 0.095f
+    };
+
+    for(auto vertex: positions) {
+        drawer->addVertex(vertex);
+    }
+
+    drawer->addActiveObject();
+    drawer->addActiveObject();
+    drawer->addActiveObject();
+
 
     //const int maxAgents = 10000;
     //float verticies[maxAgents * 6];
@@ -113,10 +139,11 @@ int main(int argc, char* argv[]) {
 
        /* glBindVertexArray(vao);
         glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, nullptr);*/
-        Shapes::TriangleDrawer<float>* triangle = new Shapes::TriangleDrawer<float>(*point, *vector);
         Shapes::CircleDrawer<float>* circleDraw = new Shapes::CircleDrawer<float>(*circle1);
         Shapes::CircleDrawer<float>* circleDraw2 = new Shapes::CircleDrawer<float>(*circle2);
         Shapes::CircleDrawer<float>* circleDraw3 = new Shapes::CircleDrawer<float>(*circle3);
+
+        drawer->drawElements();
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
 
