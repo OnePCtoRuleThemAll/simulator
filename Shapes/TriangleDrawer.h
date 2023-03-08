@@ -19,6 +19,7 @@ namespace Shapes
 		float positions[6];
 		int startIndex;
 		DrawTriangles* pointerToDrawerObject;
+
 	};
 
 	template<typename T>
