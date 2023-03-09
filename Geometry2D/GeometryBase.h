@@ -29,6 +29,6 @@ namespace Geometry2D
 		/// <returns>True if objects are equal. </returns>
 		virtual bool equals(const GeomteryBase& other) = 0;
 
-
+		virtual bool isPointIn(const GeomteryBase& form) = 0;
 	};
 }

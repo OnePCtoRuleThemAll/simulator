@@ -2,6 +2,7 @@
 #include <list>
 #include <vector>
 #include "Agent.h"
+#include "Geometry2D/GeometryBase.h"
 
 class World
 {
@@ -19,7 +20,9 @@ public:
 
 	bool remove(Agent* pAgent);
 
-	std::list<Agent*>* search(Agent* pAgent, Geometry2D::MyFloat distance);
+	std::list<Agent*>* search(Agent* pAgent, Geometry2D::GeomteryBase* form);
+
+	void update(Agent* pAgent);
 
 	Geometry2D::MyPoint* getTopPoint();
 
@@ -86,6 +89,25 @@ inline bool World::remove(Agent* pAgent)
 		itr++;
 	}
 	return false;
+}
+
+inline void World::update(Agent* pAgent)
+{
+	int spotVector = mapping(pAgent->getPosition()->mPositionX, pAgent->getPosition()->mPositionY);
+	auto itr = matrix->at(spotVector)->begin();
+	bool erased = false;
+	for (Agent* agent : *(matrix->at(spotVector))) {
+		if (agent->equals(*pAgent)) {
+			matrix->at(spotVector)->erase(itr);
+			erased = true;
+			break;
+		}
+		itr++;
+	}
+	if (erased) {
+		insert(pAgent);
+	}
+
 }
 
 inline Geometry2D::MyPoint* World::getTopPoint()

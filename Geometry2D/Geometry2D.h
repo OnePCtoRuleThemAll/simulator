@@ -66,6 +66,11 @@ namespace Geometry2D
 		/// <summary>Move point by vector. </summary>
 		/// <param name = "vector"> Vector. </param>
 		void movePointByVector(const Vector<T>& vector);
+
+		/// <summary> Is point on line. </summary>
+		/// <param name="point"> Point. </param>
+		/// <returns>True if point lies on line. </returns>
+		bool isPointIn(const Point<T>& point) override;
 	};
 
 	template<typename T>
@@ -158,6 +163,12 @@ namespace Geometry2D
 	{
 		mPositionX += vector.mDeltaX;
 		mPositionY += vector.mDeltaY;
+	}
+
+	template<typename T>
+	inline bool Point<T>::isPointIn(const Point<T>& point)
+	{
+		return this->equals(point);
 	}
 
 
@@ -266,6 +277,11 @@ namespace Geometry2D
 		/// <param name = "vector"> Vector. </param>
 		/// <param name = "angle"> Angle in radians. </param>
 		void rotateVectorByAngle(double angle);
+
+		/// <summary> Is point on line. </summary>
+		/// <param name="point"> Point. </param>
+		/// <returns>True if point lies on line. </returns>
+		bool isPointIn(const Point<T>& point) override;
 	};
 
 	template<typename T>
@@ -457,6 +473,12 @@ namespace Geometry2D
 		mDeltaY = (T)(deltaX * sin(angle) + mDeltaY * cos(angle));
 	}
 
+	template<typename T>
+	inline bool Vector<T>::isPointIn(const Point<T>& point)
+	{
+		return false;
+	}
+
 	/// <summary> Rotate vector by angle. </summary>
 	/// <param name = "vector"> Vector. </param>
 	/// <param name = "degrees"> Angle in radians. </param>
@@ -533,7 +555,7 @@ namespace Geometry2D
 		/// <summary> Is point on line. </summary>
 		/// <param name="point"> Point. </param>
 		/// <returns>True if point lies on line. </returns>
-		bool isPointOnLine(const Point<T>& point);
+		bool isPointIn(const Point<T>& point) override;
 
 		/// <summary> Moves line by vector. </summary>
 		/// <param name="vector"> Vector. </param>
@@ -657,7 +679,7 @@ namespace Geometry2D
 	}
 
 	template<typename T>
-	inline bool Line<T>::isPointOnLine(const Point<T>& point)
+	inline bool Line<T>::isPointIn(const Point<T>& point)
 	{
 		return this->distancetoPoint(point) == 0;
 	}
@@ -835,7 +857,7 @@ namespace Geometry2D
 		/// <summary> Is point on line. </summary>
 		/// <param name="point"> Point. </param>
 		/// <returns>True if point lies on line. </returns>
-		bool isPointOn(const Point<T>& point) override;
+		bool isPointIn(const Point<T>& point) override;
 
 		/// <summary> Moves line by vector. </summary>
 		/// <param name="vector"> Vector. </param>
@@ -963,7 +985,7 @@ namespace Geometry2D
 	}
 
 	template<typename T>
-	inline bool LineSegment<T>::isPointOn(const Point<T>& point)
+	inline bool LineSegment<T>::isPointIn(const Point<T>& point)
 	{
 		return this->distancetoPoint(point) == 0;
 	}
@@ -1041,9 +1063,9 @@ namespace Geometry2D
 		if (orientation1 != orientation2 && orientation3 != orientation4)
 			return true;
 
-		if (orientation1 == 0 && isPointOn(*line1.mPoint1)) return true;
+		if (orientation1 == 0 && isPointIn(*line1.mPoint1)) return true;
 
-		if (orientation2 == 0 && isPointOn(*line1.mPoint2)) return true;
+		if (orientation2 == 0 && isPointIn(*line1.mPoint2)) return true;
 
 		if (orientation3 == 0 && isPointOnLineSegment(line1, *mPoint1)) return true;
 
@@ -1196,7 +1218,7 @@ namespace Geometry2D
 		/// <summary> Is point on line. </summary>
 		/// <param name="point"> Point. </param>
 		/// <returns>True if point lies on line. </returns>
-		bool isPointOn(const Point<T>& point);
+		bool isPointIn(const Point<T>& point) override;
 
 		/// <summary> Moves circle line by vector. </summary>
 		/// <param name="vector"> Vector. </param>
@@ -1309,7 +1331,7 @@ namespace Geometry2D
 		return false;
 	}
 	template<typename T>
-	inline bool CircleLine<T>::isPointOn(const Point<T>& point)
+	inline bool CircleLine<T>::isPointIn(const Point<T>& point)
 	{
 		return distanceBetweenPoints(*mCenter, point) == mRadius;
 	}
@@ -1398,7 +1420,7 @@ namespace Geometry2D
 	/// <returns>True if point lies on line. </returns>
 	template<typename T>
 	bool isPointOnCircleLine(CircleLine<T>& line, const Point<T>& point) {
-		return line.isPointOn(point);
+		return line.isPointIn(point);
 	}
 
 	/// <summary> Moves circle line by vector. </summary>
@@ -1496,7 +1518,7 @@ namespace Geometry2D
 		/// <summary> Is point on line. </summary>
 		/// <param name="point"> Point. </param>
 		/// <returns>True if point lies on line. </returns>
-		bool isPointOn(const Point<T>& point);
+		bool isPointIn(const Point<T>& point) override;
 
 		/// <summary> Moves circle line by vector. </summary>
 		/// <param name="vector"> Vector. </param>
@@ -1604,7 +1626,7 @@ namespace Geometry2D
 		return false;
 	}
 	template<typename T>
-	inline bool Circle<T>::isPointOn(const Point<T>& point)
+	inline bool Circle<T>::isPointIn(const Point<T>& point)
 	{
 		return distanceBetweenPoints(*mCenter, point) <= mRadius;
 	}
@@ -1632,7 +1654,7 @@ namespace Geometry2D
 	template<typename T>
 	inline bool Circle<T>::intersectionWithLineSegment(const LineSegment<T>& line)
 	{
-		if (this->isPointOn(*line.mPoint1) || this->isPointOn(*line.mPoint2))
+		if (this->isPointIn(*line.mPoint1) || this->isPointIn(*line.mPoint2))
 			return true;
 		double minDist = DBL_MAX;
 		double maxDist = max(distanceBetweenPoints(*mCenter, *line.mPoint1), distanceBetweenPoints(*mCenter, *line.mPoint2));
@@ -1665,7 +1687,7 @@ namespace Geometry2D
 	/// <returns>True if point lies on line. </returns>
 	template<typename T>
 	bool isPointOnCircle(Circle<T>& circle, const Point<T>& point) {
-		return circle.isPointOn(point);
+		return circle.isPointIn(point);
 	}
 
 	/// <summary> Moves circle line by vector. </summary>
@@ -1781,7 +1803,7 @@ namespace Geometry2D
 		/// <summary> Is point on line. </summary>
 		/// <param name="point"> Point. </param>
 		/// <returns>True if point lies on line. </returns>
-		bool isPointOn(const Point<T>& point) override;
+		bool isPointIn(const Point<T>& point) override;
 
 		/// <summary> Moves circle line by vector. </summary>
 		/// <param name="vector"> Vector. </param>
@@ -1963,7 +1985,7 @@ namespace Geometry2D
 	}
 
 	template<typename T>
-	inline bool Arc<T>::isPointOn(const Point<T>& point)
+	inline bool Arc<T>::isPointIn(const Point<T>& point)
 	{
 		if (distanceBetweenPoints(*(mCenter, point)) = mRadius) {
 			return this->isPointInCone(point);
@@ -1999,14 +2021,14 @@ namespace Geometry2D
 		CircleLine<T>* circle = new CircleLine<T>(*mCenter, mRadius);
 		if (circle->pointsOfIntersectionWithLine(line, pPoint1, pPoint2)) {
 			if (pPoint1 != nullptr) {
-				if (isPointOn(*pPoint1)) {
+				if (isPointIn(*pPoint1)) {
 					delete pPoint1;
 					delete pPoint2;
 					delete circle;
 					return true;
 				}
 				if (pPoint2 != nullptr) {
-					if (isPointOn(*pPoint2)) {
+					if (isPointIn(*pPoint2)) {
 						delete pPoint1;
 						delete pPoint2;
 						delete circle;
@@ -2030,7 +2052,7 @@ namespace Geometry2D
 		Line<T>* helpLine = new Line<T>(line.mPoint1, line.mPoint2);
 		if (circle->pointsOfIntersectionWithLine(*helpLine, pPoint1, pPoint2)) {
 			if (pPoint1 != nullptr) {
-				if (isPointOn(*pPoint1) && line.isPointOn(*pPoint1)) {
+				if (isPointIn(*pPoint1) && line.isPointIn(*pPoint1)) {
 					delete pPoint1;
 					delete pPoint2;
 					delete circle;
@@ -2038,7 +2060,7 @@ namespace Geometry2D
 					return true;
 				}
 				if (pPoint2 != nullptr) {
-					if (isPointOn(*pPoint2) && line.isPointOn(*pPoint2)) {
+					if (isPointIn(*pPoint2) && line.isPointIn(*pPoint2)) {
 						delete pPoint1;
 						delete pPoint2;
 						delete circle;
@@ -2141,7 +2163,7 @@ namespace Geometry2D
 		/// <summary> Is point on line. </summary>
 		/// <param name="point"> Point. </param>
 		/// <returns>True if point lies on line. </returns>
-		bool isPointOn(const Point<T>& point);
+		bool isPointIn(const Point<T>& point) override;
 
 		/// <summary> Moves line by vector. </summary>
 		/// <param name="vector"> Vector. </param>
@@ -2301,7 +2323,7 @@ namespace Geometry2D
 	}
 
 	template<typename T>
-	inline bool Polyline<T>::isPointOn(const Point<T>& point)
+	inline bool Polyline<T>::isPointIn(const Point<T>& point)
 	{
 		PolySegment<T>* current = mFirst;
 
@@ -2393,7 +2415,7 @@ namespace Geometry2D
 			LineSegment<T>* side = new LineSegment<T>*(*current->getPoint1(), *current->mNext->getPoint1());
 			if (side->intersectionWithLine(*exline)) {
 				if (orientationOfPoints(*side->mPoint1, point, *side->mPoint2) == 0)
-					return side->isPointOn(point);
+					return side->isPointIn(point);
 				count++;
 			}
 			current = current->mNext;

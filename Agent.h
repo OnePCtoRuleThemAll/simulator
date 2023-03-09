@@ -38,6 +38,8 @@ public:
 
 	Geometry2D::MyPoint* getPosition();
 
+	Geometry2D::MyPoint* getOldPosition();
+
 	Geometry2D::MyVector* getDirection();
 
 	void setDirection(Geometry2D::MyVector& direction);
@@ -49,6 +51,8 @@ public:
 private:
 	Geometry2D::MyPoint* mPosition;
 
+	Geometry2D::MyPoint* mOldPosition;
+
 	Geometry2D::MyVector* mDirection;
 
 	World* mWorld;
@@ -58,9 +62,11 @@ inline Agent::~Agent()
 {
 	delete this->mPosition;
 	delete this->mDirection;
+	delete this->mOldPosition;
 
 	this->mPosition = nullptr;
 	this->mDirection = nullptr;
+	this->mOldPosition = nullptr;
 }
 
 inline Agent& Agent::operator=(const Agent& other)
@@ -75,12 +81,18 @@ inline bool Agent::operator==(const Agent& other)
 
 inline void Agent::moveTo(Geometry2D::MyPoint& newPosition)
 {
+	this->mOldPosition->assign(*mPosition);
 	this->mPosition->assign(newPosition);
 }
 
 inline Geometry2D::MyPoint* Agent::getPosition()
 {
 	return this->mPosition;
+}
+
+inline Geometry2D::MyPoint* Agent::getOldPosition()
+{
+	return mOldPosition;
 }
 
 inline Geometry2D::MyVector* Agent::getDirection()
