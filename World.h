@@ -94,19 +94,26 @@ inline bool World::remove(Agent* pAgent)
 inline void World::update(Agent* pAgent)
 {
 	int spotVector = mapping(pAgent->getPosition()->mPositionX, pAgent->getPosition()->mPositionY);
-	auto itr = matrix->at(spotVector)->begin();
-	bool erased = false;
-	for (Agent* agent : *(matrix->at(spotVector))) {
-		if (agent->equals(*pAgent)) {
-			matrix->at(spotVector)->erase(itr);
-			erased = true;
-			break;
+	int spotVectorOld = -1;
+	if (pAgent->getOldPosition() != nullptr) {
+		spotVectorOld = mapping(pAgent->getOldPosition()->mPositionX, pAgent->getOldPosition()->mPositionY);
+	}
+	if (spotVectorOld != -1 && spotVector != spotVectorOld) {
+		auto itr = matrix->at(spotVectorOld)->begin();
+		bool erased = false;
+		for (Agent* agent : *(matrix->at(spotVectorOld))) {
+			if (agent->equals(*pAgent)) {
+				matrix->at(spotVectorOld)->erase(itr);
+				erased = true;
+				break;
+			}
+			itr++;
 		}
-		itr++;
+		if (erased) {
+			insert(pAgent);
+		}
 	}
-	if (erased) {
-		insert(pAgent);
-	}
+	
 
 }
 
