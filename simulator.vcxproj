@@ -160,6 +160,7 @@
     <ClInclude Include="Dependencies\GLFW\64bit\include\GLFW\glfw3native.h" />
     <ClInclude Include="Geometry2D\Geometry2D.h" />
     <ClInclude Include="Geometry2D\GeometryBase.h" />
+    <ClInclude Include="Point.h" />
     <ClInclude Include="PolySegment.h" />
     <ClInclude Include="tests\test.h" />
     <ClInclude Include="tests\testGeometry\testGeometry.h" />

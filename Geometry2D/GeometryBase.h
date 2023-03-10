@@ -1,4 +1,5 @@
 #pragma once
+#include "../Point.h"
 
 namespace Geometry2D
 {
@@ -29,6 +30,13 @@ namespace Geometry2D
 		/// <returns>True if objects are equal. </returns>
 		virtual bool equals(const GeomteryBase& other) = 0;
 
-		virtual bool isPointIn(const GeomteryBase& form) = 0;
+		template<typename T>
+		bool isPointIn(const Point<T>& point);
 	};
+
+	template<typename T>
+	inline bool GeomteryBase::isPointIn(const Point<T>& point)
+	{
+		return false;
+	}
 }

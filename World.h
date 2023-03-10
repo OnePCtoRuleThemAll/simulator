@@ -91,6 +91,11 @@ inline bool World::remove(Agent* pAgent)
 	return false;
 }
 
+inline std::list<Agent*>* World::search(Agent* pAgent, Geometry2D::GeomteryBase* form)
+{
+	return nullptr;
+}
+
 inline void World::update(Agent* pAgent)
 {
 	int spotVector = mapping(pAgent->getPosition()->mPositionX, pAgent->getPosition()->mPositionY);
