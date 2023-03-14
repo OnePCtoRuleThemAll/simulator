@@ -32,6 +32,11 @@ namespace Geometry2D
 
 		template<typename T>
 		bool isPointIn(const Point<T>& point);
+
+		int topXPos;
+		int bottomXPos;
+		int topYPos;
+		int bottomYPos;
 	};
 
 	template<typename T>

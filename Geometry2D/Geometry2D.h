@@ -728,6 +728,8 @@ namespace Geometry2D
 		/// <param name="line"> Line. </param>
 		/// <returns>True if line segment line intersects with line. </returns>
 		bool intersectionWithLine(const Line<T>& line) override;
+
+		void boundingRectangle();
 	};
 
 	template<typename T>
@@ -735,6 +737,7 @@ namespace Geometry2D
 		mPoint1(Point<T>()),
 		mPoint2(Point<T>())
 	{
+		boundingRectangle();
 	}
 
 	template<typename T>
@@ -742,6 +745,7 @@ namespace Geometry2D
 		mPoint1(new Point<T>(point1)),
 		mPoint2(new Point<T>(point2))
 	{
+		boundingRectangle();
 	}
 
 	template<typename T>
@@ -749,6 +753,7 @@ namespace Geometry2D
 		mPoint1(new Point<T>(*(other.mPoint1))),
 		mPoint2(new Point<T>(*(other.mPoint2)))
 	{
+		boundingRectangle();
 	}
 
 	template<typename T>
@@ -756,6 +761,7 @@ namespace Geometry2D
 		mPoint1(other.mPoint1),
 		mPoint2(other.mPoint2)
 	{
+		boundingRectangle();
 		other.mPoint1 = nullptr;
 		other.mPoint2 = nullptr;
 	}
@@ -777,6 +783,7 @@ namespace Geometry2D
 			const Line<T>& otherLine = static_cast<const Line<T>&>(other);
 			mPoint1->assign(*(otherLine.mPoint1));
 			mPoint2->assign(*(otherLine.mPoint2));
+			boundingRectangle();
 		}
 
 		return *this;
@@ -787,6 +794,7 @@ namespace Geometry2D
 	{
 		mPoint1 = other.mPoint1;
 		mPoint2 = other.mPoint2;
+		boundingRectangle();
 		other.mPoint1 = nullptr;
 		other.mPoint2 = nullptr;
 		return *this;
@@ -799,6 +807,7 @@ namespace Geometry2D
 		{
 			mPoint1->assign(*other.mPoint1);
 			mPoint2->assign(*other.mPoint2);
+			boundingRectangle();
 		}
 		return *this;
 	}
@@ -926,6 +935,28 @@ namespace Geometry2D
 		delete pVector1;
 		delete pVector2;
 		return (!(dotProduct1 >= 0 && dotProduct2 >= 0) || (dotProduct1 < 0 && dotProduct2 < 0));
+	}
+
+	template<typename T>
+	inline void LineSegment<T>::boundingRectangle()
+	{
+		if (mPoint1->mPositionX < mPoint2->mPositionX) {
+			topXPos = mPoint1->mPositionX;
+			bottomXPos = mPoint2->mPositionX;
+		}
+		else {
+			topXPos = mPoint2->mPositionX;
+			bottomXPos = mPoint1->mPositionX;
+		}
+
+		if (mPoint1->mPositionY < mPoint2->mPositionY) {
+			topYPos = mPoint1->mPositionY;
+			bottomYPos = mPoint2->mPositionY;
+		}
+		else {
+			topYPos = mPoint2->mPositionY;
+			bottomYPos = mPoint1->mPositionY;
+		}
 	}
 
 	/// <summary> Gradient of line. </summary>
@@ -1082,6 +1113,8 @@ namespace Geometry2D
 		/// <param name="line"> Line segment. </param>
 		/// <returns>True if circle line intersects with line segment. </returns>
 		bool intersectionWithLineSegment(const LineSegment<T>& line);
+
+		void boundingRectangle();
 	};
 
 	template<typename T>
@@ -1090,6 +1123,7 @@ namespace Geometry2D
 		mCenter(Point<T>()),
 		mRadius(0)
 	{
+		boundingRectangle();
 	}
 
 	template<typename T>
@@ -1097,6 +1131,7 @@ namespace Geometry2D
 		mCenter(new Point<T>(point)),
 		mRadius(radius)
 	{
+		boundingRectangle();
 	}
 
 	template<typename T>
@@ -1104,6 +1139,7 @@ namespace Geometry2D
 		mCenter(new Point<T>(*(other.mCenter))),
 		mRadius(other.mRadius)
 	{
+		boundingRectangle();
 	}
 
 	template<typename T>
@@ -1111,6 +1147,7 @@ namespace Geometry2D
 		mCenter(*(other.mCenter)),
 		mRadius(other.mRadius)
 	{
+		boundingRectangle();
 		other.mCenter = nullptr;
 	}
 
@@ -1130,6 +1167,7 @@ namespace Geometry2D
 			const CircleLine<T>& otherLine = static_cast<const CircleLine<T>&>(other);
 			mCenter->assign(*(otherLine.mCenter));
 			mRadius = otherLine.mRadius;
+			boundingRectangle();
 		}
 
 		return *this;
@@ -1140,6 +1178,7 @@ namespace Geometry2D
 	{
 		mCenter = other.mCenter;
 		mRadius = other.mRadius;
+		boundingRectangle();
 		other.mCenter = nullptr;
 		other.mRadius = 0;
 		return *this;
@@ -1152,6 +1191,7 @@ namespace Geometry2D
 		{
 			mCenter->assign(*other.mCenter);
 			mRadius = other.mRadius;
+			boundingRectangle();
 		}
 		return *this;
 	}
@@ -1253,6 +1293,16 @@ namespace Geometry2D
 		if (minDist <= mRadius && maxDist >= mRadius)
 			return true;
 		return false;
+	}
+
+	template<typename T>
+	inline void CircleLine<T>::boundingRectangle()
+	{
+		topXPos = mCenter->mPositionX - mRadius;
+		topYPos = mCenter->mPositionY - mRadius;
+
+		bottomXPos = mCenter->mPositionX + mRadius;
+		bottomYPos = mCenter->mPositionY + mRadius;
 	}
 
 	/// <summary> Is point on line. </summary>
@@ -1377,6 +1427,8 @@ namespace Geometry2D
 		/// <param name="line"> Line segment. </param>
 		/// <returns>True if circle intersects with line segment. </returns>
 		bool intersectionWithLineSegment(const LineSegment<T>& line);
+
+		void boundingRectangle();
 	};
 
 	template<typename T>
@@ -1385,6 +1437,7 @@ namespace Geometry2D
 		mCenter(Point<T>()),
 		mRadius(0)
 	{
+		boundingRectangle();
 	}
 
 	template<typename T>
@@ -1392,6 +1445,7 @@ namespace Geometry2D
 		mCenter(new Point<T>(point)),
 		mRadius(radius)
 	{
+		boundingRectangle();
 	}
 
 	template<typename T>
@@ -1399,6 +1453,7 @@ namespace Geometry2D
 		mCenter(new Point<T>(*(other.mCenter))),
 		mRadius(other.mRadius)
 	{
+		boundingRectangle();
 	}
 
 	template<typename T>
@@ -1406,6 +1461,7 @@ namespace Geometry2D
 		mCenter(*(other.mCenter)),
 		mRadius(other.mRadius)
 	{
+		boundingRectangle();
 		other.mCenter = nullptr;
 	}
 
@@ -1425,6 +1481,7 @@ namespace Geometry2D
 			const Circle<T>& otherCircle = static_cast<const Circle<T>&>(other);
 			mCenter->assign(*(otherCircle.mCenter));
 			mRadius = otherCircle.mRadius;
+			boundingRectangle();
 		}
 
 		return *this;
@@ -1435,6 +1492,7 @@ namespace Geometry2D
 	{
 		mCenter = other.mCenter;
 		mRadius = other.mRadius;
+		boundingRectangle();
 		other.mCenter = nullptr;
 		other.mRadius = 0;
 		return *this;
@@ -1447,6 +1505,7 @@ namespace Geometry2D
 		{
 			mCenter->assign(*other.mCenter);
 			mRadius = other.mRadius;
+			boundingRectangle();
 		}
 		return *this;
 	}
@@ -1519,6 +1578,16 @@ namespace Geometry2D
 		if (minDist <= mRadius && maxDist >= mRadius)
 			return true;
 		return false;
+	}
+
+	template<typename T>
+	inline void Circle<T>::boundingRectangle()
+	{
+		topXPos = mCenter->mPositionX - mRadius;
+		topYPos = mCenter->mPositionY - mRadius;
+
+		bottomXPos = mCenter->mPositionX + mRadius;
+		bottomYPos = mCenter->mPositionY + mRadius;
 	}
 
 	/// <summary> Is point on line. </summary>
@@ -1662,6 +1731,8 @@ namespace Geometry2D
 		/// <param name="line"> Line segment. </param>
 		/// <returns>True if circle intersects with line segment. </returns>
 		bool intersectionWithLineSegment(const LineSegment<T>& line) override;
+
+		void boundingRectangle();
 	};
 
 	template<typename T>
@@ -1672,6 +1743,7 @@ namespace Geometry2D
 		mRadius(1),
 		mAltitude(0)
 	{
+		boundingRectangle();
 	}
 
 	template<typename T>
@@ -1689,6 +1761,7 @@ namespace Geometry2D
 		mCenter = movePointByVector(*pLineVector, point1);
 		mCenter->movePointByVector(*pNormVector);
 		mRadius = distanceBetweenPoints(*mPoint1, *mCenter);
+		boundingRectangle();
 		delete pLineVector;
 		delete pLine;
 		delete pNormVector;
@@ -1702,6 +1775,7 @@ namespace Geometry2D
 		mRadius(other.mRadius),
 		mAltitude(other.mAltitude)
 	{
+		boundingRectangle();
 	}
 
 	template<typename T>
@@ -1712,6 +1786,7 @@ namespace Geometry2D
 		mRadius(other.mRadius),
 		mAltitude(other.mAltitude)
 	{
+		boundingRectangle();
 		other.mPoint1 = nullptr;
 		other.mPoint2 = nullptr;
 		other.mCenter = nullptr;
@@ -1742,6 +1817,7 @@ namespace Geometry2D
 			mCenter->assign(*(otherArc.mCenter));
 			mRadius = otherArc.mRadius;
 			mAltitude = otherArc.mAltitude;
+			boundingRectangle();
 		}
 
 		return *this;
@@ -1755,6 +1831,7 @@ namespace Geometry2D
 		mCenter = other.mCenter;
 		mRadius = other.mRadius;
 		mAltitude = other.mAltitude;
+		boundingRectangle();
 		other.mPoint1 = nullptr;
 		other.mPoint2 = nullptr;
 		other.mCenter = nullptr;
@@ -1773,6 +1850,7 @@ namespace Geometry2D
 			mCenter->assign(*(other.mCenter));
 			mRadius = other.mRadius;
 			mAltitude = other.mAltitude;
+			boundingRectangle();
 		}
 		return *this;
 	}
@@ -1827,7 +1905,7 @@ namespace Geometry2D
 	template<typename T>
 	inline bool Arc<T>::isPointIn(const Point<T>& point)
 	{
-		if (distanceBetweenPoints(*(mCenter, point)) = mRadius) {
+		if (distanceBetweenPoints(*mCenter, point) == mRadius) {
 			return this->isPointInCone(point);
 		}
 		return false;
@@ -1916,6 +1994,41 @@ namespace Geometry2D
 		return false;
 	}
 
+	template<typename T>
+	inline void Arc<T>::boundingRectangle()
+	{
+		Vector<T>* pLineVector = new Vector<T>(*mPoint1, *mPoint2);
+		Line<T>* pLine = new Line<T>(*mPoint1, *mPoint2);
+		Vector<T>* pNormVector = pLine->normalizedVector();
+		pLineVector->vectorMultiplication(0.5);
+		pNormVector->vectorMultiplication(1 / pNormVector->sizeOfVector());
+		if (mAltitude < 0) {
+			pNormVector->vectorMultiplication(mRadius - mAltitude);
+		}
+		else {
+			pNormVector->vectorMultiplication(mAltitude - mRadius);
+		}
+
+		Point<T>* point3 = movePointByVector(*pLineVector, *mPoint1);
+		point3->movePointByVector(*pNormVector);
+
+		topXPos = std::min(mPoint1->mPositionX, mPoint2->mPositionX);
+		topXPos = std::min(topXPos, point3->mPositionX);
+		topYPos = std::min(mPoint1->mPositionY, mPoint2->mPositionY);
+		topYPos = std::min(topYPos, point3->mPositionY);
+
+		bottomXPos = std::max(mPoint1->mPositionX, mPoint2->mPositionX);
+		bottomXPos = std::max(topXPos, point3->mPositionX);
+		bottomYPos = std::max(mPoint1->mPositionY, mPoint2->mPositionY);
+		bottomYPos = std::max(topYPos, point3->mPositionY);
+		
+
+		delete point3;
+		delete pLineVector;
+		delete pLine;
+		delete pNormVector;
+	}
+
 #pragma endregion
 
 	/// <summary> Abstract parent class of segments of Polyline and Polygon. </summary>
@@ -1929,7 +2042,7 @@ namespace Geometry2D
 
 		virtual Point<T>* getPoint1() = 0;
 
-		virtual bool isPointOn(const Point<T>& point) = 0;
+		virtual bool isPointIn(const Point<T>& point) override = 0;
 
 		virtual double distancetoPoint(const Point<T>& point) = 0;
 
@@ -2022,6 +2135,8 @@ namespace Geometry2D
 		/// <param name="line"> Line segment. </param>
 		/// <returns>True if polyline intersects with line segment. </returns>
 		bool intersectionWithLineSegment(const LineSegment<T>& line);
+
+		void boundingRectangle();
 	};
 	template<typename T>
 	inline Polyline<T>::Polyline() :
@@ -2043,6 +2158,7 @@ namespace Geometry2D
 		mLast(other.mLast),
 		mSize(other.mSize)
 	{
+		boundingRectangle();
 		other.mFirst = nullptr;
 		other.mLast = nullptr;
 		other.mSize = 0;
@@ -2070,7 +2186,7 @@ namespace Geometry2D
 				current = current->mNext;
 			}
 		}
-
+		boundingRectangle();
 		return *this;
 	}
 
@@ -2080,6 +2196,7 @@ namespace Geometry2D
 		mFirst = other.mFirst;
 		mLast = other.mLast;
 		mSize = other.mSize;
+		boundingRectangle();
 		other.mFirst = nullptr;
 		other.mLast = nullptr;
 		other.mSize = 0;
@@ -2099,6 +2216,7 @@ namespace Geometry2D
 				current = current->mNext;
 			}
 		}
+		boundingRectangle();
 		return *this;
 	}
 
@@ -2232,6 +2350,29 @@ namespace Geometry2D
 		return false;
 	}
 
+	template<typename T>
+	inline void Polyline<T>::boundingRectangle()
+	{
+		PolySegment<T>* current = mFirst;
+		Point<T>* currentPoint;
+		currentPoint = current->getPoint1();
+		if (currentPoint != nullptr) {
+			topXPos = currentPoint->mPositionX;
+			bottomXPos = currentPoint->mPositionX;
+			topYPos = currentPoint->mPositionY;
+			bottomYPos = currentPoint->mPositionY;
+		}
+		current = current->mNext;
+		while (current != nullptr) {
+			currentPoint = current->getPoint1();
+			topXPos = std::min(topXPos, currentPoint->mPositionX);
+			topYPos = std::min(topYPos, currentPoint->mPositionY);
+			bottomXPos = std::max(topXPos, currentPoint->mPositionX);
+			bottomYPos = std::max(topYPos, currentPoint->mPositionY);
+			current = current->mNext;
+		}
+	}
+
 	/// <summary> Struct representing polygon. </summary>
 	/// <typeparam name = "T"> Data type to compute with. </typepram>
 	template<typename T>
@@ -2241,7 +2382,9 @@ namespace Geometry2D
 		/// <summary> Is point in polygon. </summary>
 		/// <param name="point"> Point. </param>
 		/// <returns>True if point lies on line. </returns>
-		bool isPointIn(const Point<T>& point);
+		bool isPointIn(const Point<T>& point) override;
+
+		void boundingRectangle() override;
 	};
 
 	template<typename T>
@@ -2261,6 +2404,29 @@ namespace Geometry2D
 			current = current->mNext;
 		} while (current != this->mLast);
 		return count & 1;
+	}
+
+	template<typename T>
+	inline void Polygon<T>::boundingRectangle()
+	{
+		PolySegment<T>* current = mFirst;
+		Point<T>* currentPoint;
+		currentPoint = current->getPoint1();
+		if (currentPoint != nullptr) {
+			topXPos = currentPoint->mPositionX;
+			bottomXPos = currentPoint->mPositionX;
+			topYPos = currentPoint->mPositionY;
+			bottomYPos = currentPoint->mPositionY;
+		}
+		current = current->mNext;
+		do {
+			currentPoint = current->getPoint1();
+			topXPos = std::min(topXPos, currentPoint->mPositionX);
+			topYPos = std::min(topYPos, currentPoint->mPositionY);
+			bottomXPos = std::max(topXPos, currentPoint->mPositionX);
+			bottomYPos = std::max(topYPos, currentPoint->mPositionY);
+			current = current->mNext;
+		} while (current != mLast);
 	}
 
 	using MyFloat = float;
