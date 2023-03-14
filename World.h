@@ -93,7 +93,27 @@ inline bool World::remove(Agent* pAgent)
 
 inline std::list<Agent*>* World::search(Agent* pAgent, Geometry2D::GeomteryBase* form)
 {
-	return nullptr;
+	Geometry2D::MyFloat topX = (mPointTop->mPositionX < form->topXPos) ? form->topXPos : mPointTop->mPositionX;
+	Geometry2D::MyFloat topY = (mPointTop->mPositionY < form->topYPos) ? form->topYPos : mPointTop->mPositionY;
+	Geometry2D::MyFloat bottomX = (mPointTop->mPositionX > form->topXPos) ? form->topXPos : mPointTop->mPositionX;
+	Geometry2D::MyFloat bottomY = (mPointTop->mPositionY > form->topYPos) ? form->topYPos : mPointTop->mPositionY;
+	std::list<Agent*>* list;
+
+	int point1Order = mapping(topX, topY);
+	int point2Order = mapping(bottomX, topY);
+	int point3Order = mapping(topX, bottomY);
+
+	for (int i = point1Order; i <= point3Order; i+= mMatrixColumns) {
+		for (int j = i; j <= point2Order; j++) {
+			for (Agent* agent : *(matrix->at(j))) {
+				if (form->isPointIn(*agent->getPosition())) {
+					list->push_back(agent);
+				}
+			}
+		}
+		point2Order += mMatrixColumns;
+	}
+	return list;
 }
 
 inline void World::update(Agent* pAgent)
