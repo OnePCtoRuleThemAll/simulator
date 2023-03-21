@@ -15,5 +15,4 @@ namespace  Geometry2D {
 		return this->equals(other);
 	}
 
-
 }

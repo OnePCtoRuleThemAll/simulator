@@ -1,5 +1,6 @@
 #pragma once
 #include "../Point.h"
+#include "../Rectangle.h"
 
 namespace Geometry2D
 {
@@ -33,10 +34,7 @@ namespace Geometry2D
 		template<typename T>
 		bool isPointIn(const Point<T>& point);
 
-		int topXPos;
-		int bottomXPos;
-		int topYPos;
-		int bottomYPos;
+		MyRectangle* boundingRec;
 	};
 
 	template<typename T>
@@ -44,4 +42,6 @@ namespace Geometry2D
 	{
 		return false;
 	}
+
+	using MyRectangle = Rectangle<MyFloat>;
 }

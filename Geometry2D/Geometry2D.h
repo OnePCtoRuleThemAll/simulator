@@ -941,21 +941,21 @@ namespace Geometry2D
 	inline void LineSegment<T>::boundingRectangle()
 	{
 		if (mPoint1->mPositionX < mPoint2->mPositionX) {
-			topXPos = mPoint1->mPositionX;
-			bottomXPos = mPoint2->mPositionX;
+			boundingRec->mTopPoint->mPositionX = mPoint1->mPositionX;
+			boundingRec->mBottomPoint->mPositionX = mPoint2->mPositionX;
 		}
 		else {
-			topXPos = mPoint2->mPositionX;
-			bottomXPos = mPoint1->mPositionX;
+			boundingRec->mTopPoint->mPositionX = mPoint2->mPositionX;
+			boundingRec->mBottomPoint->mPositionX = mPoint1->mPositionX;
 		}
 
 		if (mPoint1->mPositionY < mPoint2->mPositionY) {
-			topYPos = mPoint1->mPositionY;
-			bottomYPos = mPoint2->mPositionY;
+			boundingRec->mTopPoint->mPositionY = mPoint1->mPositionY;
+			boundingRec->mBottomPoint->mPositionY = mPoint2->mPositionY;
 		}
 		else {
-			topYPos = mPoint2->mPositionY;
-			bottomYPos = mPoint1->mPositionY;
+			boundingRec->mTopPoint->mPositionY = mPoint2->mPositionY;
+			boundingRec->mBottomPoint->mPositionY = mPoint1->mPositionY;
 		}
 	}
 
@@ -1298,11 +1298,11 @@ namespace Geometry2D
 	template<typename T>
 	inline void CircleLine<T>::boundingRectangle()
 	{
-		topXPos = mCenter->mPositionX - mRadius;
-		topYPos = mCenter->mPositionY - mRadius;
+		boundingRec->mTopPoint->mPositionX = mCenter->mPositionX - mRadius;
+		boundingRec->mTopPoint->mPositionY = mCenter->mPositionY - mRadius;
 
-		bottomXPos = mCenter->mPositionX + mRadius;
-		bottomYPos = mCenter->mPositionY + mRadius;
+		boundingRec->mBottomPoint->mPositionX = mCenter->mPositionX + mRadius;
+		boundingRec->mBottomPoint->mPositionY = mCenter->mPositionY + mRadius;
 	}
 
 	/// <summary> Is point on line. </summary>
@@ -1583,11 +1583,11 @@ namespace Geometry2D
 	template<typename T>
 	inline void Circle<T>::boundingRectangle()
 	{
-		topXPos = mCenter->mPositionX - mRadius;
-		topYPos = mCenter->mPositionY - mRadius;
+		boundingRec->mTopPoint->mPositionX = mCenter->mPositionX - mRadius;
+		boundingRec->mTopPoint->mPositionY = mCenter->mPositionY - mRadius;
 
-		bottomXPos = mCenter->mPositionX + mRadius;
-		bottomYPos = mCenter->mPositionY + mRadius;
+		boundingRec->mBottomPoint->mPositionX = mCenter->mPositionX + mRadius;
+		boundingRec->mBottomPoint->mPositionY = mCenter->mPositionY + mRadius;
 	}
 
 	/// <summary> Is point on line. </summary>
@@ -2012,15 +2012,15 @@ namespace Geometry2D
 		Point<T>* point3 = movePointByVector(*pLineVector, *mPoint1);
 		point3->movePointByVector(*pNormVector);
 
-		topXPos = std::min(mPoint1->mPositionX, mPoint2->mPositionX);
-		topXPos = std::min(topXPos, point3->mPositionX);
-		topYPos = std::min(mPoint1->mPositionY, mPoint2->mPositionY);
-		topYPos = std::min(topYPos, point3->mPositionY);
+		boundingRec->mTopPoint->mPositionX = std::min(mPoint1->mPositionX, mPoint2->mPositionX);
+		boundingRec->mTopPoint->mPositionX = std::min(boundingRec->mTopPoint->mPositionX, point3->mPositionX);
+		boundingRec->mTopPoint->mPositionY = std::min(mPoint1->mPositionY, mPoint2->mPositionY);
+		boundingRec->mTopPoint->mPositionY = std::min(boundingRec->mTopPoint->mPositionY, point3->mPositionY);
 
-		bottomXPos = std::max(mPoint1->mPositionX, mPoint2->mPositionX);
-		bottomXPos = std::max(topXPos, point3->mPositionX);
-		bottomYPos = std::max(mPoint1->mPositionY, mPoint2->mPositionY);
-		bottomYPos = std::max(topYPos, point3->mPositionY);
+		boundingRec->mBottomPoint->mPositionX = std::max(mPoint1->mPositionX, mPoint2->mPositionX);
+		boundingRec->mBottomPoint->mPositionX = std::max(boundingRec->mBottomPoint->mPositionX, point3->mPositionX);
+		boundingRec->mBottomPoint->mPositionY = std::max(mPoint1->mPositionY, mPoint2->mPositionY);
+		boundingRec->mBottomPoint->mPositionY = std::max(boundingRec->mBottomPoint->mPositionY, point3->mPositionY);
 		
 
 		delete point3;
@@ -2365,10 +2365,10 @@ namespace Geometry2D
 		current = current->mNext;
 		while (current != nullptr) {
 			currentPoint = current->getPoint1();
-			topXPos = std::min(topXPos, currentPoint->mPositionX);
-			topYPos = std::min(topYPos, currentPoint->mPositionY);
-			bottomXPos = std::max(topXPos, currentPoint->mPositionX);
-			bottomYPos = std::max(topYPos, currentPoint->mPositionY);
+			boundingRec->mTopPoint->mPositionX = std::min(boundingRec->mTopPoint->mPositionX, currentPoint->mPositionX);
+			boundingRec->mTopPoint->mPositionY = std::min(boundingRec->mTopPoint->mPositionY, currentPoint->mPositionY);
+			boundingRec->mBottomPoint->mPositionX = std::max(boundingRec->mBottomPoint->mPositionX, currentPoint->mPositionX);
+			boundingRec->mBottomPoint->mPositionY = std::max(boundingRec->mBottomPoint->mPositionY, currentPoint->mPositionY);
 			current = current->mNext;
 		}
 	}
@@ -2421,10 +2421,10 @@ namespace Geometry2D
 		current = current->mNext;
 		do {
 			currentPoint = current->getPoint1();
-			topXPos = std::min(topXPos, currentPoint->mPositionX);
-			topYPos = std::min(topYPos, currentPoint->mPositionY);
-			bottomXPos = std::max(topXPos, currentPoint->mPositionX);
-			bottomYPos = std::max(topYPos, currentPoint->mPositionY);
+			boundingRec->mTopPoint->mPositionX = std::min(boundingRec->mTopPoint->mPositionX, currentPoint->mPositionX);
+			boundingRec->mTopPoint->mPositionY = std::min(boundingRec->mTopPoint->mPositionY, currentPoint->mPositionY);
+			boundingRec->mBottomPoint->mPositionX = std::max(boundingRec->mBottomPoint->mPositionX, currentPoint->mPositionX);
+			boundingRec->mBottomPoint->mPositionY = std::max(boundingRec->mBottomPoint->mPositionY, currentPoint->mPositionY);
 			current = current->mNext;
 		} while (current != mLast);
 	}
