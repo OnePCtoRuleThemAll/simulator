@@ -474,7 +474,7 @@ namespace Geometry2D
 	inline Line<T>& Line<T>::operator=(Line<T>&& other)
 	{
 		mPoint1 = other.mPoint1;
-		mPoint2 - other.mPoint2;
+		mPoint2 = other.mPoint2;
 		other.mPoint1 = nullptr;
 		other.mPoint2 = nullptr;
 		return *this;

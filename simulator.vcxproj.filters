@@ -169,6 +169,9 @@
     <ClInclude Include="Point.h">
       <Filter>Geometry\Header files</Filter>
     </ClInclude>
+    <ClInclude Include="Rectangle.h">
+      <Filter>Geometry\Header files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="Dependencies\GLFW\32bit\lib-vc2022\glfw3.lib">
