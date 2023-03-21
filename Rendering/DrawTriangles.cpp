@@ -43,15 +43,15 @@ void DrawTriangles::setupData()
 
 void DrawTriangles::addVertex(const float position)
 {
-	this->positions[this->indexOfCurrentLastVertex + 1] = position;
-	this->indexOfCurrentLastVertex++;
+	this->positions[this->indexBehindLastVertex] = position;
+	this->indexBehindLastVertex++;
 	this->indicies[this->currentLastPoint] = this->currentLastPoint;
 	this->currentLastPoint++;
 }
 
 int DrawTriangles::getIndexOfCurrentLastVertex()
 {
-	return this->indexOfCurrentLastVertex;
+	return this->indexBehindLastVertex;
 }
 
 void DrawTriangles::addActiveObject()

@@ -15,7 +15,7 @@ public:
 protected:
 	static const int maxNumberOfVerticies = 60000;
 	float positions[maxNumberOfVerticies];
-	int indexOfCurrentLastVertex = -1;
+	int indexBehindLastVertex = 0;
 	unsigned int indicies[maxNumberOfVerticies / 2];
 	int currentLastPoint = 0;
 	int numberOfActiveObjects = 0;
