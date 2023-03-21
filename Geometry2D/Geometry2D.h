@@ -118,6 +118,8 @@ namespace Geometry2D
 		/// <param name = "angle"> Angle in radians. </param>
 		void rotateVectorByAngle(double angle);
 
+		void normalize();
+
 		/// <summary> Is point on line. </summary>
 		/// <param name="point"> Point. </param>
 		/// <returns>True if point lies on line. </returns>
@@ -311,6 +313,16 @@ namespace Geometry2D
 		T deltaX = mDeltaX;
 		mDeltaX = (T)(deltaX * cos(angle) - mDeltaY * sin(angle));
 		mDeltaY = (T)(deltaX * sin(angle) + mDeltaY * cos(angle));
+	}
+
+	template<typename T>
+	inline void Vector<T>::normalize()
+	{
+		double size = sizeOfVector();
+		if (size > 0) {
+			mDeltaX /= size;
+			mDeltaY /= size;
+		}
 	}
 
 	template<typename T>
@@ -2011,6 +2023,7 @@ namespace Geometry2D
 
 		Point<T>* point3 = movePointByVector(*pLineVector, *mPoint1);
 		point3->movePointByVector(*pNormVector);
+		
 
 		boundingRec->mTopPoint->mPositionX = std::min(mPoint1->mPositionX, mPoint2->mPositionX);
 		boundingRec->mTopPoint->mPositionX = std::min(boundingRec->mTopPoint->mPositionX, point3->mPositionX);
@@ -2357,10 +2370,10 @@ namespace Geometry2D
 		Point<T>* currentPoint;
 		currentPoint = current->getPoint1();
 		if (currentPoint != nullptr) {
-			topXPos = currentPoint->mPositionX;
-			bottomXPos = currentPoint->mPositionX;
-			topYPos = currentPoint->mPositionY;
-			bottomYPos = currentPoint->mPositionY;
+			boundingRec->mTopPoint->mPositionX = currentPoint->mPositionX;
+			boundingRec->mBottomPoint->mPositionX = currentPoint->mPositionX;
+			boundingRec->mTopPoint->mPositionY = currentPoint->mPositionY;
+			boundingRec->mBottomPoint->mPositionY = currentPoint->mPositionY;
 		}
 		current = current->mNext;
 		while (current != nullptr) {
@@ -2413,10 +2426,10 @@ namespace Geometry2D
 		Point<T>* currentPoint;
 		currentPoint = current->getPoint1();
 		if (currentPoint != nullptr) {
-			topXPos = currentPoint->mPositionX;
-			bottomXPos = currentPoint->mPositionX;
-			topYPos = currentPoint->mPositionY;
-			bottomYPos = currentPoint->mPositionY;
+			boundingRec->mTopPoint->mPositionX = currentPoint->mPositionX;
+			boundingRec->mBottomPoint->mPositionX = currentPoint->mPositionX;
+			boundingRec->mTopPoint->mPositionY = currentPoint->mPositionY;
+			boundingRec->mBottomPoint->mPositionY = currentPoint->mPositionY;
 		}
 		current = current->mNext;
 		do {

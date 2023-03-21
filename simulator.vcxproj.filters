@@ -110,6 +110,9 @@
       <Filter>ui\Source files</Filter>
     </ClCompile>
     <ClCompile Include="tests\testGeometry\testGeometry.cpp" />
+    <ClCompile Include="BehaviorBoid.cpp">
+      <Filter>Geometry\Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Geometry2D\Geometry2D.h">
@@ -170,6 +173,12 @@
       <Filter>Geometry\Header files</Filter>
     </ClInclude>
     <ClInclude Include="Rectangle.h">
+      <Filter>Geometry\Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Behavior.h">
+      <Filter>Geometry\Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorBoid.h">
       <Filter>Geometry\Header files</Filter>
     </ClInclude>
   </ItemGroup>

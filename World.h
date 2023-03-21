@@ -93,10 +93,10 @@ inline bool World::remove(Agent* pAgent)
 
 inline std::list<Agent*>* World::search(Agent* pAgent, Geometry2D::GeomteryBase* form)
 {
-	Geometry2D::MyFloat topX = (mPointTop->mPositionX < form->topXPos) ? form->topXPos : mPointTop->mPositionX;
-	Geometry2D::MyFloat topY = (mPointTop->mPositionY < form->topYPos) ? form->topYPos : mPointTop->mPositionY;
-	Geometry2D::MyFloat bottomX = (mPointTop->mPositionX > form->topXPos) ? form->topXPos : mPointTop->mPositionX;
-	Geometry2D::MyFloat bottomY = (mPointTop->mPositionY > form->topYPos) ? form->topYPos : mPointTop->mPositionY;
+	Geometry2D::MyFloat topX = (mPointTop->mPositionX < form->boundingRec->mTopPoint->mPositionX) ? form->boundingRec->mTopPoint->mPositionX : mPointTop->mPositionX;
+	Geometry2D::MyFloat topY = (mPointTop->mPositionY < form->boundingRec->mTopPoint->mPositionX) ? form->boundingRec->mTopPoint->mPositionY : mPointTop->mPositionY;
+	Geometry2D::MyFloat bottomX = (mPointTop->mPositionX > form->boundingRec->mBottomPoint->mPositionX) ? form->boundingRec->mBottomPoint->mPositionX : mPointTop->mPositionX;
+	Geometry2D::MyFloat bottomY = (mPointTop->mPositionY > form->boundingRec->mBottomPoint->mPositionY) ? form->boundingRec->mBottomPoint->mPositionY : mPointTop->mPositionY;
 	std::list<Agent*>* list;
 
 	int point1Order = mapping(topX, topY);
@@ -107,7 +107,9 @@ inline std::list<Agent*>* World::search(Agent* pAgent, Geometry2D::GeomteryBase*
 		for (int j = i; j <= point2Order; j++) {
 			for (Agent* agent : *(matrix->at(j))) {
 				if (form->isPointIn(*agent->getPosition())) {
-					list->push_back(agent);
+					if (agent != pAgent) {
+						list->push_back(agent);
+					}
 				}
 			}
 		}
