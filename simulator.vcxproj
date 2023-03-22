@@ -142,6 +142,7 @@
     <ClCompile Include="BehaviorBoid.cpp" />
     <ClCompile Include="Geometry2D\GeometryBase.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Simulation.cpp" />
     <ClCompile Include="tests\test.cpp" />
     <ClCompile Include="tests\testGeometry\testGeometry.cpp" />
     <ClCompile Include="ui\console.cpp" />
@@ -166,6 +167,7 @@
     <ClInclude Include="Point.h" />
     <ClInclude Include="PolySegment.h" />
     <ClInclude Include="Rectangle.h" />
+    <ClInclude Include="Simulation.h" />
     <ClInclude Include="tests\test.h" />
     <ClInclude Include="tests\testGeometry\testGeometry.h" />
     <ClInclude Include="types.h" />

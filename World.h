@@ -10,7 +10,7 @@ public:
 	/// <summary>Parameterized constructor. </summary>
 	/// <param name = "point1"> Top left corner of the world. </param>
 	/// <param name = "point1"> Bottom right corner of the world. </param>
-	/// <param name = "devider"> Number used to determin to how many blocks we want devide world. </param>
+	/// <param name = "granulate"> Number used to determin to how many blocks we want devide world. </param>
 	World(const Geometry2D::MyPoint& point1, const Geometry2D::MyPoint& point2, float granulate);
 
 	/// <summary>Destructor. </summary>
@@ -23,6 +23,8 @@ public:
 	std::list<Agent*>* search(Agent* pAgent, Geometry2D::GeomteryBase* form);
 
 	void update(Agent* pAgent);
+
+	void runWorld();
 
 	Geometry2D::MyPoint* getTopPoint();
 
@@ -142,6 +144,21 @@ inline void World::update(Agent* pAgent)
 	}
 	
 
+}
+
+inline void World::runWorld()
+{
+	for (int i = 0; i < matrix->size(); i ++) {
+		for (Agent* agent : *(matrix->at(i))) {
+			agent->act();
+		}
+	}
+
+	for (int i = 0; i < matrix->size(); i++) {
+		for (Agent* agent : *(matrix->at(i))) {
+			update(agent);
+		}
+	}
 }
 
 inline Geometry2D::MyPoint* World::getTopPoint()
