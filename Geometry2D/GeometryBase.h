@@ -34,7 +34,7 @@ namespace Geometry2D
 		template<typename T>
 		bool isPointIn(const Point<T>& point);
 
-		MyRectangle* boundingRec;
+		Rectangle<float>* boundingRec;
 	};
 
 	template<typename T>

@@ -2,8 +2,10 @@
 
 #include "../Geometry2D/GeometryBase.h"
 #include <cmath> 
+#include <algorithm>
 #include <float.h>
 #include "../Point.h"
+
 
 namespace Geometry2D
 {
@@ -2024,7 +2026,6 @@ namespace Geometry2D
 		Point<T>* point3 = movePointByVector(*pLineVector, *mPoint1);
 		point3->movePointByVector(*pNormVector);
 		
-
 		boundingRec->mTopPoint->mPositionX = std::min(mPoint1->mPositionX, mPoint2->mPositionX);
 		boundingRec->mTopPoint->mPositionX = std::min(boundingRec->mTopPoint->mPositionX, point3->mPositionX);
 		boundingRec->mTopPoint->mPositionY = std::min(mPoint1->mPositionY, mPoint2->mPositionY);
