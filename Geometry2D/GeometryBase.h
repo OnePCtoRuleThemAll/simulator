@@ -1,5 +1,4 @@
 #pragma once
-#include "../Point.h"
 #include "../Rectangle.h"
 
 namespace Geometry2D
@@ -8,6 +7,8 @@ namespace Geometry2D
 	class GeomteryBase 
 	{
 	public:
+		using MyFloat = float;
+
 		/// <summary> Destruktor. </summary>
 		virtual ~GeomteryBase();
 
@@ -31,17 +32,8 @@ namespace Geometry2D
 		/// <returns>True if objects are equal. </returns>
 		virtual bool equals(const GeomteryBase& other) = 0;
 
-		template<typename T>
-		bool isPointIn(const Point<T>& point);
+		virtual bool isPointIn(const Point<MyFloat>& point) = 0;
 
-		Rectangle<float>* boundingRec;
+		Rectangle<MyFloat>* boundingRec;
 	};
-
-	template<typename T>
-	inline bool GeomteryBase::isPointIn(const Point<T>& point)
-	{
-		return false;
-	}
-
-	using MyRectangle = Rectangle<MyFloat>;
 }

@@ -44,9 +44,9 @@ public:
 
 	void setDirection(Geometry2D::MyVector& direction);
 
-	World* getWorld();
+	//World* getWorld();
 
-	void setWorld(World* world);
+	//void setWorld(World* world);
 
 private:
 	Geometry2D::MyPoint* mPosition;
@@ -105,12 +105,12 @@ inline void Agent::setDirection(Geometry2D::MyVector& direction)
 	this->mDirection->assign(direction);
 }
 
-inline World* Agent::getWorld()
-{
-	return mWorld;
-}
-
-inline void Agent::setWorld(World* world)
-{
-	mWorld = world;
-}
+//inline World* Agent::getWorld()
+//{
+//	return mWorld;
+//}
+//
+//inline void Agent::setWorld(World* world)
+//{
+//	mWorld = world;
+//}

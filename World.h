@@ -2,6 +2,7 @@
 #include <list>
 #include <vector>
 #include "Agent.h"
+#include "Obstacle.h"
 #include "Geometry2D/GeometryBase.h"
 
 class World
@@ -29,6 +30,7 @@ public:
 	Geometry2D::MyPoint* getTopPoint();
 
 	Geometry2D::MyPoint* getBottomPoint();
+
 private:
 	std::vector<std::list<Agent*>*>* matrix;
 
@@ -40,7 +42,7 @@ private:
 	
 	unsigned int mMatrixRows;
 
-	unsigned int mapping(Geometry2D::MyFloat posX, Geometry2D::MyFloat posY);
+	unsigned int mapping(Geometry2D::GeomteryBase::MyFloat posX, Geometry2D::GeomteryBase::MyFloat posY);
 };
 
 inline World::World(const Geometry2D::MyPoint& point1,const Geometry2D::MyPoint& point2, float granulate) :
@@ -95,10 +97,10 @@ inline bool World::remove(Agent* pAgent)
 
 inline std::list<Agent*>* World::search(Agent* pAgent, Geometry2D::GeomteryBase* form)
 {
-	Geometry2D::MyFloat topX = (mPointTop->mPositionX < form->boundingRec->mTopPoint->mPositionX) ? form->boundingRec->mTopPoint->mPositionX : mPointTop->mPositionX;
-	Geometry2D::MyFloat topY = (mPointTop->mPositionY < form->boundingRec->mTopPoint->mPositionX) ? form->boundingRec->mTopPoint->mPositionY : mPointTop->mPositionY;
-	Geometry2D::MyFloat bottomX = (mPointTop->mPositionX > form->boundingRec->mBottomPoint->mPositionX) ? form->boundingRec->mBottomPoint->mPositionX : mPointTop->mPositionX;
-	Geometry2D::MyFloat bottomY = (mPointTop->mPositionY > form->boundingRec->mBottomPoint->mPositionY) ? form->boundingRec->mBottomPoint->mPositionY : mPointTop->mPositionY;
+	Geometry2D::GeomteryBase::MyFloat topX = (mPointTop->mPositionX < form->boundingRec->mTopPoint->mPositionX) ? form->boundingRec->mTopPoint->mPositionX : mPointTop->mPositionX;
+	Geometry2D::GeomteryBase::MyFloat topY = (mPointTop->mPositionY < form->boundingRec->mTopPoint->mPositionX) ? form->boundingRec->mTopPoint->mPositionY : mPointTop->mPositionY;
+	Geometry2D::GeomteryBase::MyFloat bottomX = (mPointTop->mPositionX > form->boundingRec->mBottomPoint->mPositionX) ? form->boundingRec->mBottomPoint->mPositionX : mPointTop->mPositionX;
+	Geometry2D::GeomteryBase::MyFloat bottomY = (mPointTop->mPositionY > form->boundingRec->mBottomPoint->mPositionY) ? form->boundingRec->mBottomPoint->mPositionY : mPointTop->mPositionY;
 	std::list<Agent*>* list;
 
 	int point1Order = mapping(topX, topY);
@@ -171,7 +173,7 @@ inline Geometry2D::MyPoint* World::getBottomPoint()
 	return mPointBottom;
 }
 
-inline unsigned int World::mapping(Geometry2D::MyFloat posX, Geometry2D::MyFloat posY)
+inline unsigned int World::mapping(Geometry2D::GeomteryBase::MyFloat posX, Geometry2D::GeomteryBase::MyFloat posY)
 {
 	unsigned int columns = 0;
 	unsigned int rows = 0;

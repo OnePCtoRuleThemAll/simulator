@@ -119,9 +119,6 @@
       <Filter>ui\Source files</Filter>
     </ClCompile>
     <ClCompile Include="tests\testGeometry\testGeometry.cpp" />
-    <ClCompile Include="BehaviorBoid.cpp">
-      <Filter>Agent\Source files</Filter>
-    </ClCompile>
     <ClCompile Include="Simulation.cpp">
       <Filter>Simulation\Source files</Filter>
     </ClCompile>
@@ -174,11 +171,8 @@
     <ClInclude Include="Dependencies\glew-2.1.0\include\GL\wglew.h">
       <Filter>Dependencies\glew-2.1.0\include\GL</Filter>
     </ClInclude>
-    <ClInclude Include="Agent.h">
-      <Filter>Agent\Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="World.h">
-      <Filter>World</Filter>
+    <ClInclude Include="PolySegment.h">
+      <Filter>Geometry\Header files</Filter>
     </ClInclude>
     <ClInclude Include="Point.h">
       <Filter>Geometry\Header files</Filter>
@@ -186,14 +180,11 @@
     <ClInclude Include="Rectangle.h">
       <Filter>Geometry\Header files</Filter>
     </ClInclude>
-    <ClInclude Include="Behavior.h">
+    <ClInclude Include="Agent.h">
       <Filter>Agent\Header files</Filter>
     </ClInclude>
-    <ClInclude Include="BehaviorBoid.h">
-      <Filter>Agent\Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="PolySegment.h">
-      <Filter>Geometry\Header files</Filter>
+    <ClInclude Include="World.h">
+      <Filter>World</Filter>
     </ClInclude>
     <ClInclude Include="Simulation.h">
       <Filter>Simulation\Header files</Filter>

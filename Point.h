@@ -1,5 +1,4 @@
 #pragma once
-#include "Geometry2D/Geometry2D.h"
 
 namespace Geometry2D
 {
@@ -39,10 +38,6 @@ namespace Geometry2D
 		/// <returns> Adress of the object. </returns>
 		Point<T>& operator=(Point<T>&& other);
 
-		/// <summary> Assign of object. </summary>
-		/// <param name = "other"> Source objcet of taken properties. </param>
-		/// <returns> Adress of the object. </returns>
-		Point<T>& assign(const Point<T>& other);
 
 		/// <summary> Objcet equality. </summary>
 		/// <param name="other">Object to compare with. </param>
@@ -55,14 +50,9 @@ namespace Geometry2D
 		/// <summary> Postion Y of point. </summary>
 		T mPositionY;
 
-		/// <summary>Move point by vector. </summary>
+		/*/// <summary>Move point by vector. </summary>
 		/// <param name = "vector"> Vector. </param>
-		void movePointByVector(const Vector<T>& vector);
-
-		/// <summary> Is point on line. </summary>
-		/// <param name="point"> Point. </param>
-		/// <returns>True if point lies on line. </returns>
-		bool isPointIn(const Point<T>& point) override;
+		void moveByVector(const Vector<T>& vector);*/
 	};
 
 	template<typename T>
@@ -123,17 +113,6 @@ namespace Geometry2D
 		return *this;
 	}
 
-	template<typename T>
-	inline Point<T>& Point<T>::assign(const Point<T>& other)
-	{
-		if (this != &other)
-		{
-			mPositionX = other.mPositionX;
-			mPositionY = other.mPositionY;
-		}
-
-		return *this;
-	}
 
 	template<typename T>
 	inline bool Point<T>::equals(const Point<T>& other)
@@ -150,18 +129,13 @@ namespace Geometry2D
 		return false;
 	}
 
-	
 
-	template<typename T>
-	inline void Point<T>::movePointByVector(const Vector<T>& vector)
+
+	/*template<typename T>
+	inline void Point<T>::moveByVector(const Vector<T>& vector)
 	{
 		mPositionX += vector.mDeltaX;
 		mPositionY += vector.mDeltaY;
-	}
+	}*/
 
-	template<typename T>
-	inline bool Point<T>::isPointIn(const Point<T>& point)
-	{
-		return this->equals(point);
-	}
 }
