@@ -535,8 +535,8 @@ namespace Geometry2D
 	template<typename T>
 	inline bool Line<T>::isPointIn(const Point<GeomteryBase::MyFloat>& point)
 	{
-		//return this->distancetoPoint(point) == 0;
-		return false;
+		const Point<T>* pPoint = new Point<T>((T)point.mPositionX, (T)point.mPositionY);
+		return this->distancetoPoint(*pPoint) == 0;
 	}
 
 	template<typename T>
