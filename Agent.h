@@ -3,6 +3,7 @@
 #include "Geometry2D/Geometry2D.h"
 #include "World.h"
 
+class World;
 /// <summary> Abstract parent class of all agents. </summary>
 class Agent
 {
@@ -44,9 +45,9 @@ public:
 
 	void setDirection(Geometry2D::MyVector& direction);
 
-	//World* getWorld();
+	World* getWorld();
 
-	//void setWorld(World* world);
+	void setWorld(World* world);
 
 private:
 	Geometry2D::MyPoint* mPosition;
@@ -57,60 +58,3 @@ private:
 
 	World* mWorld;
 };
-
-inline Agent::~Agent()
-{
-	delete this->mPosition;
-	delete this->mDirection;
-	delete this->mOldPosition;
-
-	this->mPosition = nullptr;
-	this->mDirection = nullptr;
-	this->mOldPosition = nullptr;
-}
-
-inline Agent& Agent::operator=(const Agent& other)
-{
-	return this->assign(other);
-}
-
-inline bool Agent::operator==(const Agent& other)
-{
-	return this->equals(other);;
-}
-
-inline void Agent::moveTo(Geometry2D::MyPoint& newPosition)
-{
-	this->mOldPosition->assign(*mPosition);
-	this->mPosition->assign(newPosition);
-}
-
-inline Geometry2D::MyPoint* Agent::getPosition()
-{
-	return this->mPosition;
-}
-
-inline Geometry2D::MyPoint* Agent::getOldPosition()
-{
-	return mOldPosition;
-}
-
-inline Geometry2D::MyVector* Agent::getDirection()
-{
-	return this->mDirection;
-}
-
-inline void Agent::setDirection(Geometry2D::MyVector& direction)
-{
-	this->mDirection->assign(direction);
-}
-
-//inline World* Agent::getWorld()
-//{
-//	return mWorld;
-//}
-//
-//inline void Agent::setWorld(World* world)
-//{
-//	mWorld = world;
-//}

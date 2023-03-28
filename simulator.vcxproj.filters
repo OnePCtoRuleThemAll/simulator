@@ -97,6 +97,12 @@
     <Filter Include="Simulation\Source files">
       <UniqueIdentifier>{3a9fcfcd-dbc7-4382-9ecb-cba8fd5d4a8f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="World\Header files">
+      <UniqueIdentifier>{8e9284f0-a969-48a1-8998-4d14aa2acfcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="World\Soruce files">
+      <UniqueIdentifier>{0edafa74-d54c-492e-b1e8-239a8114a76b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -121,6 +127,12 @@
     <ClCompile Include="tests\testGeometry\testGeometry.cpp" />
     <ClCompile Include="Simulation.cpp">
       <Filter>Simulation\Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Agent.cpp">
+      <Filter>Agent\Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="World.cpp">
+      <Filter>World\Soruce files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -183,11 +195,11 @@
     <ClInclude Include="Agent.h">
       <Filter>Agent\Header files</Filter>
     </ClInclude>
-    <ClInclude Include="World.h">
-      <Filter>World</Filter>
-    </ClInclude>
     <ClInclude Include="Simulation.h">
       <Filter>Simulation\Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="World.h">
+      <Filter>World\Header files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

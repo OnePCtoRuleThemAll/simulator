@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Agent.cpp" />
     <ClCompile Include="Geometry2D\GeometryBase.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Simulation.cpp" />
@@ -146,6 +147,7 @@
     <ClCompile Include="tests\testGeometry\testGeometry.cpp" />
     <ClCompile Include="ui\console.cpp" />
     <ClCompile Include="ui\ui_keeper.cpp" />
+    <ClCompile Include="World.cpp" />
     <ClCompile Include="_logger\file_log_consumer.cpp" />
     <ClCompile Include="_logger\logger.cpp" />
   </ItemGroup>
