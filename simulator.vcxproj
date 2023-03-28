@@ -139,16 +139,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Agent.cpp" />
+    <ClCompile Include="BehaviorBoid.cpp" />
     <ClCompile Include="Geometry2D\GeometryBase.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Obstacle.cpp" />
+    <ClCompile Include="Simulation.cpp" />
     <ClCompile Include="tests\test.cpp" />
     <ClCompile Include="tests\testGeometry\testGeometry.cpp" />
     <ClCompile Include="ui\console.cpp" />
     <ClCompile Include="ui\ui_keeper.cpp" />
+    <ClCompile Include="World.cpp" />
     <ClCompile Include="_logger\file_log_consumer.cpp" />
     <ClCompile Include="_logger\logger.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Agent.h" />
+    <ClInclude Include="Behavior.h" />
+    <ClInclude Include="BehaviorBoid.h" />
     <ClInclude Include="Dependencies\glew-2.1.0\include\GL\eglew.h" />
     <ClInclude Include="Dependencies\glew-2.1.0\include\GL\glew.h" />
     <ClInclude Include="Dependencies\glew-2.1.0\include\GL\glxew.h" />
@@ -159,12 +167,16 @@
     <ClInclude Include="Dependencies\GLFW\64bit\include\GLFW\glfw3native.h" />
     <ClInclude Include="Geometry2D\Geometry2D.h" />
     <ClInclude Include="Geometry2D\GeometryBase.h" />
-    <ClInclude Include="PolySegment.h" />
+    <ClInclude Include="Obstacle.h" />
+    <ClInclude Include="Point.h" />
+    <ClInclude Include="Rectangle.h" />
+    <ClInclude Include="Simulation.h" />
     <ClInclude Include="tests\test.h" />
     <ClInclude Include="tests\testGeometry\testGeometry.h" />
     <ClInclude Include="types.h" />
     <ClInclude Include="ui\console.h" />
     <ClInclude Include="ui\ui_keeper.h" />
+    <ClInclude Include="World.h" />
     <ClInclude Include="_logger\file_log_consumer.h" />
     <ClInclude Include="_logger\logger.h" />
   </ItemGroup>
