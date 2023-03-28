@@ -100,6 +100,24 @@
     <Filter Include="Resources\Shaders">
       <UniqueIdentifier>{7deb8466-d6df-4180-b976-8af21a3acb42}</UniqueIdentifier>
     </Filter>
+    <Filter Include="World">
+      <UniqueIdentifier>{60920157-c695-495a-8d62-fe0e8d65920f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Simulation">
+      <UniqueIdentifier>{f034eb82-500c-4bb5-83e5-ab574753f136}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Simulation\Header files">
+      <UniqueIdentifier>{7d7b75c8-e21e-4eca-92a1-c5e57bc4f0cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Simulation\Source files">
+      <UniqueIdentifier>{3a9fcfcd-dbc7-4382-9ecb-cba8fd5d4a8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="World\Header files">
+      <UniqueIdentifier>{8e9284f0-a969-48a1-8998-4d14aa2acfcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="World\Soruce files">
+      <UniqueIdentifier>{0edafa74-d54c-492e-b1e8-239a8114a76b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -127,6 +145,21 @@
     </ClCompile>
     <ClCompile Include="Rendering\DrawTriangles.cpp">
       <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation.cpp">
+      <Filter>Simulation\Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Agent.cpp">
+      <Filter>Agent\Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="World.cpp">
+      <Filter>World\Soruce files</Filter>
+    </ClCompile>
+    <ClCompile Include="Obstacle.cpp">
+      <Filter>World\Soruce files</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorBoid.cpp">
+      <Filter>Agent\Source files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -192,6 +225,30 @@
     </ClInclude>
     <ClInclude Include="Rendering\DrawTriangles.h">
       <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Point.h">
+      <Filter>Geometry\Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rectangle.h">
+      <Filter>Geometry\Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Agent.h">
+      <Filter>Agent\Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation.h">
+      <Filter>Simulation\Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="World.h">
+      <Filter>World\Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Obstacle.h">
+      <Filter>World\Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Behavior.h">
+      <Filter>Agent\Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorBoid.h">
+      <Filter>Agent\Header files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

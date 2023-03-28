@@ -3,17 +3,17 @@
 
 namespace Geometry2D
 {
-	/*/// <summary> Abstract parent class of segments of Polyline and Polygon. </summary>
+	/// <summary> Abstract parent class of segments of Polyline and Polygon. </summary>
 	template<typename T>
 	class PolySegment
 	{
 	public:
 
-		bool isPointOn(const Point<T>& point);
+		virtual bool isPointOn(const Point<T>& point) = 0;
 
-		double distancetoPoint(const Point<T>& point);
+		virtual double distancetoPoint(const Point<T>& point) = 0;
 
-		void moveByVector(const Vector<T>& vector);
+		virtual void moveByVector(const Vector<T>& vector) = 0;
 
-	};*/
+	};
 }

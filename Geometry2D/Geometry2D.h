@@ -2,7 +2,10 @@
 
 #include "../Geometry2D/GeometryBase.h"
 #include <cmath> 
+#include <algorithm>
 #include <float.h>
+#include "../Point.h"
+
 
 namespace Geometry2D
 {
@@ -11,162 +14,12 @@ namespace Geometry2D
 
 #pragma region Point
 
-	/// <summary> Struct representing point. </summary>
-	/// <typeparam name = "T"> Data type to compute with. </typepram>
-	template<typename T>
-	struct Point
-		: GeomteryBase
-	{
-		/// <summary> Constructor. </summary>
-		Point();
-
-		/// <summary>Parameterized constructor. </summary>
-		/// <param name = "positionX"> Position X of point. </param>
-		/// /// <param name = "positionY"> Position Y of point. </param>
-		Point(T positionX, T positionY);
-
-		/// <summary>Copy constructor. </summary>
-		/// <param name = "other"> Source objcet of taken properties. </param>
-		Point(const Point<T>& other);
-
-
-		/// <summary>Move constructor. </summary>
-		/// <param name = "other"> Source objcet of taken properties. </param>
-		Point(Point<T>&& other);
-
-		/// <summary>Destructor. </summary>
-		~Point();
-
-		/// <summary> Assign of object. </summary>
-		/// <param name = "other"> Source objcet of taken properties. </param>
-		/// <returns> Adress of the object. </returns>
-		GeomteryBase& assign(const GeomteryBase& other) override;
-
-		/// <summary> Move assign of object. </summary>
-		/// <param name = "other"> Source objcet of taken properties. </param>
-		/// <returns> Adress of the object. </returns>
-		Point<T>& operator=(Point<T>&& other);
-
-		/// <summary> Assign of object. </summary>
-		/// <param name = "other"> Source objcet of taken properties. </param>
-		/// <returns> Adress of the object. </returns>
-		Point<T>& assign(const Point<T>& other);
-
-		/// <summary> Objcet equality. </summary>
-		/// <param name="other">Object to compare with. </param>
-		/// <returns>True if objects are equal both in types and in values. </returns>
-		bool equals(const GeomteryBase& other) override;
-
-		/// <summary> Postion X of point. </summary>
-		T mPositionX;
-
-		/// <summary> Postion Y of point. </summary>
-		T mPositionY;
-
-		/// <summary>Move point by vector. </summary>
-		/// <param name = "vector"> Vector. </param>
-		void movePointByVector(const Vector<T>& vector);
-	};
-
-	template<typename T>
-	inline Point<T>::Point() :
-		mPositionX(0),
-		mPositionY(0)
-	{
-	}
-
-	template<typename T>
-	inline Point<T>::Point(T positionX, T positionY) :
-		mPositionX(positionX),
-		mPositionY(positionY)
-	{
-	}
-
-	template<typename T>
-	inline Point<T>::Point(const Point<T>& other) :
-		mPositionX(other.mPositionX),
-		mPositionY(other.mPositionY)
-	{
-	}
-
-	template<typename T>
-	inline Point<T>::Point(Point<T>&& other) :
-		mPositionX(other.mPositionX),
-		mPositionY(other.mPositionY)
-	{
-	}
-
-	template<typename T>
-	inline Point<T>::~Point()
-	{
-		mPositionX = 0;
-		mPositionY = 0;
-	}
-
-	template<typename T>
-	inline GeomteryBase& Point<T>::assign(const GeomteryBase& other)
-	{
-		if (this != &other)
-		{
-			const Point<T>& otherPoint = static_cast<const Point<T>&>(other);
-			mPositionX = otherPoint.mPositionX;
-			mPositionY = otherPoint.mPositionY;
-		}
-
-		return *this;
-	}
-
-	template<typename T>
-	inline Point<T>& Point<T>::operator=(Point<T>&& other)
-	{
-		mPositionX = other.mPositionX;
-		mPositionY = other.mPositionY;
-		other.mPositionX = 0;
-		other.mPositionY = 0;
-		return *this;
-	}
-
-	template<typename T>
-	inline Point<T>& Point<T>::assign(const Point<T>& other)
-	{
-		if (this != &other)
-		{
-			mPositionX = other.mPositionX;
-			mPositionY = other.mPositionY;
-		}
-
-		return *this;
-	}
-
-	template<typename T>
-	inline bool Point<T>::equals(const GeomteryBase& other)
-	{
-		if (this == &other) {
-			return true;
-		}
-		else {
-			const Point<T>* otherPoint = dynamic_cast<const Point<T>*>(&other);
-			if (otherPoint != nullptr && otherPoint->mPositionX == mPositionX && otherPoint->mPositionY == mPositionY) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	template<typename T>
-	inline void Geometry2D::Point<T>::movePointByVector(const Vector<T>& vector)
-	{
-		mPositionX += vector.mDeltaX;
-		mPositionY += vector.mDeltaY;
-	}
-
-
 	/// <summary>Distance between two points. </summary>
 	/// <param name = "point1"> First point. </param>
 	/// <param name = "point2"> Second point. </param>
 	/// <returns> Returns distance between two points. </returns>
 	template<typename T>
-	double distanceBetweenPoints(Point<T>& point1, Point<T>& point2) {
+	float distanceBetweenPoints(const Point<T>& point1, const Point<T>& point2) {
 		return sqrt(pow(point1.mPositionX - point2.mPositionX, 2) + pow(point1.mPositionY - point2.mPositionY, 2));
 	}
 
@@ -266,6 +119,13 @@ namespace Geometry2D
 		/// <param name = "vector"> Vector. </param>
 		/// <param name = "angle"> Angle in radians. </param>
 		void rotateVectorByAngle(double angle);
+
+		void normalize();
+
+		/// <summary> Is point on line. </summary>
+		/// <param name="point"> Point. </param>
+		/// <returns>True if point lies on line. </returns>
+		bool isPointIn(const Point<GeomteryBase::MyFloat>& point) override;
 	};
 
 	template<typename T>
@@ -457,6 +317,22 @@ namespace Geometry2D
 		mDeltaY = (T)(deltaX * sin(angle) + mDeltaY * cos(angle));
 	}
 
+	template<typename T>
+	inline void Vector<T>::normalize()
+	{
+		double size = sizeOfVector();
+		if (size > 0) {
+			mDeltaX /= size;
+			mDeltaY /= size;
+		}
+	}
+
+	template<typename T>
+	inline bool Vector<T>::isPointIn(const Point<GeomteryBase::MyFloat>& point)
+	{
+		return false;
+	}
+
 	/// <summary> Rotate vector by angle. </summary>
 	/// <param name = "vector"> Vector. </param>
 	/// <param name = "degrees"> Angle in radians. </param>
@@ -533,7 +409,7 @@ namespace Geometry2D
 		/// <summary> Is point on line. </summary>
 		/// <param name="point"> Point. </param>
 		/// <returns>True if point lies on line. </returns>
-		bool isPointOnLine(const Point<T>& point);
+		bool isPointIn(const Point<GeomteryBase::MyFloat>& point) override;
 
 		/// <summary> Moves line by vector. </summary>
 		/// <param name="vector"> Vector. </param>
@@ -612,7 +488,7 @@ namespace Geometry2D
 	inline Line<T>& Line<T>::operator=(Line<T>&& other)
 	{
 		mPoint1 = other.mPoint1;
-		mPoint2 - other.mPoint2;
+		mPoint2 = other.mPoint2;
 		other.mPoint1 = nullptr;
 		other.mPoint2 = nullptr;
 		return *this;
@@ -657,9 +533,10 @@ namespace Geometry2D
 	}
 
 	template<typename T>
-	inline bool Line<T>::isPointOnLine(const Point<T>& point)
+	inline bool Line<T>::isPointIn(const Point<GeomteryBase::MyFloat>& point)
 	{
-		return this->distancetoPoint(point) == 0;
+		const Point<T>* pPoint = new Point<T>((T)point.mPositionX, (T)point.mPositionY);
+		return this->distancetoPoint(*pPoint) == 0;
 	}
 
 	template<typename T>
@@ -835,7 +712,7 @@ namespace Geometry2D
 		/// <summary> Is point on line. </summary>
 		/// <param name="point"> Point. </param>
 		/// <returns>True if point lies on line. </returns>
-		bool isPointOn(const Point<T>& point) override;
+		bool isPointIn(const Point<GeomteryBase::MyFloat>& point) override;
 
 		/// <summary> Moves line by vector. </summary>
 		/// <param name="vector"> Vector. </param>
@@ -866,6 +743,8 @@ namespace Geometry2D
 		/// <param name="line"> Line. </param>
 		/// <returns>True if line segment line intersects with line. </returns>
 		bool intersectionWithLine(const Line<T>& line) override;
+
+		void boundingRectangle();
 	};
 
 	template<typename T>
@@ -873,6 +752,7 @@ namespace Geometry2D
 		mPoint1(Point<T>()),
 		mPoint2(Point<T>())
 	{
+		boundingRectangle();
 	}
 
 	template<typename T>
@@ -880,6 +760,7 @@ namespace Geometry2D
 		mPoint1(new Point<T>(point1)),
 		mPoint2(new Point<T>(point2))
 	{
+		boundingRectangle();
 	}
 
 	template<typename T>
@@ -887,6 +768,7 @@ namespace Geometry2D
 		mPoint1(new Point<T>(*(other.mPoint1))),
 		mPoint2(new Point<T>(*(other.mPoint2)))
 	{
+		boundingRectangle();
 	}
 
 	template<typename T>
@@ -894,6 +776,7 @@ namespace Geometry2D
 		mPoint1(other.mPoint1),
 		mPoint2(other.mPoint2)
 	{
+		boundingRectangle();
 		other.mPoint1 = nullptr;
 		other.mPoint2 = nullptr;
 	}
@@ -915,6 +798,7 @@ namespace Geometry2D
 			const Line<T>& otherLine = static_cast<const Line<T>&>(other);
 			mPoint1->assign(*(otherLine.mPoint1));
 			mPoint2->assign(*(otherLine.mPoint2));
+			boundingRectangle();
 		}
 
 		return *this;
@@ -925,6 +809,7 @@ namespace Geometry2D
 	{
 		mPoint1 = other.mPoint1;
 		mPoint2 = other.mPoint2;
+		boundingRectangle();
 		other.mPoint1 = nullptr;
 		other.mPoint2 = nullptr;
 		return *this;
@@ -937,6 +822,7 @@ namespace Geometry2D
 		{
 			mPoint1->assign(*other.mPoint1);
 			mPoint2->assign(*other.mPoint2);
+			boundingRectangle();
 		}
 		return *this;
 	}
@@ -963,7 +849,7 @@ namespace Geometry2D
 	}
 
 	template<typename T>
-	inline bool LineSegment<T>::isPointOn(const Point<T>& point)
+	inline bool LineSegment<T>::isPointIn(const Point<GeomteryBase::MyFloat>& point)
 	{
 		return this->distancetoPoint(point) == 0;
 	}
@@ -1041,9 +927,9 @@ namespace Geometry2D
 		if (orientation1 != orientation2 && orientation3 != orientation4)
 			return true;
 
-		if (orientation1 == 0 && isPointOn(*line1.mPoint1)) return true;
+		if (orientation1 == 0 && isPointIn(*line1.mPoint1)) return true;
 
-		if (orientation2 == 0 && isPointOn(*line1.mPoint2)) return true;
+		if (orientation2 == 0 && isPointIn(*line1.mPoint2)) return true;
 
 		if (orientation3 == 0 && isPointOnLineSegment(line1, *mPoint1)) return true;
 
@@ -1064,6 +950,28 @@ namespace Geometry2D
 		delete pVector1;
 		delete pVector2;
 		return (!(dotProduct1 >= 0 && dotProduct2 >= 0) || (dotProduct1 < 0 && dotProduct2 < 0));
+	}
+
+	template<typename T>
+	inline void LineSegment<T>::boundingRectangle()
+	{
+		if (mPoint1->mPositionX < mPoint2->mPositionX) {
+			boundingRec->mTopPoint->mPositionX = mPoint1->mPositionX;
+			boundingRec->mBottomPoint->mPositionX = mPoint2->mPositionX;
+		}
+		else {
+			boundingRec->mTopPoint->mPositionX = mPoint2->mPositionX;
+			boundingRec->mBottomPoint->mPositionX = mPoint1->mPositionX;
+		}
+
+		if (mPoint1->mPositionY < mPoint2->mPositionY) {
+			boundingRec->mTopPoint->mPositionY = mPoint1->mPositionY;
+			boundingRec->mBottomPoint->mPositionY = mPoint2->mPositionY;
+		}
+		else {
+			boundingRec->mTopPoint->mPositionY = mPoint2->mPositionY;
+			boundingRec->mBottomPoint->mPositionY = mPoint1->mPositionY;
+		}
 	}
 
 	/// <summary> Gradient of line. </summary>
@@ -1196,7 +1104,7 @@ namespace Geometry2D
 		/// <summary> Is point on line. </summary>
 		/// <param name="point"> Point. </param>
 		/// <returns>True if point lies on line. </returns>
-		bool isPointOn(const Point<T>& point);
+		bool isPointIn(const Point<GeomteryBase::MyFloat>& point) override;
 
 		/// <summary> Moves circle line by vector. </summary>
 		/// <param name="vector"> Vector. </param>
@@ -1220,6 +1128,8 @@ namespace Geometry2D
 		/// <param name="line"> Line segment. </param>
 		/// <returns>True if circle line intersects with line segment. </returns>
 		bool intersectionWithLineSegment(const LineSegment<T>& line);
+
+		void boundingRectangle();
 	};
 
 	template<typename T>
@@ -1228,6 +1138,7 @@ namespace Geometry2D
 		mCenter(Point<T>()),
 		mRadius(0)
 	{
+		boundingRectangle();
 	}
 
 	template<typename T>
@@ -1235,6 +1146,7 @@ namespace Geometry2D
 		mCenter(new Point<T>(point)),
 		mRadius(radius)
 	{
+		boundingRectangle();
 	}
 
 	template<typename T>
@@ -1242,6 +1154,7 @@ namespace Geometry2D
 		mCenter(new Point<T>(*(other.mCenter))),
 		mRadius(other.mRadius)
 	{
+		boundingRectangle();
 	}
 
 	template<typename T>
@@ -1249,6 +1162,7 @@ namespace Geometry2D
 		mCenter(*(other.mCenter)),
 		mRadius(other.mRadius)
 	{
+		boundingRectangle();
 		other.mCenter = nullptr;
 	}
 
@@ -1268,6 +1182,7 @@ namespace Geometry2D
 			const CircleLine<T>& otherLine = static_cast<const CircleLine<T>&>(other);
 			mCenter->assign(*(otherLine.mCenter));
 			mRadius = otherLine.mRadius;
+			boundingRectangle();
 		}
 
 		return *this;
@@ -1278,6 +1193,7 @@ namespace Geometry2D
 	{
 		mCenter = other.mCenter;
 		mRadius = other.mRadius;
+		boundingRectangle();
 		other.mCenter = nullptr;
 		other.mRadius = 0;
 		return *this;
@@ -1290,6 +1206,7 @@ namespace Geometry2D
 		{
 			mCenter->assign(*other.mCenter);
 			mRadius = other.mRadius;
+			boundingRectangle();
 		}
 		return *this;
 	}
@@ -1309,7 +1226,7 @@ namespace Geometry2D
 		return false;
 	}
 	template<typename T>
-	inline bool CircleLine<T>::isPointOn(const Point<T>& point)
+	inline bool CircleLine<T>::isPointIn(const Point<GeomteryBase::MyFloat>& point)
 	{
 		return distanceBetweenPoints(*mCenter, point) == mRadius;
 	}
@@ -1393,12 +1310,22 @@ namespace Geometry2D
 		return false;
 	}
 
+	template<typename T>
+	inline void CircleLine<T>::boundingRectangle()
+	{
+		boundingRec->mTopPoint->mPositionX = mCenter->mPositionX - mRadius;
+		boundingRec->mTopPoint->mPositionY = mCenter->mPositionY - mRadius;
+
+		boundingRec->mBottomPoint->mPositionX = mCenter->mPositionX + mRadius;
+		boundingRec->mBottomPoint->mPositionY = mCenter->mPositionY + mRadius;
+	}
+
 	/// <summary> Is point on line. </summary>
 	/// <param name="point"> Point. </param>
 	/// <returns>True if point lies on line. </returns>
 	template<typename T>
-	bool isPointOnCircleLine(CircleLine<T>& line, const Point<T>& point) {
-		return line.isPointOn(point);
+	bool isPointOnCircleLine(CircleLine<T>& line, const Point<GeomteryBase::MyFloat>& point) {
+		return line.isPointIn(point);
 	}
 
 	/// <summary> Moves circle line by vector. </summary>
@@ -1496,7 +1423,7 @@ namespace Geometry2D
 		/// <summary> Is point on line. </summary>
 		/// <param name="point"> Point. </param>
 		/// <returns>True if point lies on line. </returns>
-		bool isPointOn(const Point<T>& point);
+		bool isPointIn(const Point<MyFloat>& point) override;
 
 		/// <summary> Moves circle line by vector. </summary>
 		/// <param name="vector"> Vector. </param>
@@ -1515,6 +1442,8 @@ namespace Geometry2D
 		/// <param name="line"> Line segment. </param>
 		/// <returns>True if circle intersects with line segment. </returns>
 		bool intersectionWithLineSegment(const LineSegment<T>& line);
+
+		void boundingRectangle();
 	};
 
 	template<typename T>
@@ -1523,6 +1452,7 @@ namespace Geometry2D
 		mCenter(Point<T>()),
 		mRadius(0)
 	{
+		boundingRectangle();
 	}
 
 	template<typename T>
@@ -1530,6 +1460,7 @@ namespace Geometry2D
 		mCenter(new Point<T>(point)),
 		mRadius(radius)
 	{
+		boundingRectangle();
 	}
 
 	template<typename T>
@@ -1537,6 +1468,7 @@ namespace Geometry2D
 		mCenter(new Point<T>(*(other.mCenter))),
 		mRadius(other.mRadius)
 	{
+		boundingRectangle();
 	}
 
 	template<typename T>
@@ -1544,6 +1476,7 @@ namespace Geometry2D
 		mCenter(*(other.mCenter)),
 		mRadius(other.mRadius)
 	{
+		boundingRectangle();
 		other.mCenter = nullptr;
 	}
 
@@ -1563,6 +1496,7 @@ namespace Geometry2D
 			const Circle<T>& otherCircle = static_cast<const Circle<T>&>(other);
 			mCenter->assign(*(otherCircle.mCenter));
 			mRadius = otherCircle.mRadius;
+			boundingRectangle();
 		}
 
 		return *this;
@@ -1573,6 +1507,7 @@ namespace Geometry2D
 	{
 		mCenter = other.mCenter;
 		mRadius = other.mRadius;
+		boundingRectangle();
 		other.mCenter = nullptr;
 		other.mRadius = 0;
 		return *this;
@@ -1585,6 +1520,7 @@ namespace Geometry2D
 		{
 			mCenter->assign(*other.mCenter);
 			mRadius = other.mRadius;
+			boundingRectangle();
 		}
 		return *this;
 	}
@@ -1604,7 +1540,7 @@ namespace Geometry2D
 		return false;
 	}
 	template<typename T>
-	inline bool Circle<T>::isPointOn(const Point<T>& point)
+	inline bool Circle<T>::isPointIn(const Point<MyFloat>& point)
 	{
 		return distanceBetweenPoints(*mCenter, point) <= mRadius;
 	}
@@ -1632,7 +1568,7 @@ namespace Geometry2D
 	template<typename T>
 	inline bool Circle<T>::intersectionWithLineSegment(const LineSegment<T>& line)
 	{
-		if (this->isPointOn(*line.mPoint1) || this->isPointOn(*line.mPoint2))
+		if (this->isPointIn(*line.mPoint1) || this->isPointIn(*line.mPoint2))
 			return true;
 		double minDist = DBL_MAX;
 		double maxDist = max(distanceBetweenPoints(*mCenter, *line.mPoint1), distanceBetweenPoints(*mCenter, *line.mPoint2));
@@ -1659,13 +1595,23 @@ namespace Geometry2D
 		return false;
 	}
 
+	template<typename T>
+	inline void Circle<T>::boundingRectangle()
+	{
+		boundingRec->mTopPoint->mPositionX = mCenter->mPositionX - mRadius;
+		boundingRec->mTopPoint->mPositionY = mCenter->mPositionY - mRadius;
+
+		boundingRec->mBottomPoint->mPositionX = mCenter->mPositionX + mRadius;
+		boundingRec->mBottomPoint->mPositionY = mCenter->mPositionY + mRadius;
+	}
+
 	/// <summary> Is point on line. </summary>
 	///<param name="circle"> Circle. </param>
 	/// <param name="point"> Point. </param>
 	/// <returns>True if point lies on line. </returns>
 	template<typename T>
-	bool isPointOnCircle(Circle<T>& circle, const Point<T>& point) {
-		return circle.isPointOn(point);
+	bool isPointOnCircle(Circle<T>& circle, const Point<GeomteryBase::MyFloat>& point) {
+		return circle.isPointIn(point);
 	}
 
 	/// <summary> Moves circle line by vector. </summary>
@@ -1781,7 +1727,7 @@ namespace Geometry2D
 		/// <summary> Is point on line. </summary>
 		/// <param name="point"> Point. </param>
 		/// <returns>True if point lies on line. </returns>
-		bool isPointOn(const Point<T>& point) override;
+		bool isPointIn(const Point<MyFloat>& point) override;
 
 		/// <summary> Moves circle line by vector. </summary>
 		/// <param name="vector"> Vector. </param>
@@ -1800,6 +1746,8 @@ namespace Geometry2D
 		/// <param name="line"> Line segment. </param>
 		/// <returns>True if circle intersects with line segment. </returns>
 		bool intersectionWithLineSegment(const LineSegment<T>& line) override;
+
+		void boundingRectangle();
 	};
 
 	template<typename T>
@@ -1810,6 +1758,7 @@ namespace Geometry2D
 		mRadius(1),
 		mAltitude(0)
 	{
+		boundingRectangle();
 	}
 
 	template<typename T>
@@ -1827,6 +1776,7 @@ namespace Geometry2D
 		mCenter = movePointByVector(*pLineVector, point1);
 		mCenter->movePointByVector(*pNormVector);
 		mRadius = distanceBetweenPoints(*mPoint1, *mCenter);
+		boundingRectangle();
 		delete pLineVector;
 		delete pLine;
 		delete pNormVector;
@@ -1840,6 +1790,7 @@ namespace Geometry2D
 		mRadius(other.mRadius),
 		mAltitude(other.mAltitude)
 	{
+		boundingRectangle();
 	}
 
 	template<typename T>
@@ -1850,6 +1801,7 @@ namespace Geometry2D
 		mRadius(other.mRadius),
 		mAltitude(other.mAltitude)
 	{
+		boundingRectangle();
 		other.mPoint1 = nullptr;
 		other.mPoint2 = nullptr;
 		other.mCenter = nullptr;
@@ -1880,6 +1832,7 @@ namespace Geometry2D
 			mCenter->assign(*(otherArc.mCenter));
 			mRadius = otherArc.mRadius;
 			mAltitude = otherArc.mAltitude;
+			boundingRectangle();
 		}
 
 		return *this;
@@ -1893,6 +1846,7 @@ namespace Geometry2D
 		mCenter = other.mCenter;
 		mRadius = other.mRadius;
 		mAltitude = other.mAltitude;
+		boundingRectangle();
 		other.mPoint1 = nullptr;
 		other.mPoint2 = nullptr;
 		other.mCenter = nullptr;
@@ -1911,6 +1865,7 @@ namespace Geometry2D
 			mCenter->assign(*(other.mCenter));
 			mRadius = other.mRadius;
 			mAltitude = other.mAltitude;
+			boundingRectangle();
 		}
 		return *this;
 	}
@@ -1963,9 +1918,9 @@ namespace Geometry2D
 	}
 
 	template<typename T>
-	inline bool Arc<T>::isPointOn(const Point<T>& point)
+	inline bool Arc<T>::isPointIn(const Point<MyFloat>& point)
 	{
-		if (distanceBetweenPoints(*(mCenter, point)) = mRadius) {
+		if (distanceBetweenPoints(*mCenter, point) == mRadius) {
 			return this->isPointInCone(point);
 		}
 		return false;
@@ -1999,14 +1954,14 @@ namespace Geometry2D
 		CircleLine<T>* circle = new CircleLine<T>(*mCenter, mRadius);
 		if (circle->pointsOfIntersectionWithLine(line, pPoint1, pPoint2)) {
 			if (pPoint1 != nullptr) {
-				if (isPointOn(*pPoint1)) {
+				if (isPointIn(*pPoint1)) {
 					delete pPoint1;
 					delete pPoint2;
 					delete circle;
 					return true;
 				}
 				if (pPoint2 != nullptr) {
-					if (isPointOn(*pPoint2)) {
+					if (isPointIn(*pPoint2)) {
 						delete pPoint1;
 						delete pPoint2;
 						delete circle;
@@ -2030,7 +1985,7 @@ namespace Geometry2D
 		Line<T>* helpLine = new Line<T>(line.mPoint1, line.mPoint2);
 		if (circle->pointsOfIntersectionWithLine(*helpLine, pPoint1, pPoint2)) {
 			if (pPoint1 != nullptr) {
-				if (isPointOn(*pPoint1) && line.isPointOn(*pPoint1)) {
+				if (isPointIn(*pPoint1) && line.isPointIn(*pPoint1)) {
 					delete pPoint1;
 					delete pPoint2;
 					delete circle;
@@ -2038,7 +1993,7 @@ namespace Geometry2D
 					return true;
 				}
 				if (pPoint2 != nullptr) {
-					if (isPointOn(*pPoint2) && line.isPointOn(*pPoint2)) {
+					if (isPointIn(*pPoint2) && line.isPointIn(*pPoint2)) {
 						delete pPoint1;
 						delete pPoint2;
 						delete circle;
@@ -2054,6 +2009,41 @@ namespace Geometry2D
 		return false;
 	}
 
+	template<typename T>
+	inline void Arc<T>::boundingRectangle()
+	{
+		Vector<T>* pLineVector = new Vector<T>(*mPoint1, *mPoint2);
+		Line<T>* pLine = new Line<T>(*mPoint1, *mPoint2);
+		Vector<T>* pNormVector = pLine->normalizedVector();
+		pLineVector->vectorMultiplication(0.5);
+		pNormVector->vectorMultiplication(1 / pNormVector->sizeOfVector());
+		if (mAltitude < 0) {
+			pNormVector->vectorMultiplication(mRadius - mAltitude);
+		}
+		else {
+			pNormVector->vectorMultiplication(mAltitude - mRadius);
+		}
+
+		Point<T>* point3 = movePointByVector(*pLineVector, *mPoint1);
+		point3->movePointByVector(*pNormVector);
+
+		boundingRec->mTopPoint->mPositionX = std::min(mPoint1->mPositionX, mPoint2->mPositionX);
+		boundingRec->mTopPoint->mPositionX = std::min(boundingRec->mTopPoint->mPositionX, point3->mPositionX);
+		boundingRec->mTopPoint->mPositionY = std::min(mPoint1->mPositionY, mPoint2->mPositionY);
+		boundingRec->mTopPoint->mPositionY = std::min(boundingRec->mTopPoint->mPositionY, point3->mPositionY);
+
+		boundingRec->mBottomPoint->mPositionX = std::max(mPoint1->mPositionX, mPoint2->mPositionX);
+		boundingRec->mBottomPoint->mPositionX = std::max(boundingRec->mBottomPoint->mPositionX, point3->mPositionX);
+		boundingRec->mBottomPoint->mPositionY = std::max(mPoint1->mPositionY, mPoint2->mPositionY);
+		boundingRec->mBottomPoint->mPositionY = std::max(boundingRec->mBottomPoint->mPositionY, point3->mPositionY);
+
+
+		delete point3;
+		delete pLineVector;
+		delete pLine;
+		delete pNormVector;
+	}
+
 #pragma endregion
 
 	/// <summary> Abstract parent class of segments of Polyline and Polygon. </summary>
@@ -2067,7 +2057,7 @@ namespace Geometry2D
 
 		virtual Point<T>* getPoint1() = 0;
 
-		virtual bool isPointOn(const Point<T>& point) = 0;
+		virtual bool isPointIn(const Point<T>& point) override = 0;
 
 		virtual double distancetoPoint(const Point<T>& point) = 0;
 
@@ -2141,25 +2131,27 @@ namespace Geometry2D
 		/// <summary> Is point on line. </summary>
 		/// <param name="point"> Point. </param>
 		/// <returns>True if point lies on line. </returns>
-		bool isPointOn(const Point<T>& point);
+		bool isPointIn(const Point<GeomteryBase::MyFloat>& point) override;
 
 		/// <summary> Moves line by vector. </summary>
 		/// <param name="vector"> Vector. </param>
-		void moveByVector(const Vector<T>& vector);
+		void moveByVector(const Vector<T>& vector) override;
 
 		/// <summary> Coefficient of line. </summary>
 		/// <returns> Coefficient of line. </returns>
-		double distancetoPoint(const Point<T>& point);
+		double distancetoPoint(const Point<T>& point) override;
 
 		/// <summary> Intersection with line. </summary>
 		/// <param name="line"> Line. </param>
 		/// <returns>True if polyline  intersects with line. </returns>
-		bool intersectionWithLine(const Line<T>& line);
+		bool intersectionWithLine(const Line<T>& line) override;
 
 		/// <summary> Intersection with line segment. </summary>
 		/// <param name="line"> Line segment. </param>
 		/// <returns>True if polyline intersects with line segment. </returns>
-		bool intersectionWithLineSegment(const LineSegment<T>& line);
+		bool intersectionWithLineSegment(const LineSegment<T>& line) override;
+
+		void boundingRectangle();
 	};
 	template<typename T>
 	inline Polyline<T>::Polyline() :
@@ -2181,6 +2173,7 @@ namespace Geometry2D
 		mLast(other.mLast),
 		mSize(other.mSize)
 	{
+		boundingRectangle();
 		other.mFirst = nullptr;
 		other.mLast = nullptr;
 		other.mSize = 0;
@@ -2208,7 +2201,7 @@ namespace Geometry2D
 				current = current->mNext;
 			}
 		}
-
+		boundingRectangle();
 		return *this;
 	}
 
@@ -2218,6 +2211,7 @@ namespace Geometry2D
 		mFirst = other.mFirst;
 		mLast = other.mLast;
 		mSize = other.mSize;
+		boundingRectangle();
 		other.mFirst = nullptr;
 		other.mLast = nullptr;
 		other.mSize = 0;
@@ -2237,6 +2231,7 @@ namespace Geometry2D
 				current = current->mNext;
 			}
 		}
+		boundingRectangle();
 		return *this;
 	}
 
@@ -2301,7 +2296,7 @@ namespace Geometry2D
 	}
 
 	template<typename T>
-	inline bool Polyline<T>::isPointOn(const Point<T>& point)
+	inline bool Polyline<T>::isPointIn(const Point<GeomteryBase::MyFloat>& point)
 	{
 		PolySegment<T>* current = mFirst;
 
@@ -2370,6 +2365,29 @@ namespace Geometry2D
 		return false;
 	}
 
+	template<typename T>
+	inline void Polyline<T>::boundingRectangle()
+	{
+		PolySegment<T>* current = mFirst;
+		Point<T>* currentPoint;
+		currentPoint = current->getPoint1();
+		if (currentPoint != nullptr) {
+			boundingRec->mTopPoint->mPositionX = currentPoint->mPositionX;
+			boundingRec->mBottomPoint->mPositionX = currentPoint->mPositionX;
+			boundingRec->mTopPoint->mPositionY = currentPoint->mPositionY;
+			boundingRec->mBottomPoint->mPositionY = currentPoint->mPositionY;
+		}
+		current = current->mNext;
+		while (current != nullptr) {
+			currentPoint = current->getPoint1();
+			boundingRec->mTopPoint->mPositionX = std::min(boundingRec->mTopPoint->mPositionX, currentPoint->mPositionX);
+			boundingRec->mTopPoint->mPositionY = std::min(boundingRec->mTopPoint->mPositionY, currentPoint->mPositionY);
+			boundingRec->mBottomPoint->mPositionX = std::max(boundingRec->mBottomPoint->mPositionX, currentPoint->mPositionX);
+			boundingRec->mBottomPoint->mPositionY = std::max(boundingRec->mBottomPoint->mPositionY, currentPoint->mPositionY);
+			current = current->mNext;
+		}
+	}
+
 	/// <summary> Struct representing polygon. </summary>
 	/// <typeparam name = "T"> Data type to compute with. </typepram>
 	template<typename T>
@@ -2379,11 +2397,13 @@ namespace Geometry2D
 		/// <summary> Is point in polygon. </summary>
 		/// <param name="point"> Point. </param>
 		/// <returns>True if point lies on line. </returns>
-		bool isPointIn(const Point<T>& point);
+		bool isPointIn(const Point<GeomteryBase::MyFloat>& point) override;
+
+		void boundingRectangle() override;
 	};
 
 	template<typename T>
-	inline bool Polygon<T>::isPointIn(const Point<T>& point)
+	inline bool Polygon<T>::isPointIn(const Point<GeomteryBase::MyFloat>& point)
 	{
 		Point<T>* p1 = new Point<T>(9999, point.mPositionY);
 		Line<T>* exline = new Line<T>(point, *p1);
@@ -2393,12 +2413,37 @@ namespace Geometry2D
 			LineSegment<T>* side = new LineSegment<T>*(*current->getPoint1(), *current->mNext->getPoint1());
 			if (side->intersectionWithLine(*exline)) {
 				if (orientationOfPoints(*side->mPoint1, point, *side->mPoint2) == 0)
-					return side->isPointOn(point);
+					return side->isPointIn(point);
 				count++;
 			}
 			current = current->mNext;
 		} while (current != this->mLast);
 		return count & 1;
 	}
-}
 
+	template<typename T>
+	inline void Polygon<T>::boundingRectangle()
+	{
+		PolySegment<T>* current = this->mFirst;
+		Point<T>* currentPoint;
+		currentPoint = current->getPoint1();
+		if (currentPoint != nullptr) {
+			this->boundingRec->mTopPoint->mPositionX = currentPoint->mPositionX;
+			this->boundingRec->mBottomPoint->mPositionX = currentPoint->mPositionX;
+			this->boundingRec->mTopPoint->mPositionY = currentPoint->mPositionY;
+			this->boundingRec->mBottomPoint->mPositionY = currentPoint->mPositionY;
+		}
+		current = current->mNext;
+		do {
+			currentPoint = current->getPoint1();
+			this->boundingRec->mTopPoint->mPositionX = std::min(this->boundingRec->mTopPoint->mPositionX, currentPoint->mPositionX);
+			this->boundingRec->mTopPoint->mPositionY = std::min(this->boundingRec->mTopPoint->mPositionY, currentPoint->mPositionY);
+			this->boundingRec->mBottomPoint->mPositionX = std::max(this->boundingRec->mBottomPoint->mPositionX, currentPoint->mPositionX);
+			this->boundingRec->mBottomPoint->mPositionY = std::max(this->boundingRec->mBottomPoint->mPositionY, currentPoint->mPositionY);
+			current = current->mNext;
+		} while (current != this->mLast);
+	}
+
+	using MyPoint = Point<GeomteryBase::MyFloat>;
+	using MyVector = Vector<GeomteryBase::MyFloat>;
+}
