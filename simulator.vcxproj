@@ -169,7 +169,6 @@
     <ClInclude Include="Geometry2D\GeometryBase.h" />
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="Point.h" />
-    <ClInclude Include="PolySegment.h" />
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="Simulation.h" />
     <ClInclude Include="tests\test.h" />

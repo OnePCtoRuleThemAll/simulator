@@ -189,9 +189,6 @@
     <ClInclude Include="Dependencies\glew-2.1.0\include\GL\wglew.h">
       <Filter>Dependencies\glew-2.1.0\include\GL</Filter>
     </ClInclude>
-    <ClInclude Include="PolySegment.h">
-      <Filter>Geometry\Header files</Filter>
-    </ClInclude>
     <ClInclude Include="Point.h">
       <Filter>Geometry\Header files</Filter>
     </ClInclude>
