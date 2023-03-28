@@ -45,6 +45,8 @@ public:
 
 	void setDirection(Geometry2D::MyVector& direction);
 
+	World* mWorld;
+
 	World* getWorld();
 
 	void setWorld(World* world);
@@ -55,6 +57,4 @@ private:
 	Geometry2D::MyPoint* mOldPosition;
 
 	Geometry2D::MyVector* mDirection;
-
-	World* mWorld;
 };

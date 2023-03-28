@@ -134,6 +134,12 @@
     <ClCompile Include="World.cpp">
       <Filter>World\Soruce files</Filter>
     </ClCompile>
+    <ClCompile Include="Obstacle.cpp">
+      <Filter>World\Soruce files</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorBoid.cpp">
+      <Filter>Agent\Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Geometry2D\Geometry2D.h">
@@ -200,6 +206,15 @@
     </ClInclude>
     <ClInclude Include="World.h">
       <Filter>World\Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Obstacle.h">
+      <Filter>World\Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Behavior.h">
+      <Filter>Agent\Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorBoid.h">
+      <Filter>Agent\Header files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

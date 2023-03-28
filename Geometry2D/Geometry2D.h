@@ -19,7 +19,7 @@ namespace Geometry2D
 	/// <param name = "point2"> Second point. </param>
 	/// <returns> Returns distance between two points. </returns>
 	template<typename T>
-	double distanceBetweenPoints(Point<T>& point1, Point<T>& point2) {
+	float distanceBetweenPoints(const Point<T>& point1, const Point<T>& point2) {
 		return sqrt(pow(point1.mPositionX - point2.mPositionX, 2) + pow(point1.mPositionY - point2.mPositionY, 2));
 	}
 
