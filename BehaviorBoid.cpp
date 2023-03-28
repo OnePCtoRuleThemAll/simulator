@@ -65,24 +65,24 @@ Geometry2D::MyVector* Cohesion::behave(Agent* pAgent)
 	return steer;
 }
 
-Geometry2D::MyVector* BehaviorBoid::behave(Agent* pAgent)
-{
-	Separation* sep = new Separation();
-	Alignment* ali = new Alignment();
-	Cohesion* coh = new Cohesion();
-
-	Geometry2D::MyVector* sepV = sep->behave(pAgent);
-	Geometry2D::MyVector* aliV = ali->behave(pAgent);
-	Geometry2D::MyVector* cohV = coh->behave(pAgent);
-
-	pAgent->getDirection()->vectorAddition(*sepV);
-	pAgent->getDirection()->vectorAddition(*aliV);
-	pAgent->getDirection()->vectorAddition(*cohV);
-
-	delete sep;
-	delete ali;
-	delete coh;
-	delete sepV;
-	delete aliV;
-	delete cohV;
-}
+//Geometry2D::MyVector* BehaviorBoid::behave(Agent* pAgent)
+//{
+//	Separation* sep = new Separation();
+//	Alignment* ali = new Alignment();
+//	Cohesion* coh = new Cohesion();
+//
+//	Geometry2D::MyVector* sepV = sep->behave(pAgent);
+//	Geometry2D::MyVector* aliV = ali->behave(pAgent);
+//	Geometry2D::MyVector* cohV = coh->behave(pAgent);
+//
+//	
+//	sepV->vectorAddition(*aliV);
+//	sepV->vectorAddition(*cohV);
+//
+//	delete sep;
+//	delete ali;
+//	delete coh;
+//	delete aliV;
+//	delete cohV;
+//	return nullptr;
+//}

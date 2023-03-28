@@ -34,6 +34,6 @@ namespace Geometry2D
 
 		virtual bool isPointIn(const Point<MyFloat>& point) = 0;
 
-		Rectangle<MyFloat>* boundingRec;
+		Rectangle<MyFloat>* boundingRec = nullptr;
 	};
 }
