@@ -6,17 +6,38 @@
 #include <cstddef>
 #include <math.h>
 
-namespace Shapes 
+namespace Shapes
 {
 	template<typename T>
 	class Shape
 	{
 	public:
-
-		virtual void rotate(const Geometry2D::Vector<T>& vector) = 0;
-		virtual void translate(const Geometry2D::Point<T>& point) = 0;
+		Shape(Geometry2D::Point<T>& worldStart, Geometry2D::Point<T>& worldEnd);
 
 	protected:
-		//virtual void scale(Geometry2D::Point<T>& point) = 0;
+		Geometry2D::Point<T>* mWorldStart;
+		Geometry2D::Point<T>* mWorldEnd;
+
+	private:
+		float mapBetweenSystems(T value, bool vertical);
 	};
+
+	template<typename T>
+	inline Shape<T>::Shape(Geometry2D::Point<T>& worldStart, Geometry2D::Point<T>& worldEnd) :
+		mWorldStart(&worldStart),
+		mWorldEnd(&worldEnd)
+	{
+	}
+
+	template<typename T>
+	inline float Shape<T>::mapBetweenSystems(T value, bool vertical)
+	{
+		if (vertical) {
+			return (1.0f + ((-1.0f - 1.0f) / (this->mWorldEnd->mPositionY - this->mWorldStart->mPositionY)) * ((float)value - this->mWorldStart->mPositionY));
+		}
+		else {
+			return (-1.0f + ((1.0f + 1.0f) / (this->mWorldEnd->mPositionX - this->mWorldStart->mPositionX)) * ((float)value - this->mWorldStart->mPositionX));
+		}
+		return 0.0f;
+	}
 }

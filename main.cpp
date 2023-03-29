@@ -5,11 +5,10 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "Rendering/Shader.h"
-#include "Shapes/TriangleDrawer.h"
 #include "Shapes/CircleDrawer.h"
 #include "Rendering/DrawTriangles.h"
-
 #include <iostream>
+#include "Shapes/TriangleDrawerDynamic.h"
 
 using namespace std;
 
@@ -60,12 +59,20 @@ int main(int argc, char* argv[]) {
     Geometry2D::Point<float>* point3 = new Geometry2D::Point<float>(-0.4f, -0.5f);
     Geometry2D::Vector<float>* vector = new Geometry2D::Vector<float>(0.5f, 0.5f);
 
+    Geometry2D::Point<int>* point4 = new Geometry2D::Point<int>(0, 0);
+    Geometry2D::Point<int>* point5 = new Geometry2D::Point<int>(30, 30);
+    Geometry2D::Point<int>* point6 = new Geometry2D::Point<int>(100, 100);
+    Geometry2D::Point<int>* point7 = new Geometry2D::Point<int>(80, 80);
+    Geometry2D::Vector<int>* vector2 = new Geometry2D::Vector<int>(0, 20);
+
     Geometry2D::Circle<float>* circle1 = new Geometry2D::Circle<float>(*point, 0.1);
     Geometry2D::Circle<float>* circle2 = new Geometry2D::Circle<float>(*point2, 0.2);
     Geometry2D::Circle<float>* circle3 = new Geometry2D::Circle<float>(*point3, 0.15);
 
     DrawTriangles* drawer = new DrawTriangles();
     
+    Shapes::TriangleDrawerDynamic<int>* triangle = new Shapes::TriangleDrawerDynamic<int>(*point5, *vector2, *point4, *point6, drawer);
+
     float positions[] = {
         -0.015f, -0.005f,
         -0.005f, 0.045f,
@@ -94,9 +101,9 @@ int main(int argc, char* argv[]) {
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
 
-        Shapes::CircleDrawer<float>* circleDraw = new Shapes::CircleDrawer<float>(*circle1);
-        Shapes::CircleDrawer<float>* circleDraw2 = new Shapes::CircleDrawer<float>(*circle2);
-        Shapes::CircleDrawer<float>* circleDraw3 = new Shapes::CircleDrawer<float>(*circle3);
+        Shapes::CircleDrawer<float>* circleDraw = new Shapes::CircleDrawer<float>(*circle1, *point2, *point3);
+        Shapes::CircleDrawer<float>* circleDraw2 = new Shapes::CircleDrawer<float>(*circle2, *point2, *point3);
+        Shapes::CircleDrawer<float>* circleDraw3 = new Shapes::CircleDrawer<float>(*circle3, *point2, *point3);
 
         drawer->drawElements();
 

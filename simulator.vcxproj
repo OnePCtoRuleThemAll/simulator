@@ -173,8 +173,10 @@
     <ClInclude Include="Rendering\DrawTriangles.h" />
     <ClInclude Include="Rendering\Shader.h" />
     <ClInclude Include="Shapes\CircleDrawer.h" />
+    <ClInclude Include="Shapes\MovableShape.h" />
     <ClInclude Include="Shapes\Shape.h" />
-    <ClInclude Include="Shapes\TriangleDrawer.h" />
+    <ClInclude Include="Shapes\StaticShape.h" />
+    <ClInclude Include="Shapes\TriangleDrawerDynamic.h" />
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Rectangle.h" />

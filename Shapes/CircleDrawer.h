@@ -1,18 +1,15 @@
 #pragma once
-#include "Shape.h"
+#include "StaticShape.h"
 
 namespace Shapes
 {
 	template <typename T>
 	class CircleDrawer : 
-		Shape<T>
+		StaticShape<T>
 	{
 	public:
-		CircleDrawer(Geometry2D::Circle<T>& circle);
+		CircleDrawer(Geometry2D::Circle<T>& circle, Geometry2D::Point<T>& worldStart, Geometry2D::Point<T>& worldEnd);
 		~CircleDrawer();
-
-		void rotate(const Geometry2D::Vector<T>& vector) override;
-		void translate(const Geometry2D::Point<T>& point) override;
 
 	private:
 		void drawFilledCircle(GLfloat x, GLfloat y, GLfloat radius);
@@ -21,7 +18,8 @@ namespace Shapes
 
 
 	template<typename T>
-	inline CircleDrawer<T>::CircleDrawer(Geometry2D::Circle<T>& circle)
+	inline CircleDrawer<T>::CircleDrawer(Geometry2D::Circle<T>& circle,	Geometry2D::Point<T>& worldStart, Geometry2D::Point<T>& worldEnd):
+		StaticShape<T>::StaticShape(worldStart, worldEnd)
 	{
 		this->drawFilledCircle((GLfloat)circle.mCenter->mPositionX, (GLfloat)circle.mCenter->mPositionY, (GLfloat)circle.mRadius);
 	}
@@ -31,15 +29,6 @@ namespace Shapes
 	{
 	}
 
-	template<typename T>
-	inline void CircleDrawer<T>::rotate(const Geometry2D::Vector<T>& vector)
-	{
-	}
-
-	template<typename T>
-	inline void CircleDrawer<T>::translate(const Geometry2D::Point<T>& point)
-	{
-	}
 
 	template<typename T>
 	inline void CircleDrawer<T>::drawFilledCircle(GLfloat x, GLfloat y, GLfloat radius)
