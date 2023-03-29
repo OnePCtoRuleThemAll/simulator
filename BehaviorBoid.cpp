@@ -79,10 +79,6 @@ Geometry2D::MyVector* Cohesion::behave(Agent* pAgent)
 //	sepV->vectorAddition(*aliV);
 //	sepV->vectorAddition(*cohV);
 //
-//	delete sep;
-//	delete ali;
-//	delete coh;
-//	delete aliV;
-//	delete cohV;
-//	return nullptr;
+//	
+//	return sepV;
 //}
