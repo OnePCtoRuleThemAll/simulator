@@ -1450,7 +1450,8 @@ namespace Geometry2D
 	inline Circle<T>::Circle() :
 
 		mCenter(Point<T>()),
-		mRadius(0)
+		mRadius(0),
+		boundingRec(new Rectangle<MyFloat>*())
 	{
 		boundingRectangle();
 	}

@@ -58,8 +58,8 @@ namespace Geometry2D {
 
 	template<typename T>
 	inline Rectangle<T>::Rectangle() :
-		mTopPoint(Point<T>()),
-		mBottomPoint(Point<T>())
+		mTopPoint(new Point<T>()),
+		mBottomPoint(new Point<T>())
 	{
 	}
 
