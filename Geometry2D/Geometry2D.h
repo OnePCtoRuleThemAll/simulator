@@ -283,6 +283,15 @@ namespace Geometry2D
 		return vector1.mDeltaX * vector2.mDeltaX + vector1.mDeltaY * vector2.mDeltaY;
 	}
 
+	/// <summary> Dot product. </summary>
+		/// <param name = "vector1"> First vector. </param>
+		/// <param name = "vector2"> Second vector. </param>
+		/// <returns> Returns dot product. </returns>
+	template<typename T>
+	T crossProduct(Vector<T>& vector1, Vector<T>& vector2)
+	{
+		return vector1.mDeltaX * vector2.mDeltaY - vector2.mDeltaX * vector1.mDeltaY;
+	}
 
 	/// <summary>Move point by vector. </summary>
 	/// <param name = "vector"> Vector. </param>
@@ -298,7 +307,7 @@ namespace Geometry2D
 	template<typename T>
 	inline double Geometry2D::Vector<T>::angleBetweenVectors(Vector<T>& vector)
 	{
-		return acos(dotProduct(*this, vector) / sqrt(this->sizeOfVector() * sizeOfVector(vector)));
+		return atan2(crossProduct(*this, vector), dotProduct(*this, vector));
 	}
 
 	/// <summary> Angle between vectors. </summary>
@@ -308,7 +317,12 @@ namespace Geometry2D
 	template<typename T>
 	double angleBetweenVectors(Vector<T>& vector1, Vector<T>& vector2)
 	{
-		return acos(dotProduct(vector1, vector2) / (sizeOfVector(vector1) * sizeOfVector(vector2)));
+		double angle = atan2(crossProduct(vector1, vector2), dotProduct(vector1, vector2));
+
+		if (angle < 0) {
+			return (atan(1) * 4) + angle + (atan(1) * 4);
+		}
+		return angle;
 	}
 
 	template<typename T>
