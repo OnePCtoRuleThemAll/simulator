@@ -29,8 +29,8 @@ namespace tests {
 
 	void VectorTests::test()
 	{
-		Geometry2D::Vector<int>* vector1 = new Geometry2D::Vector<int>(0, 20);
-		Geometry2D::Vector<int>* vector2 = new Geometry2D::Vector<int>(1, 0);
+		Geometry2D::Vector<int>* vector1 = new Geometry2D::Vector<int>(1, 0);
+		Geometry2D::Vector<int>* vector2 = new Geometry2D::Vector<int>(-1, 1);
 		int dotProduct = vector1->mDeltaX * vector2->mDeltaX + vector1->mDeltaY * vector2->mDeltaY;
 		std::cout << dotProduct << std::endl;
 
