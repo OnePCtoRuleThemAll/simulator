@@ -1,16 +1,15 @@
 #pragma once
 #include "Behavior.h"
 
-class BehaviorBoid :
+class Alignment :
 	Behavior
 {
 public:
-	BehaviorBoid();
+	Alignment();
 
-	~BehaviorBoid();
+	~Alignment();
 
 	/// <summary> Mehod that defines behavior. </summary>
 	/// <returns> Vector in what direction should agent move based on behaviour. </returns>
 	Geometry2D::MyVector* behave(Agent* pAgent) override;
 };
-
