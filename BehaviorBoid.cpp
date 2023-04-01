@@ -1,22 +1,22 @@
 #include "BehaviorBoid.h"
-#include "Separation.h"
-#include "Cohesion.h"
-#include "Alignment.h"
 
-BehaviorBoid::BehaviorBoid()
+
+BehaviorBoid::BehaviorBoid():
+	sep(new Separation()),
+	coh(new Cohesion()),
+	ali(new Alignment())
 {
 }
 
 BehaviorBoid::~BehaviorBoid()
 {
+	delete sep;
+	delete coh;
+	delete ali;
 }
 
 Geometry2D::MyVector* BehaviorBoid::behave(Agent* pAgent)
 {
-	Separation* sep = new Separation();
-	Alignment* ali = new Alignment();
-	Cohesion* coh = new Cohesion();
-
 	Geometry2D::MyVector* sepV = sep->behave(pAgent);
 	Geometry2D::MyVector* aliV = ali->behave(pAgent);
 	Geometry2D::MyVector* cohV = coh->behave(pAgent);
@@ -25,6 +25,8 @@ Geometry2D::MyVector* BehaviorBoid::behave(Agent* pAgent)
 	sepV->vectorAddition(*aliV);
 	sepV->vectorAddition(*cohV);
 
-	
+	delete aliV;
+	delete cohV;
+
 	return sepV;
 }
