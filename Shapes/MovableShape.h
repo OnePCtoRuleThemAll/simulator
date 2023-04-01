@@ -23,27 +23,40 @@ namespace Shapes {
 		Shape<T>::Shape(worldStart, worldEnd)
 	{
 	}
+
 	template<typename T>
 	inline void MovableShape<T>::rotate(Geometry2D::Vector<T>& vector)
 	{
+		double angle;
 		if (this->mCurrentDirection == nullptr) {
-			Geometry2D::Vector<T>* initialVector = new Geometry2D::Vector<T>((T)1,(T)0);
-			double angle = Geometry2D::angleBetweenVectors(vector, initialVector);
+			Geometry2D::Vector<T>* initialVector = new Geometry2D::Vector<T>((T)0,(T)1);
+			angle = Geometry2D::angleBetweenVectors(vector, *initialVector);
 			delete initialVector;
 		}
 		else {
-			double angle = Geometry2D::angleBetweenVectors(vector, *this->mCurrentDirection);
+			angle = Geometry2D::angleBetweenVectors(vector, *this->mCurrentDirection);
 		}
 		float mappedCenterX = this->mapBetweenSystems(this->mCurrentPosition->mPositionX, false);
 		float mappedCenterY = this->mapBetweenSystems(this->mCurrentPosition->mPositionY, true);
 		for (int i = 0; i < this->mPositions.size(); i += 2) {
-			mPositions[i] = mappedCenterX + (mPositions[i] - mappedCenterX) * cos(angle) - (mPositions[i + 1] - mappedCenterY) * sin(angle);
-			mPositions[i + 1] += mappedCenterY + (mPositions[i] - mappedCenterX) * sin(angle) + (mPositions[i + 1] - mappedCenterY) * cos(angle);
+			//mPositions[i] = mappedCenterX + (mPositions[i] - mappedCenterX) * cos(angle) - (mPositions[i + 1] - mappedCenterY) * sin(angle);
+			//mPositions[i + 1] += mappedCenterY + (mPositions[i] - mappedCenterX) * sin(angle) + (mPositions[i + 1] - mappedCenterY) * cos(angle);
+			double s = sin(angle);
+			double c = cos(angle);
 
+			mPositions[i] -= mappedCenterX;
+			mPositions[i + 1] -= mappedCenterY;
+
+			double xnew = mPositions[i] * c - mPositions[i + 1] * s;
+			double ynew = mPositions[i] * s + mPositions[i + 1] * c;
+
+			mPositions[i] = xnew + mappedCenterX;
+			mPositions[i + 1] = ynew + mappedCenterY;
 		}
 
 		this->mCurrentDirection = &vector;
 	}
+
 	template<typename T>
 	inline void MovableShape<T>::translate(Geometry2D::Point<T>& point)
 	{

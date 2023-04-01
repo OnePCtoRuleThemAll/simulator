@@ -29,7 +29,7 @@ namespace Shapes
 	template<typename T>
 	inline TriangleDrawerDynamic<T>::TriangleDrawerDynamic(Geometry2D::Point<T>& point, Geometry2D::Vector<T>& vector,
 		Geometry2D::Point<T>& worldStart, Geometry2D::Point<T>& worldEnd, DrawTriangles* pointer):
-		Shape<T>::Shape(point, vector, worldStart, worldEnd)
+		MovableShape<T>::MovableShape(point, vector, worldStart, worldEnd)
 	{
 		this->pointerToDrawerObject = pointer;
 
@@ -40,10 +40,10 @@ namespace Shapes
 		this->mPositions.push_back(0.01f);
 		this->mPositions.push_back(-0.005f);
 
-		this->addToDrawObject();
-
 		this->translate(point);
 		this->rotate(vector);
+
+		this->addToDrawObject();
 	}
 
 	template<typename T>
@@ -58,14 +58,14 @@ namespace Shapes
 	template<typename T>
 	inline void TriangleDrawerDynamic<T>::rotate(Geometry2D::Vector<T>& vector)
 	{
-		Shape<T>::rotate(vector);
+		MovableShape<T>::rotate(vector);
 		this->updateData();
 	}
 
 	template<typename T>
 	inline void TriangleDrawerDynamic<T>::translate(Geometry2D::Point<T>& point)
 	{
-		Shape<T>::translate(point);
+		MovableShape<T>::translate(point);
 		this->updateData();
 	}
 

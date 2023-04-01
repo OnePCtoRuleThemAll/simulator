@@ -17,8 +17,6 @@ namespace Shapes
 	protected:
 		Geometry2D::Point<T>* mWorldStart;
 		Geometry2D::Point<T>* mWorldEnd;
-
-	private:
 		float mapBetweenSystems(T value, bool vertical);
 	};
 
