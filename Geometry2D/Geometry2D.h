@@ -168,6 +168,8 @@ namespace Geometry2D
 	{
 		mDeltaX = 0;
 		mDeltaY = 0;
+		delete boundingRec;
+		boundingRec = nullptr;
 	}
 
 	template<typename T>
@@ -467,6 +469,8 @@ namespace Geometry2D
 	{
 		delete mPoint1;
 		delete mPoint2;
+		delete boundingRec;
+		boundingRec = nullptr;
 		mPoint1 = nullptr;
 		mPoint2 = nullptr;
 	}
@@ -786,6 +790,8 @@ namespace Geometry2D
 	{
 		delete mPoint1;
 		delete mPoint2;
+		delete boundingRec;
+		boundingRec = nullptr;
 		mPoint1 = nullptr;
 		mPoint2 = nullptr;
 	}
@@ -1170,6 +1176,8 @@ namespace Geometry2D
 	inline CircleLine<T>::~CircleLine()
 	{
 		delete mCenter;
+		delete boundingRec;
+		boundingRec = nullptr;
 		mCenter = nullptr;
 		mRadius = 0;
 	}
@@ -1450,8 +1458,7 @@ namespace Geometry2D
 	inline Circle<T>::Circle() :
 
 		mCenter(Point<T>()),
-		mRadius(0),
-		boundingRec(new Rectangle<MyFloat>*())
+		mRadius(0)
 	{
 		boundingRectangle();
 	}
@@ -1485,6 +1492,8 @@ namespace Geometry2D
 	inline Circle<T>::~Circle()
 	{
 		delete mCenter;
+		delete boundingRec;
+		boundingRec = nullptr;
 		mCenter = nullptr;
 		mRadius = 0;
 	}
@@ -1814,12 +1823,14 @@ namespace Geometry2D
 		delete mPoint1;
 		delete mPoint2;
 		delete mCenter;
+		delete boundingRec;
 		mRadius = 0;
 		mAltitude = 0;
 
 		mPoint1 = nullptr;
 		mPoint2 = nullptr;
 		mCenter = nullptr;
+		boundingRec = nullptr;
 	}
 
 	template<typename T>
@@ -2184,6 +2195,8 @@ namespace Geometry2D
 	inline Polyline<T>::~Polyline()
 	{
 		clear();
+		delete boundingRec;
+		boundingRec = nullptr;
 	}
 
 	template<typename T>
