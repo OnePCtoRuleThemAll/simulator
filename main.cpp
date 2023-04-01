@@ -108,7 +108,7 @@ int main(int argc, char* argv[]) {
         Shapes::CircleDrawer<float>* circleDraw2 = new Shapes::CircleDrawer<float>(*circle2, *point2, *point3);
         Shapes::CircleDrawer<float>* circleDraw3 = new Shapes::CircleDrawer<float>(*circle3, *point2, *point3);
 
-        //drawer->drawElements();
+        drawer->drawElements();
 
         if (i % 50 == 0) {
             triangle->rotate(*vector3);
