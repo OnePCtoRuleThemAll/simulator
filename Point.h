@@ -49,10 +49,6 @@ namespace Geometry2D
 
 		/// <summary> Postion Y of point. </summary>
 		T mPositionY;
-
-		/*/// <summary>Move point by vector. </summary>
-		/// <param name = "vector"> Vector. </param>
-		void moveByVector(const Vector<T>& vector);*/
 	};
 
 	template<typename T>
@@ -128,14 +124,4 @@ namespace Geometry2D
 		}
 		return false;
 	}
-
-
-
-	/*template<typename T>
-	inline void Point<T>::moveByVector(const Vector<T>& vector)
-	{
-		mPositionX += vector.mDeltaX;
-		mPositionY += vector.mDeltaY;
-	}*/
-
 }
