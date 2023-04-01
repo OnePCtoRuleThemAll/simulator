@@ -1,5 +1,7 @@
 #include "testGeometry.h"
 #include "../../Geometry2D/Geometry2D.h"
+#include <iostream>
+#include <cmath>
 
 namespace tests {
 
@@ -27,9 +29,14 @@ namespace tests {
 
 	void VectorTests::test()
 	{
-		Geometry2D::Vector<int>* vector = new Geometry2D::Vector<int>(2, 5);
+		Geometry2D::Vector<int>* vector1 = new Geometry2D::Vector<int>(0, 20);
+		Geometry2D::Vector<int>* vector2 = new Geometry2D::Vector<int>(1, 0);
+		int dotProduct = vector1->mDeltaX * vector2->mDeltaX + vector1->mDeltaY * vector2->mDeltaY;
+		std::cout << dotProduct << std::endl;
 
-		delete vector;
+		std::cout << Geometry2D::angleBetweenVectors(*vector1, *vector2) << std::endl;
+		delete vector1;
+		delete vector2;
 	}
 
 	LineTests::LineTests() :
