@@ -51,7 +51,7 @@ bool World::remove(Agent* pAgent)
 	return false;
 }
 
-std::list<Agent*>* World::search(Agent* pAgent, Geometry2D::GeomteryBase* form)
+std::list<Agent*>* World::searchAgents(Agent* pAgent, Geometry2D::GeomteryBase* form)
 {
 	Geometry2D::GeomteryBase::MyFloat topX = (mPointTop->mPositionX < form->boundingRec->mTopPoint->mPositionX) ? form->boundingRec->mTopPoint->mPositionX : mPointTop->mPositionX;
 	Geometry2D::GeomteryBase::MyFloat topY = (mPointTop->mPositionY < form->boundingRec->mTopPoint->mPositionX) ? form->boundingRec->mTopPoint->mPositionY : mPointTop->mPositionY;
@@ -75,6 +75,19 @@ std::list<Agent*>* World::search(Agent* pAgent, Geometry2D::GeomteryBase* form)
 		}
 		point2Order += mMatrixColumns;
 	}
+	return list;
+}
+
+std::list<Obstacle*>* World::searchObstacles(Geometry2D::GeomteryBase* form)
+{
+	std::list<Obstacle*>* list = new std::list<Obstacle*>();
+
+	for (int i = 0; i < obstacles->size(); i++) {
+		if (obstacles->at(i)->mForm->boundingRec->intersectionRectangle(*form->boundingRec)) {
+			list->push_back(obstacles->at(i));
+		}
+	}
+	
 	return list;
 }
 

@@ -21,7 +21,9 @@ public:
 
 	bool remove(Agent* pAgent);
 
-	std::list<Agent*>* search(Agent* pAgent, Geometry2D::GeomteryBase* form);
+	std::list<Agent*>* searchAgents(Agent* pAgent, Geometry2D::GeomteryBase* form);
+
+	std::list<Obstacle*>* searchObstacles(Geometry2D::GeomteryBase* form);
 
 	void update(Agent* pAgent);
 
@@ -33,6 +35,8 @@ public:
 
 private:
 	std::vector<std::list<Agent*>*>* matrix;
+
+	std::vector<Obstacle*>* obstacles;
 
 	Geometry2D::MyPoint* mPointTop;
 
