@@ -41,7 +41,7 @@ namespace Shapes
 		this->mPositions.push_back(-0.005f);
 
 		this->translate(point);
-		this->rotate(vector);
+		/*this->rotate(vector);*/
 
 		this->addToDrawObject();
 	}

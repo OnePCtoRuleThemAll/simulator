@@ -63,7 +63,9 @@ int main(int argc, char* argv[]) {
     Geometry2D::Point<int>* point5 = new Geometry2D::Point<int>(30, 30);
     Geometry2D::Point<int>* point6 = new Geometry2D::Point<int>(100, 100);
     Geometry2D::Point<int>* point7 = new Geometry2D::Point<int>(80, 80);
-    Geometry2D::Vector<int>* vector2 = new Geometry2D::Vector<int>(0, 20);
+    Geometry2D::Vector<int>* vector2 = new Geometry2D::Vector<int>(1, 0);
+    Geometry2D::Vector<int>* vector3 = new Geometry2D::Vector<int>(0, -1);
+    Geometry2D::Vector<int>* vector4= new Geometry2D::Vector<int>(-1, -1);
 
     Geometry2D::Circle<float>* circle1 = new Geometry2D::Circle<float>(*point, 0.1);
     Geometry2D::Circle<float>* circle2 = new Geometry2D::Circle<float>(*point2, 0.2);
@@ -94,6 +96,7 @@ int main(int argc, char* argv[]) {
     //drawer->addActiveObject();
     //drawer->addActiveObject();
     //drawer->addActiveObject();
+    int i = 1;
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
@@ -107,11 +110,25 @@ int main(int argc, char* argv[]) {
 
         drawer->drawElements();
 
+        if (i % 50 == 0) {
+            triangle->rotate(*vector3);
+        }
+        if (i % 60 == 0) {
+            triangle->translate(*point7);
+        }
+        if (i % 70 == 0) {
+            triangle->rotate(*vector4);
+        }
+        if (i % 100 == 0) {
+            triangle->translate(*point5);
+        }
+
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
 
         /* Poll for and process events */
         glfwPollEvents();
+        i++;
     }
 
     //glDeleteProgram(shader);
