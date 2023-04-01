@@ -308,7 +308,7 @@ namespace Geometry2D
 	template<typename T>
 	double angleBetweenVectors(Vector<T>& vector1, Vector<T>& vector2)
 	{
-		return acos(dotProduct(vector1, vector2) / sqrt(sizeOfVector(vector1) * sizeOfVector(vector2)));
+		return acos(dotProduct(vector1, vector2) / (sizeOfVector(vector1) * sizeOfVector(vector2)));
 	}
 
 	template<typename T>
