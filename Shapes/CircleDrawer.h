@@ -53,6 +53,9 @@ namespace Shapes
 			);
 		}
 		glEnd();
+
+		glUseProgram(0);
+		glDeleteProgram(shader);
 	}
 
 }

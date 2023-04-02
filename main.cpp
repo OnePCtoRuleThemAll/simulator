@@ -75,27 +75,27 @@ int main(int argc, char* argv[]) {
     
     Shapes::TriangleDrawerDynamic<int>* triangle = new Shapes::TriangleDrawerDynamic<int>(*point5, *vector2, *point4, *point6, drawer);
 
-    //float positions[] = {
-    //    -0.015f, -0.005f,
-    //    -0.005f, 0.045f,
-    //    0.005f, -0.005f,
+    float positions[] = {
+        -0.015f, -0.005f,
+        -0.005f, 0.045f,
+        0.005f, -0.005f,
 
-    //    0.055f, 0.05f,
-    //    0.045f, 0.1f,
-    //    0.035f, 0.05f,
+        0.055f, 0.05f,
+        0.045f, 0.1f,
+        0.035f, 0.05f,
 
-    //    0.095f, 0.095f,
-    //    0.085f, 0.045f,
-    //    0.075f, 0.095f
-    //};
+        0.095f, 0.095f,
+        0.085f, 0.045f,
+        0.075f, 0.095f
+    };
 
-    //for(auto vertex: positions) {
-    //    drawer->addVertex(vertex);
-    //}
+    for(auto vertex: positions) {
+        drawer->addVertex(vertex);
+    }
 
-    //drawer->addActiveObject();
-    //drawer->addActiveObject();
-    //drawer->addActiveObject();
+    drawer->addActiveObject();
+    drawer->addActiveObject();
+    drawer->addActiveObject();
     int i = 1;
 
     /* Loop until the user closes the window */
