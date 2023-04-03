@@ -4,7 +4,7 @@
 namespace Shapes {
 	template <typename T>
 	class StaticShape :
-		Shape<T>
+		public Shape<T>
 	{
 	public:
 		StaticShape(Geometry2D::Point<T>& worldStart, Geometry2D::Point<T>& worldEnd);

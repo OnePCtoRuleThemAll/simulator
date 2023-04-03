@@ -5,14 +5,17 @@ namespace Shapes
 {
 	template <typename T>
 	class CircleDrawer : 
-		StaticShape<T>
+		public StaticShape<T>
 	{
 	public:
 		CircleDrawer(Geometry2D::Circle<T>& circle, Geometry2D::Point<T>& worldStart, Geometry2D::Point<T>& worldEnd);
 		~CircleDrawer();
+		void drawFilledCircle();
 
 	private:
-		void drawFilledCircle(GLfloat x, GLfloat y, GLfloat radius);
+		float xCoordinate;
+		float yCoordinate;
+		float radius;
 		Shader shader;
 	};
 
@@ -21,17 +24,23 @@ namespace Shapes
 	inline CircleDrawer<T>::CircleDrawer(Geometry2D::Circle<T>& circle,	Geometry2D::Point<T>& worldStart, Geometry2D::Point<T>& worldEnd):
 		StaticShape<T>::StaticShape(worldStart, worldEnd)
 	{
-		this->drawFilledCircle((GLfloat)circle.mCenter->mPositionX, (GLfloat)circle.mCenter->mPositionY, (GLfloat)circle.mRadius);
+		this->xCoordinate = Shape<T>::mapBetweenSystems(circle.mCenter->mPositionX, false);
+		this->yCoordinate = Shape<T>::mapBetweenSystems(circle.mCenter->mPositionY, true);
+		this->radius = (float)circle.mRadius;
 	}
 
 	template<typename T>
 	inline CircleDrawer<T>::~CircleDrawer()
 	{
+		delete this->xCoordinate;
+		delete this->yCoordinate;
+		delete this->radius;
+		delete this->shader;
 	}
 
 
 	template<typename T>
-	inline void CircleDrawer<T>::drawFilledCircle(GLfloat x, GLfloat y, GLfloat radius)
+	inline void CircleDrawer<T>::drawFilledCircle()
 	{
 		ShaderProgramSource source = this->shader.ParseShader("Resources/Shaders/Circle.shader");
 
@@ -45,11 +54,11 @@ namespace Shapes
 		GLfloat twicePi = 2.0f * atan(1) * 4;
 
 		glBegin(GL_TRIANGLE_FAN);
-		glVertex2f(x, y); // center of circle
+		glVertex2f(this->xCoordinate, this->yCoordinate); // center of circle
 		for (i = 0; i <= triangleAmount; i++) {
 			glVertex2f(
-				x + (radius * cos(i * twicePi / triangleAmount)),
-				y + (radius * sin(i * twicePi / triangleAmount))
+				this->xCoordinate + (this->radius * cos(i * twicePi / triangleAmount)),
+				this->yCoordinate + (this->radius * sin(i * twicePi / triangleAmount))
 			);
 		}
 		glEnd();

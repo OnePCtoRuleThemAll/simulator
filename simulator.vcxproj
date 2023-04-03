@@ -180,6 +180,7 @@
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Rectangle.h" />
+    <ClInclude Include="Shapes\TriangleDrawerStatic.h" />
     <ClInclude Include="Simulation.h" />
     <ClInclude Include="tests\test.h" />
     <ClInclude Include="tests\testGeometry\testGeometry.h" />
