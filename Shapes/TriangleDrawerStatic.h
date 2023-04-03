@@ -60,7 +60,7 @@ namespace Shapes {
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
 
-		int indicies[] = { 0, 1, 2, 3, 4, 5 };
+		int indicies[] = { 0, 1, 2 };
 
 		unsigned int ebo;
 		glCreateBuffers(1, &ebo);
@@ -70,7 +70,7 @@ namespace Shapes {
 		glUseProgram(shader);
 
 		glBindVertexArray(vao);
-		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, nullptr);
+		glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
 		glBindVertexArray(0);
 
 		glDeleteVertexArrays(1, &vao);

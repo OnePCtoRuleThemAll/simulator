@@ -10,6 +10,7 @@
 #include <iostream>
 #include "Shapes/TriangleDrawerDynamic.h"
 #include "Shapes/TriangleDrawerStatic.h"
+#include "Shapes/RectangleDrawer.h"
 
 using namespace std;
 
@@ -94,6 +95,8 @@ int main(int argc, char* argv[]) {
     Shapes::CircleDrawer<float>* circleDraw2 = new Shapes::CircleDrawer<float>(*circle2, *point8, *point9);
     Shapes::CircleDrawer<float>* circleDraw3 = new Shapes::CircleDrawer<float>(*circle3, *point8, *point9);
 
+    Shapes::RectangleDrawer<int>* rectangle = new Shapes::RectangleDrawer<int>(*point5, *point7, *point4, *point6);
+
     float positions[] = {
         -0.015f, -0.005f,
         -0.005f, 0.045f,
@@ -123,9 +126,9 @@ int main(int argc, char* argv[]) {
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
 
-        circleDraw->drawFilledCircle();
-        circleDraw2->drawFilledCircle();
-        circleDraw3->drawFilledCircle();
+        //circleDraw->drawFilledCircle();
+        //circleDraw2->drawFilledCircle();
+        //circleDraw3->drawFilledCircle();
 
         drawer->drawElements();
 
@@ -143,6 +146,8 @@ int main(int argc, char* argv[]) {
         }
 
         triangleStatic->drawTriangle();
+
+        //rectangle->drawRectangle();
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
