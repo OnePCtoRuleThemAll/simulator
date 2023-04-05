@@ -181,12 +181,14 @@
     <ClInclude Include="Separation.h" />
     <ClInclude Include="Shapes\CircleDrawer.h" />
     <ClInclude Include="Shapes\MovableShape.h" />
+    <ClInclude Include="Shapes\RectangleDrawer.h" />
     <ClInclude Include="Shapes\Shape.h" />
     <ClInclude Include="Shapes\StaticShape.h" />
     <ClInclude Include="Shapes\TriangleDrawerDynamic.h" />
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Rectangle.h" />
+    <ClInclude Include="Shapes\TriangleDrawerStatic.h" />
     <ClInclude Include="Simulation.h" />
     <ClInclude Include="tests\test.h" />
     <ClInclude Include="tests\testGeometry\testGeometry.h" />

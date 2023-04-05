@@ -9,6 +9,8 @@
 #include "Rendering/DrawTriangles.h"
 #include <iostream>
 #include "Shapes/TriangleDrawerDynamic.h"
+#include "Shapes/TriangleDrawerStatic.h"
+#include "Shapes/RectangleDrawer.h"
 
 using namespace std;
 
@@ -40,7 +42,7 @@ int main(int argc, char* argv[]) {
         return -1;
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(1500, 900, "Simulator", NULL, NULL);
+    window = glfwCreateWindow(900, 900, "Simulator", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -54,15 +56,28 @@ int main(int argc, char* argv[]) {
         cout << "Error!";
     }
 
-    Geometry2D::Point<float>* point = new Geometry2D::Point<float>(0.4f, 0.5f);
-    Geometry2D::Point<float>* point2 = new Geometry2D::Point<float>(0.2f, -0.2f);
-    Geometry2D::Point<float>* point3 = new Geometry2D::Point<float>(-0.4f, -0.5f);
-    Geometry2D::Vector<float>* vector = new Geometry2D::Vector<float>(0.5f, 0.5f);
+    // get the dimensions of the window
+    int width, height;
+    glfwGetWindowSize(window, &width, &height);
+
+    // set up the viewport to be centered and symmetric
+    int viewportWidth = std::min(width, height);
+    int viewportHeight = viewportWidth;
+    int viewportX = (width - viewportWidth) / 2;
+    int viewportY = (height - viewportHeight) / 2;
+    glViewport(viewportX, viewportY, viewportWidth, viewportHeight);
+
+    Geometry2D::Point<float>* point = new Geometry2D::Point<float>(20, 20);
+    Geometry2D::Point<float>* point2 = new Geometry2D::Point<float>(80, 80);
+    Geometry2D::Point<float>* point3 = new Geometry2D::Point<float>(70, 40);
+    Geometry2D::Point<float>* point8 = new Geometry2D::Point<float>(0, 0);
+    Geometry2D::Point<float>* point9 = new Geometry2D::Point<float>(100, 100);
 
     Geometry2D::Point<int>* point4 = new Geometry2D::Point<int>(0, 0);
     Geometry2D::Point<int>* point5 = new Geometry2D::Point<int>(30, 30);
     Geometry2D::Point<int>* point6 = new Geometry2D::Point<int>(100, 100);
     Geometry2D::Point<int>* point7 = new Geometry2D::Point<int>(80, 80);
+
     Geometry2D::Vector<int>* vector2 = new Geometry2D::Vector<int>(1, 0);
     Geometry2D::Vector<int>* vector3 = new Geometry2D::Vector<int>(0, -1);
     Geometry2D::Vector<int>* vector4= new Geometry2D::Vector<int>(-1, -1);
@@ -74,28 +89,35 @@ int main(int argc, char* argv[]) {
     DrawTriangles* drawer = new DrawTriangles();
     
     Shapes::TriangleDrawerDynamic<int>* triangle = new Shapes::TriangleDrawerDynamic<int>(*point5, *vector2, *point4, *point6, drawer);
+    Shapes::TriangleDrawerStatic<float>* triangleStatic = new Shapes::TriangleDrawerStatic<float>(*point, *point2, *point3, *point8, *point9);
 
-    //float positions[] = {
-    //    -0.015f, -0.005f,
-    //    -0.005f, 0.045f,
-    //    0.005f, -0.005f,
+    Shapes::CircleDrawer<float>* circleDraw = new Shapes::CircleDrawer<float>(*circle1, *point8, *point9);
+    Shapes::CircleDrawer<float>* circleDraw2 = new Shapes::CircleDrawer<float>(*circle2, *point8, *point9);
+    Shapes::CircleDrawer<float>* circleDraw3 = new Shapes::CircleDrawer<float>(*circle3, *point8, *point9);
 
-    //    0.055f, 0.05f,
-    //    0.045f, 0.1f,
-    //    0.035f, 0.05f,
+    Shapes::RectangleDrawer<int>* rectangle = new Shapes::RectangleDrawer<int>(*point5, *point7, *point4, *point6);
 
-    //    0.095f, 0.095f,
-    //    0.085f, 0.045f,
-    //    0.075f, 0.095f
-    //};
+    float positions[] = {
+        -0.015f, -0.005f,
+        -0.005f, 0.045f,
+        0.005f, -0.005f,
 
-    //for(auto vertex: positions) {
-    //    drawer->addVertex(vertex);
-    //}
+        0.055f, 0.05f,
+        0.045f, 0.1f,
+        0.035f, 0.05f,
 
-    //drawer->addActiveObject();
-    //drawer->addActiveObject();
-    //drawer->addActiveObject();
+        0.095f, 0.095f,
+        0.085f, 0.045f,
+        0.075f, 0.095f
+    };
+
+    for(auto vertex: positions) {
+        drawer->addVertex(vertex);
+    }
+
+    drawer->addActiveObject();
+    drawer->addActiveObject();
+    drawer->addActiveObject();
     int i = 1;
 
     /* Loop until the user closes the window */
@@ -104,9 +126,9 @@ int main(int argc, char* argv[]) {
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
 
-        Shapes::CircleDrawer<float>* circleDraw = new Shapes::CircleDrawer<float>(*circle1, *point2, *point3);
-        Shapes::CircleDrawer<float>* circleDraw2 = new Shapes::CircleDrawer<float>(*circle2, *point2, *point3);
-        Shapes::CircleDrawer<float>* circleDraw3 = new Shapes::CircleDrawer<float>(*circle3, *point2, *point3);
+        //circleDraw->drawFilledCircle();
+        //circleDraw2->drawFilledCircle();
+        //circleDraw3->drawFilledCircle();
 
         drawer->drawElements();
 
@@ -122,6 +144,10 @@ int main(int argc, char* argv[]) {
         if (i % 100 == 0) {
             triangle->translate(*point5);
         }
+
+        triangleStatic->drawTriangle();
+
+        //rectangle->drawRectangle();
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);

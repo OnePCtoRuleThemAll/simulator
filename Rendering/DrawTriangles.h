@@ -11,6 +11,7 @@ public:
 	void addVertex(const float position);
 	int getIndexOfCurrentLastVertex();
 	void addActiveObject();
+	void clear();
 
 protected:
 	static const int maxNumberOfVerticies = 60000;
@@ -20,6 +21,9 @@ protected:
 	int currentLastPoint = 0;
 	int numberOfActiveObjects = 0;
 	unsigned int vao;
-	Shader shader;
+	unsigned int vbo;
+	unsigned int ebo;
+	unsigned int shader;
+	Shader shaderObject;
 };
 
