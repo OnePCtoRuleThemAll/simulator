@@ -49,7 +49,7 @@ namespace Shapes {
 		unsigned int shader = this->shaderObject.CreateShader(source.VertexSource, source.FragmentSource);
 
 		unsigned int vao;
-		glCreateVertexArrays(1, &vao);
+		glGenVertexArrays(1, &vao);
 		glBindVertexArray(vao);
 
 		unsigned int vbo;
@@ -63,7 +63,7 @@ namespace Shapes {
 		int indicies[] = { 0, 1, 2 };
 
 		unsigned int ebo;
-		glCreateBuffers(1, &ebo);
+		glGenBuffers(1, &ebo);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indicies), indicies, GL_STATIC_DRAW);
 
