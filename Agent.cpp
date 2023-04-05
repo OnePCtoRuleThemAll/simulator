@@ -22,10 +22,11 @@ bool Agent::operator==(const Agent& other)
 	return this->equals(other);
 }
 
-void Agent::moveTo(Geometry2D::MyPoint& newPosition)
+void Agent::moveTo(Geometry2D::MyVector& velocity)
 {
 	this->mOldPosition->assign(*mPosition);
-	this->mPosition->assign(newPosition);
+	Geometry2D::moveThisPointByVector(*this->mPosition, velocity);
+	
 }
 
 Geometry2D::MyPoint* Agent::getPosition()

@@ -3,6 +3,7 @@
 #include <vector>
 #include "Obstacle.h"
 #include "Geometry2D/GeometryBase.h"
+#include "Rendering/DrawTriangles.h"
 
 class Agent;
 class World
@@ -33,7 +34,6 @@ public:
 
 	Geometry2D::MyPoint* getBottomPoint();
 
-private:
 	std::vector<std::list<Agent*>*>* matrix;
 
 	std::vector<Obstacle*>* obstacles;
@@ -41,6 +41,8 @@ private:
 	Geometry2D::MyPoint* mPointTop;
 
 	Geometry2D::MyPoint* mPointBottom;
+
+	DrawTriangles* mAgentDrawer;
 
 	unsigned int mMatrixColumns;
 	

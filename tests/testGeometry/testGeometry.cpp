@@ -30,13 +30,8 @@ namespace tests {
 	void VectorTests::test()
 	{
 		Geometry2D::Vector<int>* vector1 = new Geometry2D::Vector<int>(1, 0);
-		Geometry2D::Vector<int>* vector2 = new Geometry2D::Vector<int>(-1, 1);
-		int dotProduct = vector1->mDeltaX * vector2->mDeltaX + vector1->mDeltaY * vector2->mDeltaY;
-		std::cout << dotProduct << std::endl;
-
-		std::cout << Geometry2D::angleBetweenVectors(*vector1, *vector2) << std::endl;
+		
 		delete vector1;
-		delete vector2;
 	}
 
 	LineTests::LineTests() :

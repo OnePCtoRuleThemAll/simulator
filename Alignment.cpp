@@ -1,4 +1,5 @@
 #include "Alignment.h"
+#include "Agent.h"
 
 Alignment::Alignment()
 {

@@ -1,4 +1,5 @@
 #include"Cohesion.h"
+#include "Agent.h"
 
 Cohesion::Cohesion()
 {

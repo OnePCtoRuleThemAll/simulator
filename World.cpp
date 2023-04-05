@@ -124,12 +124,7 @@ void World::runWorld()
 			agent->act();
 		}
 	}
-
-	for (int i = 0; i < matrix->size(); i++) {
-		for (Agent* agent : *(matrix->at(i))) {
-			update(agent);
-		}
-	}
+	//this->mAgentDrawer->drawElements();
 }
 
 Geometry2D::MyPoint* World::getTopPoint()

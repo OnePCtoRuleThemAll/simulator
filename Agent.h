@@ -2,6 +2,8 @@
 
 #include "Geometry2D/Geometry2D.h"
 #include "World.h"
+#include "Shapes/MovableShape.h"
+#include "Behavior.h"
 
 class World;
 /// <summary> Abstract parent class of all agents. </summary>
@@ -35,7 +37,7 @@ public:
 
 	virtual void act() = 0;
 
-	void moveTo(Geometry2D::MyPoint& newPosition);
+	void moveTo(Geometry2D::MyVector& velocity);
 
 	Geometry2D::MyPoint* getPosition();
 
@@ -49,9 +51,12 @@ public:
 
 	World* getWorld();
 
+	Shapes::MovableShape<Geometry2D::GeomteryBase::MyFloat>* mShape;
+
+	Behavior* mBehavoir;
+
 	void setWorld(World* world);
 
-private:
 	Geometry2D::MyPoint* mPosition;
 
 	Geometry2D::MyPoint* mOldPosition;

@@ -120,13 +120,15 @@ int main(int argc, char* argv[]) {
     drawer->addActiveObject();
     int i = 1;
 
+    cout << glGetString(GL_VERSION) << endl;
+
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
 
-        //circleDraw->drawFilledCircle();
+        circleDraw->drawFilledCircle();
         //circleDraw2->drawFilledCircle();
         //circleDraw3->drawFilledCircle();
 
@@ -147,7 +149,7 @@ int main(int argc, char* argv[]) {
 
         triangleStatic->drawTriangle();
 
-        //rectangle->drawRectangle();
+        rectangle->drawRectangle();
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);

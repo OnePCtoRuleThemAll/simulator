@@ -26,7 +26,7 @@ void DrawTriangles::setupData()
 	ShaderProgramSource source = this->shaderObject.ParseShader("Resources/Shaders/Triangle.shader");
 	this->shader = this->shaderObject.CreateShader(source.VertexSource, source.FragmentSource);
 
-	glCreateVertexArrays(1, &this->vao);
+	glGenVertexArrays(1, &this->vao);
 	glBindVertexArray(this->vao);
 
 	glGenBuffers(1, &this->vbo);
@@ -36,7 +36,7 @@ void DrawTriangles::setupData()
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
 
-	glCreateBuffers(1, &this->ebo);
+	glGenBuffers(1, &this->ebo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->ebo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(this->indicies), this->indicies, GL_STATIC_DRAW);
 }

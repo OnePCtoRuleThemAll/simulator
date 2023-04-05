@@ -1,7 +1,7 @@
 #pragma once
 #include "Geometry2D/Geometry2D.h"
-#include "Agent.h"
 
+class Agent;
 /// <summary> Abstract parent class of all geometrical objects. </summary>
 class Behavior
 {

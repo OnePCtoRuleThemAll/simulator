@@ -1,4 +1,5 @@
 #include "Separation.h"
+#include "Agent.h"
 
 Separation::Separation()
 {
