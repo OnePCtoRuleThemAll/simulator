@@ -124,7 +124,7 @@ void World::runWorld()
 			agent->act();
 		}
 	}
-	//this->mAgentDrawer->drawElements();
+	this->mAgentDrawer->drawElements();
 }
 
 Geometry2D::MyPoint* World::getTopPoint()

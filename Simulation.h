@@ -8,13 +8,11 @@ public:
 
 	~Simulation();
 
-	void createWorld();
+	virtual void createWorld() = 0;
 	
-	void runSimulation();
+	void runSimulation(int numberOfSimulations, int numberOfReplicataions);
 
-	void runReplication();
-
-private:
+	void runReplication(int numberOfReplicataions);
 
 	World* world;
 };
