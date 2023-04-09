@@ -10,8 +10,4 @@ public:
 	Boid(World* world);
 
 	~Boid();
-
-	void execute() override;
-
-	void act() override;
 };

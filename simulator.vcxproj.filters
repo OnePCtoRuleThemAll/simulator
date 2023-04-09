@@ -161,6 +161,17 @@
     <ClCompile Include="BehaviorBoid.cpp">
       <Filter>Agent\Source files</Filter>
     </ClCompile>
+    <ClCompile Include="Alignment.cpp" />
+    <ClCompile Include="Behavior.cpp" />
+    <ClCompile Include="Boid.cpp" />
+    <ClCompile Include="Cohesion.cpp" />
+    <ClCompile Include="Separation.cpp" />
+    <ClCompile Include="TestSimulation.cpp">
+      <Filter>Simulation\Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="TestAgent.cpp">
+      <Filter>Agent\Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Geometry2D\Geometry2D.h">
@@ -214,9 +225,6 @@
     <ClInclude Include="Shapes\Shape.h">
       <Filter>Shapes\Header files</Filter>
     </ClInclude>
-    <ClInclude Include="Shapes\TriangleDrawer.h">
-      <Filter>Shapes\Header files</Filter>
-    </ClInclude>
     <ClInclude Include="Shapes\CircleDrawer.h">
       <Filter>Shapes\Header files</Filter>
     </ClInclude>
@@ -248,6 +256,21 @@
       <Filter>Agent\Header files</Filter>
     </ClInclude>
     <ClInclude Include="BehaviorBoid.h">
+      <Filter>Agent\Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Alignment.h" />
+    <ClInclude Include="Boid.h" />
+    <ClInclude Include="Cohesion.h" />
+    <ClInclude Include="Separation.h" />
+    <ClInclude Include="Shapes\MovableShape.h" />
+    <ClInclude Include="Shapes\RectangleDrawer.h" />
+    <ClInclude Include="Shapes\StaticShape.h" />
+    <ClInclude Include="Shapes\TriangleDrawerDynamic.h" />
+    <ClInclude Include="Shapes\TriangleDrawerStatic.h" />
+    <ClInclude Include="TestSimulation.h">
+      <Filter>Simulation\Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="TestAgent.h">
       <Filter>Agent\Header files</Filter>
     </ClInclude>
   </ItemGroup>

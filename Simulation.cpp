@@ -6,20 +6,20 @@ Simulation::Simulation()
 
 Simulation::~Simulation()
 {
-	delete world;
-	world = nullptr;
+	delete mWorld;
+	mWorld = nullptr;
 }
 
-void Simulation::runSimulation(int numberOfSimulations , int numberOfReplicataions)
+void Simulation::runSimulation(int numberOfSimulations , int numberOfReplications)
 {
 	for (int i = 0; i < numberOfSimulations; i++) {
-		runReplication(numberOfReplicataions);
+		runReplication(numberOfReplications);
 	}
 }
 
-void Simulation::runReplication(int numberOfReplicataions)
+void Simulation::runReplication(int numberOfReplications)
 {
-	for (int i = 0; i < 10000; i++) {
-		world->runWorld();
+	for (int i = 0; i < numberOfReplications; i++) {
+		mWorld->runWorld();
 	}
 }

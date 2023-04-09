@@ -22,6 +22,20 @@ bool Agent::operator==(const Agent& other)
 	return this->equals(other);
 }
 
+void Agent::execute()
+{
+	this->mDirection = this->mBehavoir->behave(this);
+	this->moveTo(*this->mDirection);
+}
+
+void Agent::act()
+{
+	this->execute();
+	this->mWorld->update(this);
+	this->mShape->translate(*this->mPosition);
+	this->mShape->rotate(*this->mDirection);
+}
+
 void Agent::moveTo(Geometry2D::MyVector& velocity)
 {
 	this->mOldPosition->assign(*mPosition);

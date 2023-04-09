@@ -35,17 +35,3 @@ Boid::~Boid()
 	this->mShape = nullptr;
 	this->mBehavoir = nullptr;
 }
-
-void Boid::execute()
-{
-	this->mDirection = this->mBehavoir->behave(this);
-	this->moveTo(*this->mDirection);
-}
-
-void Boid::act()
-{
-	this->execute();
-	this->mWorld->update(this);
-	this->mShape->translate(*this->mPosition);
-	this->mShape->rotate(*this->mDirection);
-}

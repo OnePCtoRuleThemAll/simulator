@@ -12,6 +12,7 @@
 #include "Shapes/TriangleDrawerStatic.h"
 #include "Shapes/RectangleDrawer.h"
 
+#include "TestSimulation.h"
 using namespace std;
 
 int main(int argc, char* argv[]) { 
@@ -97,6 +98,10 @@ int main(int argc, char* argv[]) {
 
     Shapes::RectangleDrawer<int>* rectangle = new Shapes::RectangleDrawer<int>(*point5, *point7, *point4, *point6);
 
+    TestSimlation* sim = new TestSimlation();
+    sim->createWorld();
+    sim->runReplication(1000);
+
     float positions[] = {
         -0.015f, -0.005f,
         -0.005f, 0.045f,
@@ -128,28 +133,28 @@ int main(int argc, char* argv[]) {
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
 
-        circleDraw->drawFilledCircle();
-        //circleDraw2->drawFilledCircle();
-        //circleDraw3->drawFilledCircle();
+        //circleDraw->drawFilledCircle();
+        ////circleDraw2->drawFilledCircle();
+        ////circleDraw3->drawFilledCircle();
 
-        drawer->drawElements();
+        //drawer->drawElements();
 
-        if (i % 50 == 0) {
-            triangle->rotate(*vector3);
-        }
-        if (i % 60 == 0) {
-            triangle->translate(*point7);
-        }
-        if (i % 70 == 0) {
-            triangle->rotate(*vector4);
-        }
-        if (i % 100 == 0) {
-            triangle->translate(*point5);
-        }
+        //if (i % 50 == 0) {
+        //    triangle->rotate(*vector3);
+        //}
+        //if (i % 60 == 0) {
+        //    triangle->translate(*point7);
+        //}
+        //if (i % 70 == 0) {
+        //    triangle->rotate(*vector4);
+        //}
+        //if (i % 100 == 0) {
+        //    triangle->translate(*point5);
+        //}
 
-        triangleStatic->drawTriangle();
+        //triangleStatic->drawTriangle();
 
-        rectangle->drawRectangle();
+        //rectangle->drawRectangle();
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);

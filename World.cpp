@@ -14,6 +14,10 @@ World::World(const Geometry2D::MyPoint& point1, const Geometry2D::MyPoint& point
 		std::list<Agent*>* list = new std::list<Agent*>();
 		matrix->push_back(list);
 	}
+
+	obstacles = new std::vector<Obstacle*>();
+
+	mAgentDrawer = new DrawTriangles();
 }
 
 World::~World()
@@ -94,11 +98,9 @@ std::list<Obstacle*>* World::searchObstacles(Geometry2D::GeomteryBase* form)
 void World::update(Agent* pAgent)
 {
 	int spotVector = mapping(pAgent->getPosition()->mPositionX, pAgent->getPosition()->mPositionY);
-	int spotVectorOld = -1;
-	if (pAgent->getOldPosition() != nullptr) {
-		spotVectorOld = mapping(pAgent->getOldPosition()->mPositionX, pAgent->getOldPosition()->mPositionY);
-	}
-	if (spotVectorOld != -1 && spotVector != spotVectorOld) {
+	int spotVectorOld = mapping(pAgent->getOldPosition()->mPositionX, pAgent->getOldPosition()->mPositionY);;
+	
+	if (spotVector != spotVectorOld) {
 		auto itr = matrix->at(spotVectorOld)->begin();
 		bool erased = false;
 		for (Agent* agent : *(matrix->at(spotVectorOld))) {

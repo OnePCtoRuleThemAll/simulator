@@ -6,7 +6,7 @@ namespace Shapes
 {
 	template <typename T>
 	class TriangleDrawerDynamic :
-		MovableShape<T>
+		public MovableShape<T>
 	{
 	public:
 		TriangleDrawerDynamic(Geometry2D::Point<T>& point, Geometry2D::Vector<T>& vector, 

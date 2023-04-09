@@ -5,7 +5,7 @@
 #include "Alignment.h"
 
 class BehaviorBoid :
-	Behavior
+	public Behavior
 {
 public:
 	BehaviorBoid();

@@ -33,9 +33,9 @@ public:
 	/// <returns>True if objects are equal. </returns>
 	virtual bool equals(const Agent& other) = 0;
 
-	virtual void execute() = 0;
+	void execute();
 
-	virtual void act() = 0;
+	void act();
 
 	void moveTo(Geometry2D::MyVector& velocity);
 

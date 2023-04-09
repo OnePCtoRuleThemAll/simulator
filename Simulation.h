@@ -14,5 +14,5 @@ public:
 
 	void runReplication(int numberOfReplicataions);
 
-	World* world;
+	World* mWorld;
 };
