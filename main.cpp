@@ -11,54 +11,64 @@
 #include "Shapes/TriangleDrawerDynamic.h"
 #include "Shapes/TriangleDrawerStatic.h"
 #include "Shapes/RectangleDrawer.h"
+#include "Rendering/Window.h"
 
 using namespace std;
 
 int main(int argc, char* argv[]) { 
 
-	ui::UiKeeper keeper;
-	structures::Logger::getInstance().registerConsumer(&keeper);
+#ifdef _DEBUG
 
-	keeper.registerTest(new tests::GeometryTestOverall());
+    ui::UiKeeper keeper;
+    structures::Logger::getInstance().registerConsumer(&keeper);
 
-	bool run = true;
-	do
-	{
-		keeper.printTestMenu();
-		std::vector<int> choice = keeper.readTestChoice();
-		keeper.markTests(choice);
-		keeper.resetTests();
-		keeper.runTests();
-		keeper.showTestResults();
-		keeper.showLog();
-		keeper.clearLog();
-		run = keeper.readShouldContinue();
-	} while (run);
+    keeper.registerTest(new tests::GeometryTestOverall());
 
-    GLFWwindow* window;
+    bool run = true;
+    do
+    {
+        keeper.printTestMenu();
+        std::vector<int> choice = keeper.readTestChoice();
+        keeper.markTests(choice);
+        keeper.resetTests();
+        keeper.runTests();
+        keeper.showTestResults();
+        keeper.showLog();
+        keeper.clearLog();
+        run = keeper.readShouldContinue();
+    } while (run);
+
+#endif // DEBUG
+
+    Window& window = Window::getInstance();
 
     /* Initialize the library */
-    if (!glfwInit())
+    if (!glfwInit()) {
+        std::cerr << "Failed to initialize GLFW" << std::endl;
         return -1;
+    }
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(900, 900, "Simulator", NULL, NULL);
-    if (!window)
+    GLFWwindow* windowPtr = glfwCreateWindow(900, 900, "Simulator", NULL, NULL);
+    if (!windowPtr)
     {
+        std::cerr << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
         return -1;
     }
 
+    window.setWindow(windowPtr);
+
     /* Make the window's context current */
-    glfwMakeContextCurrent(window);
+    glfwMakeContextCurrent(window.getWindow());
 
     if (glewInit() != GLEW_OK) {
-        cout << "Error!";
+        throw std::runtime_error("Failed to initialize GLEW");
     }
 
     // get the dimensions of the window
     int width, height;
-    glfwGetWindowSize(window, &width, &height);
+    glfwGetWindowSize(window.getWindow(), &width, &height);
 
     // set up the viewport to be centered and symmetric
     int viewportWidth = std::min(width, height);
@@ -121,14 +131,14 @@ int main(int argc, char* argv[]) {
     int i = 1;
 
     /* Loop until the user closes the window */
-    while (!glfwWindowShouldClose(window))
+    while (!glfwWindowShouldClose(window.getWindow()))
     {
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
 
-        //circleDraw->drawFilledCircle();
-        //circleDraw2->drawFilledCircle();
-        //circleDraw3->drawFilledCircle();
+        circleDraw->drawFilledCircle();
+        circleDraw2->drawFilledCircle();
+        circleDraw3->drawFilledCircle();
 
         drawer->drawElements();
 
@@ -145,20 +155,19 @@ int main(int argc, char* argv[]) {
             triangle->translate(*point5);
         }
 
-        triangleStatic->drawTriangle();
+        //triangleStatic->drawTriangle();
 
         //rectangle->drawRectangle();
 
         /* Swap front and back buffers */
-        glfwSwapBuffers(window);
+        glfwSwapBuffers(window.getWindow());
 
         /* Poll for and process events */
         glfwPollEvents();
         i++;
     }
 
-    //glDeleteProgram(shader);
-
+    glfwDestroyWindow(windowPtr);
     glfwTerminate();
 
 

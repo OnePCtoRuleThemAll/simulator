@@ -1,4 +1,5 @@
 #include "DrawTriangles.h"
+#include <GLFW/glfw3.h>
 
 DrawTriangles::~DrawTriangles()
 {
@@ -18,6 +19,7 @@ void DrawTriangles::drawElements()
 	glBindVertexArray(this->vao);
 	glDrawElements(GL_TRIANGLES, this->numberOfActiveObjects*3, GL_UNSIGNED_INT, nullptr);
 	glBindVertexArray(0);
+
 	this->clear();
 }
 

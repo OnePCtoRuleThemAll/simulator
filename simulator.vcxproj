@@ -172,6 +172,7 @@
     <ClInclude Include="PolySegment.h" />
     <ClInclude Include="Rendering\DrawTriangles.h" />
     <ClInclude Include="Rendering\Shader.h" />
+    <ClInclude Include="Rendering\Window.h" />
     <ClInclude Include="Shapes\CircleDrawer.h" />
     <ClInclude Include="Shapes\MovableShape.h" />
     <ClInclude Include="Shapes\RectangleDrawer.h" />

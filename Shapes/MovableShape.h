@@ -4,11 +4,10 @@
 namespace Shapes {
 	template <typename T>
 	class MovableShape :
-		Shape<T>
+		public Shape<T>
 	{
 	public:
-		MovableShape(Geometry2D::Point<T>& point, Geometry2D::Vector<T>& vector,
-			Geometry2D::Point<T>& worldStart, Geometry2D::Point<T>& worldEnd);
+		MovableShape(Geometry2D::Point<T>& worldStart, Geometry2D::Point<T>& worldEnd);
 		void rotate(Geometry2D::Vector<T>& vector);
 		void translate(Geometry2D::Point<T>& point);
 
@@ -18,8 +17,7 @@ namespace Shapes {
 		std::vector<float> mPositions;
 	};
 	template<typename T>
-	inline MovableShape<T>::MovableShape(Geometry2D::Point<T>& point, Geometry2D::Vector<T>& vector,
-		Geometry2D::Point<T>& worldStart, Geometry2D::Point<T>& worldEnd):
+	inline MovableShape<T>::MovableShape(Geometry2D::Point<T>& worldStart, Geometry2D::Point<T>& worldEnd):
 		Shape<T>::Shape(worldStart, worldEnd)
 	{
 	}

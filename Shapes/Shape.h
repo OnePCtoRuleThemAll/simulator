@@ -1,6 +1,7 @@
 #pragma once
 #include "../Geometry2D/Geometry2D.h"
 #include "../Rendering/Shader.h"
+#include "../Rendering/Window.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <cstddef>
