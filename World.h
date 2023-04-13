@@ -26,6 +26,8 @@ public:
 
 	std::list<Obstacle*>* searchObstacles(Geometry2D::GeomteryBase* form);
 
+	void shouldAgentUpdate(Agent* pAgent);
+
 	void update(Agent* pAgent);
 
 	void runWorld();
@@ -35,6 +37,8 @@ public:
 	Geometry2D::MyPoint* getBottomPoint();
 
 	std::vector<std::list<Agent*>*>* matrix;
+
+	std::vector<Agent*>* toUpdate;
 
 	std::vector<Obstacle*>* obstacles;
 

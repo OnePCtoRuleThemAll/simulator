@@ -17,6 +17,8 @@ World::World(const Geometry2D::MyPoint& point1, const Geometry2D::MyPoint& point
 
 	obstacles = new std::vector<Obstacle*>();
 
+	toUpdate = new std::vector<Agent*>();
+
 	mAgentDrawer = new DrawTriangles();
 }
 
@@ -95,36 +97,46 @@ std::list<Obstacle*>* World::searchObstacles(Geometry2D::GeomteryBase* form)
 	return list;
 }
 
-void World::update(Agent* pAgent)
+void World::shouldAgentUpdate(Agent* pAgent)
 {
 	int spotVector = mapping(pAgent->getPosition()->mPositionX, pAgent->getPosition()->mPositionY);
 	int spotVectorOld = mapping(pAgent->getOldPosition()->mPositionX, pAgent->getOldPosition()->mPositionY);;
-	
+
 	if (spotVector != spotVectorOld) {
-		auto itr = matrix->at(spotVectorOld)->begin();
-		bool erased = false;
-		for (Agent* agent : *(matrix->at(spotVectorOld))) {
-			if (agent->equals(*pAgent)) {
-				matrix->at(spotVectorOld)->erase(itr);
-				erased = true;
-				break;
-			}
-			itr++;
-		}
-		if (erased) {
-			insert(pAgent);
-		}
+		this->toUpdate->push_back(pAgent);
 	}
+}
 
-
+void World::update(Agent* pAgent)
+{
+	int spotVectorOld = mapping(pAgent->getOldPosition()->mPositionX, pAgent->getOldPosition()->mPositionY);;
+	
+	auto itr = matrix->at(spotVectorOld)->begin();
+	bool erased = false;
+	for (Agent* agent : *(matrix->at(spotVectorOld))) {
+		if (agent->equals(*pAgent)) {
+			matrix->at(spotVectorOld)->erase(itr);
+			erased = true;
+			break;
+		}
+		++itr;
+	}
+	if (erased) {
+		insert(pAgent);
+	}
 }
 
 void World::runWorld()
 {
+	toUpdate->clear();
 	for (int i = 0; i < matrix->size(); i++) {
 		for (Agent* agent : *(matrix->at(i))) {
 			agent->act();
+			shouldAgentUpdate(agent);
 		}
+	}
+	for (int i = 0; i < toUpdate->size(); i++) {
+		this->update(toUpdate->at(i));
 	}
 	this->mAgentDrawer->drawElements();
 }

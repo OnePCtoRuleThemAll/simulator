@@ -31,7 +31,6 @@ void Agent::execute()
 void Agent::act()
 {
 	this->execute();
-	this->mWorld->update(this);
 	this->mShape->translate(*this->mPosition);
 	this->mShape->rotate(*this->mDirection);
 }

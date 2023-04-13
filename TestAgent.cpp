@@ -33,13 +33,23 @@ Agent& TestAgent::assign(const Agent& other)
 
 bool TestAgent::equals(const Agent& other)
 {
+	if (this == &other) {
+		return true;
+	}
+	else {
+		const TestAgent* otherAgent = dynamic_cast<const TestAgent*>(&other);
+		if (otherAgent->mDirection->equals(*this->mDirection) && otherAgent->mPosition->equals(*this->mPosition) && 
+			otherAgent->mOldPosition->equals(*this->mOldPosition) && otherAgent->mWorld == this->mWorld) {
+			return true;
+		}
+	}
 	return false;
 }
 
 Geometry2D::MyVector* TestBehaviour::behave(Agent* pAgent)
 {
 	Geometry2D::MyVector* result = new Geometry2D::MyVector(1, 0);
-	if (pAgent->mPosition->mPositionX == 70 && pAgent->mPosition->mPositionY <= 70) {
+	/*if (pAgent->mPosition->mPositionX == 70 && pAgent->mPosition->mPositionY <= 70) {
 		result->mDeltaX = 0;
 		result->mDeltaY = 1;
 	}
@@ -50,6 +60,11 @@ Geometry2D::MyVector* TestBehaviour::behave(Agent* pAgent)
 	else if (pAgent->mPosition->mPositionX == 50 && pAgent->mPosition->mPositionY >= 50) {
 		result->mDeltaX = 0;
 		result->mDeltaY = -1;
+	}*/
+	if (pAgent->mPosition->mPositionX == 70) {
+		result->mDeltaX = -20;
+		result->mDeltaY = 0;
 	}
+	
 	return result;
 }
