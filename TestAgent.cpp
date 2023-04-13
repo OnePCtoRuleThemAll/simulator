@@ -48,23 +48,29 @@ bool TestAgent::equals(const Agent& other)
 
 Geometry2D::MyVector* TestBehaviour::behave(Agent* pAgent)
 {
+
 	Geometry2D::MyVector* result = new Geometry2D::MyVector(1, 0);
-	/*if (pAgent->mPosition->mPositionX == 70 && pAgent->mPosition->mPositionY <= 70) {
+	// Move down until reaching (70,70)
+	if (pAgent->mPosition->mPositionX == 70 && pAgent->mPosition->mPositionY < 70) {
 		result->mDeltaX = 0;
 		result->mDeltaY = 1;
 	}
-	else if (pAgent->mPosition->mPositionX >= 50 && pAgent->mPosition->mPositionY == 70) {
+	// Move left until reaching (50,70)
+	else if (pAgent->mPosition->mPositionX > 50 && pAgent->mPosition->mPositionY == 70) {
 		result->mDeltaX = -1;
 		result->mDeltaY = 0;
 	}
-	else if (pAgent->mPosition->mPositionX == 50 && pAgent->mPosition->mPositionY >= 50) {
+	// Move up until reaching (50,50)
+	else if (pAgent->mPosition->mPositionX == 50 && pAgent->mPosition->mPositionY > 50) {
 		result->mDeltaX = 0;
 		result->mDeltaY = -1;
-	}*/
-	if (pAgent->mPosition->mPositionX == 70) {
-		result->mDeltaX = -20;
+	}
+	// Move right until reaching (70,50)
+	else if (pAgent->mPosition->mPositionX < 70 && pAgent->mPosition->mPositionY == 50) {
+		result->mDeltaX = 1;
 		result->mDeltaY = 0;
 	}
-	
+
 	return result;
+
 }
