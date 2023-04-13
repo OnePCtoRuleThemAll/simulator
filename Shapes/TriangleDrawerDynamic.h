@@ -29,7 +29,7 @@ namespace Shapes
 	template<typename T>
 	inline TriangleDrawerDynamic<T>::TriangleDrawerDynamic(Geometry2D::Point<T>& point, Geometry2D::Vector<T>& vector,
 		Geometry2D::Point<T>& worldStart, Geometry2D::Point<T>& worldEnd, DrawTriangles* pointer):
-		MovableShape<T>::MovableShape(point, vector, worldStart, worldEnd)
+		MovableShape<T>::MovableShape(worldStart, worldEnd)
 	{
 		this->pointerToDrawerObject = pointer;
 
