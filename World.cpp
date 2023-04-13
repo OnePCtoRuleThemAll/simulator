@@ -1,5 +1,6 @@
 #include "World.h"
 #include "Agent.h"
+#include "Rendering/Window.h"
 
 World::World(const Geometry2D::MyPoint& point1, const Geometry2D::MyPoint& point2, float granulate) :
 	mPointTop(new Geometry2D::MyPoint(point1)),
@@ -128,6 +129,7 @@ void World::update(Agent* pAgent)
 
 void World::runWorld()
 {
+	glClear(GL_COLOR_BUFFER_BIT);
 	toUpdate->clear();
 	for (int i = 0; i < matrix->size(); i++) {
 		for (Agent* agent : *(matrix->at(i))) {
@@ -139,6 +141,11 @@ void World::runWorld()
 		this->update(toUpdate->at(i));
 	}
 	this->mAgentDrawer->drawElements();
+	/* Swap front and back buffers */
+	glfwSwapBuffers(Window::getInstance().getWindow());
+
+	/* Poll for and process events */
+	glfwPollEvents();
 }
 
 Geometry2D::MyPoint* World::getTopPoint()

@@ -24,6 +24,7 @@ bool Agent::operator==(const Agent& other)
 
 void Agent::execute()
 {
+	this->mOldDirection->assign(*mDirection);
 	this->mDirection = this->mBehavoir->behave(this);
 	this->moveTo(*this->mDirection);
 }
@@ -39,7 +40,6 @@ void Agent::moveTo(Geometry2D::MyVector& velocity)
 {
 	this->mOldPosition->assign(*mPosition);
 	Geometry2D::moveThisPointByVector(*this->mPosition, velocity);
-	
 }
 
 Geometry2D::MyPoint* Agent::getPosition()

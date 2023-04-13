@@ -2,7 +2,7 @@
 
 #include "Geometry2D/Geometry2D.h"
 #include "World.h"
-#include "Shapes/MovableShape.h"
+#include "Shapes/TriangleDrawerDynamic.h"
 #include "Behavior.h"
 
 class World;
@@ -51,7 +51,7 @@ public:
 
 	World* getWorld();
 
-	Shapes::MovableShape<Geometry2D::GeomteryBase::MyFloat>* mShape;
+	Shapes::TriangleDrawerDynamic<Geometry2D::GeomteryBase::MyFloat>* mShape;
 
 	Behavior* mBehavoir;
 
@@ -62,4 +62,6 @@ public:
 	Geometry2D::MyPoint* mOldPosition;
 
 	Geometry2D::MyVector* mDirection;
+
+	Geometry2D::MyVector* mOldDirection;
 };

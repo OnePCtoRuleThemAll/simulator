@@ -6,7 +6,8 @@ TestAgent::TestAgent(World* world)
 	this->mPosition = new Geometry2D::MyPoint(50, 50);
 	this->mOldPosition = new Geometry2D::MyPoint(*this->mPosition);
 	this->mDirection = new Geometry2D::MyVector(1, 0);
-	this->mShape = new Shapes::TriangleDrawerDynamic<Geometry2D::GeomteryBase::MyFloat>(*this->mOldPosition, *this->mDirection,
+	this->mOldDirection = new Geometry2D::MyVector(1, 0);
+	this->mShape = new Shapes::TriangleDrawerDynamic<Geometry2D::GeomteryBase::MyFloat>(*this->mOldPosition, *this->mOldDirection,
 		*this->mWorld->mPointTop, *this->mWorld->mPointBottom, this->mWorld->mAgentDrawer);
 	this->mBehavoir = new TestBehaviour();
 }
@@ -53,21 +54,21 @@ Geometry2D::MyVector* TestBehaviour::behave(Agent* pAgent)
 	// Move down until reaching (70,70)
 	if (pAgent->mPosition->mPositionX == 70 && pAgent->mPosition->mPositionY < 70) {
 		result->mDeltaX = 0;
-		result->mDeltaY = 1;
+		result->mDeltaY = 0.25;
 	}
 	// Move left until reaching (50,70)
 	else if (pAgent->mPosition->mPositionX > 50 && pAgent->mPosition->mPositionY == 70) {
-		result->mDeltaX = -1;
+		result->mDeltaX = -0.25;
 		result->mDeltaY = 0;
 	}
 	// Move up until reaching (50,50)
 	else if (pAgent->mPosition->mPositionX == 50 && pAgent->mPosition->mPositionY > 50) {
 		result->mDeltaX = 0;
-		result->mDeltaY = -1;
+		result->mDeltaY = -0.25;
 	}
 	// Move right until reaching (70,50)
 	else if (pAgent->mPosition->mPositionX < 70 && pAgent->mPosition->mPositionY == 50) {
-		result->mDeltaX = 1;
+		result->mDeltaX = 0.25;
 		result->mDeltaY = 0;
 	}
 

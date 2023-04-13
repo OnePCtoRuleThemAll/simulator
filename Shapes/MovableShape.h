@@ -32,8 +32,8 @@ namespace Shapes {
 			Geometry2D::Vector<float>* initialVector = new Geometry2D::Vector<float>(0.0f, -0.1f);
 			angle = Geometry2D::angleBetweenVectors(*initialVector, *newVector);
 			delete initialVector;
+			mCurrentDirection = &vector;
 		}
-
 		else {
 			Geometry2D::Vector<float>* newCurrentVector =
 				new Geometry2D::Vector<float>((float)this->mCurrentDirection->mDeltaX,(float)this->mCurrentDirection->mDeltaY);
@@ -59,7 +59,6 @@ namespace Shapes {
 		}
 
 		delete newVector;
-		this->mCurrentDirection = &vector;
 	}
 
 	template<typename T>
@@ -72,6 +71,9 @@ namespace Shapes {
 			deltaX = this->mapBetweenSystems(point.mPositionX, false) - this->mapBetweenSystems(this->mCurrentPosition->mPositionX, false);
 			deltaY = this->mapBetweenSystems(point.mPositionY, true) - this->mapBetweenSystems(this->mCurrentPosition->mPositionY, true);
 		}
+		else {
+			mCurrentPosition = &point;
+		}
 
 		for (int i = 0; i < this->mPositions.size(); i++) {
 			if (i % 2 == 0) {
@@ -81,8 +83,6 @@ namespace Shapes {
 				mPositions[i] += deltaY;
 			}
 		}
-
-		this->mCurrentPosition = &point;
 	}
 }
 

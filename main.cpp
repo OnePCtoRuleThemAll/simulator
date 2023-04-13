@@ -137,42 +137,6 @@ int main(int argc, char* argv[]) {
 
     cout << glGetString(GL_VERSION) << endl;
 
-    /* Loop until the user closes the window */
-    while (!glfwWindowShouldClose(window.getWindow()))
-    {
-        /* Render here */
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        //circleDraw->drawFilledCircle();
-        ////circleDraw2->drawFilledCircle();
-        ////circleDraw3->drawFilledCircle();
-
-        //drawer->drawElements();
-
-        //if (i % 50 == 0) {
-        //    triangle->rotate(*vector3);
-        //}
-        //if (i % 60 == 0) {
-        //    triangle->translate(*point7);
-        //}
-        //if (i % 70 == 0) {
-        //    triangle->rotate(*vector4);
-        //}
-        //if (i % 100 == 0) {
-        //    triangle->translate(*point5);
-        //}
-
-        //triangleStatic->drawTriangle();
-
-        //rectangle->drawRectangle();
-
-        /* Swap front and back buffers */
-        glfwSwapBuffers(window.getWindow());
-
-        /* Poll for and process events */
-        glfwPollEvents();
-        i++;
-    }
 
     glfwDestroyWindow(windowPtr);
     glfwTerminate();

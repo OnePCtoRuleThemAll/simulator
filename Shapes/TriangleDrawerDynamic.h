@@ -49,10 +49,10 @@ namespace Shapes
 	template<typename T>
 	inline TriangleDrawerDynamic<T>::~TriangleDrawerDynamic()
 	{
-		this->currentDirection = nullptr;
-		this->currentPosition = nullptr;
+		this->mCurrentDirection = nullptr;
+		this->mCurrentPosition = nullptr;
 		this->pointerToDrawerObject = nullptr;
-		delete this->mPositions;
+		//delete &this->mPositions;
 	}
 
 	template<typename T>
