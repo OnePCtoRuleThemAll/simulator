@@ -145,6 +145,7 @@
     <ClCompile Include="BehaviorBoid.cpp" />
     <ClCompile Include="Boid.cpp" />
     <ClCompile Include="Cohesion.cpp" />
+    <ClCompile Include="ConstantVelocity.cpp" />
     <ClCompile Include="Geometry2D\GeometryBase.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Obstacle.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="BehaviorBoid.h" />
     <ClInclude Include="Boid.h" />
     <ClInclude Include="Cohesion.h" />
+    <ClInclude Include="ConstantVelocity.h" />
     <ClInclude Include="Dependencies\glew-2.1.0\include\GL\eglew.h" />
     <ClInclude Include="Dependencies\glew-2.1.0\include\GL\glew.h" />
     <ClInclude Include="Dependencies\glew-2.1.0\include\GL\glxew.h" />
