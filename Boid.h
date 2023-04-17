@@ -4,10 +4,14 @@
 #include "BehaviorBoid.h"
 
 class Boid :
-	Agent
+	public Agent
 {
 public:
 	Boid(World* world);
 
 	~Boid();
+
+	Agent& assign(const Agent& other) override;
+
+	bool equals(const Agent& other) override;
 };

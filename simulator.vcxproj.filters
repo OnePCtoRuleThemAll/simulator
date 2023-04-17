@@ -172,6 +172,9 @@
     <ClCompile Include="TestAgent.cpp">
       <Filter>Agent\Source files</Filter>
     </ClCompile>
+    <ClCompile Include="BoidSimulation.cpp">
+      <Filter>Simulation\Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Geometry2D\Geometry2D.h">
@@ -261,7 +264,6 @@
     <ClInclude Include="Alignment.h" />
     <ClInclude Include="Boid.h" />
     <ClInclude Include="Cohesion.h" />
-    <ClInclude Include="Separation.h" />
     <ClInclude Include="Shapes\MovableShape.h" />
     <ClInclude Include="Shapes\RectangleDrawer.h" />
     <ClInclude Include="Shapes\StaticShape.h" />
@@ -272,6 +274,10 @@
     </ClInclude>
     <ClInclude Include="TestAgent.h">
       <Filter>Agent\Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\Window.h" />
+    <ClInclude Include="BoidSimulation.h">
+      <Filter>Simulation\Header files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
