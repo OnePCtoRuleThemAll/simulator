@@ -9,7 +9,8 @@ TestAgent::TestAgent(World* world)
 	this->mOldDirection = new Geometry2D::MyVector(1, 0);
 	this->mShape = new Shapes::TriangleDrawerDynamic<Geometry2D::GeomteryBase::MyFloat>(*this->mOldPosition, *this->mOldDirection,
 		*this->mWorld->mPointTop, *this->mWorld->mPointBottom, this->mWorld->mAgentDrawer);
-	this->mBehavoir = new TestBehaviour();
+	this->mBehavoir = new std::vector<Behavior*>();
+	this->mBehavoir->push_back(new TestBehaviour());
 }
 
 TestAgent::~TestAgent()
