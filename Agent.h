@@ -53,7 +53,7 @@ public:
 
 	Shapes::TriangleDrawerDynamic<Geometry2D::GeomteryBase::MyFloat>* mShape;
 
-	Behavior* mBehavoir;
+	std::vector<Behavior*>* mBehavoir;
 
 	void setWorld(World* world);
 

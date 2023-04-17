@@ -25,7 +25,11 @@ bool Agent::operator==(const Agent& other)
 void Agent::execute()
 {
 	this->mOldDirection->assign(*mDirection);
-	this->mDirection = this->mBehavoir->behave(this);
+	Geometry2D::MyVector* result = new Geometry2D::MyVector(0, 0);
+	for (int i = 0; i < this->mBehavoir->size(); i++) {
+		result->vectorAddition(*this->mBehavoir->at(i)->behave(this));
+	}
+	this->mDirection = result;
 	this->moveTo(*this->mDirection);
 }
 
