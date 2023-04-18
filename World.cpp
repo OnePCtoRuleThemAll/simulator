@@ -6,6 +6,7 @@ World::World(const Geometry2D::MyPoint& point1, const Geometry2D::MyPoint& point
 	mPointTop(new Geometry2D::MyPoint(point1)),
 	mPointBottom(new Geometry2D::MyPoint(point2))
 {
+	mMatrixBlockSize = granulate;
 	mMatrixColumns = ceil((mPointBottom->mPositionX - mPointTop->mPositionX) / granulate);
 	mMatrixRows = ceil((mPointBottom->mPositionY - mPointTop->mPositionY) / granulate);
 
@@ -165,17 +166,17 @@ unsigned int World::mapping(Geometry2D::GeomteryBase::MyFloat posX, Geometry2D::
 	unsigned int columns = 0;
 	unsigned int rows = 0;
 	if (mPointTop->mPositionX < 0) {
-		columns = ceil((posX - mPointTop->mPositionX) / mMatrixColumns);
+		columns = ceil((posX - mPointTop->mPositionX) / mMatrixBlockSize);
 	}
 	else {
-		columns = ceil((posX) / mMatrixColumns);
+		columns = ceil((posX) / mMatrixBlockSize);
 	}
 
 	if (mPointBottom->mPositionY < 0) {
-		rows = ceil((posY - mPointBottom->mPositionY) / mMatrixRows);
+		rows = ceil((posY - mPointBottom->mPositionY) / mMatrixBlockSize);
 	}
 	else {
-		rows = ceil((posY) / mMatrixRows);
+		rows = ceil((posY) / mMatrixBlockSize);
 	}
 
 	return rows * mMatrixColumns + columns;

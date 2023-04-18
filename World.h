@@ -52,5 +52,7 @@ public:
 	
 	unsigned int mMatrixRows;
 
+	float mMatrixBlockSize;
+
 	unsigned int mapping(Geometry2D::GeomteryBase::MyFloat posX, Geometry2D::GeomteryBase::MyFloat posY);
 };
