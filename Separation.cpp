@@ -19,7 +19,7 @@ Geometry2D::MyVector* Separation::behave(Agent* pAgent)
 
 	for (auto agent : *list) {
 		count++;
-		Geometry2D::MyVector* diff = new Geometry2D::MyVector(*pAgent->getPosition(), *agent->getPosition());
+		Geometry2D::MyVector* diff = new Geometry2D::MyVector(*agent->getPosition(), *pAgent->getPosition());
 		diff->normalize();
 		Geometry2D::GeomteryBase::MyFloat weight = 1 / Geometry2D::distanceBetweenPoints(*agent->getPosition(), *pAgent->getPosition());
 		diff->vectorMultiplication(weight);

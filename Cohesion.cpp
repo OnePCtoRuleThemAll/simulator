@@ -11,7 +11,7 @@ Cohesion::~Cohesion()
 
 Geometry2D::MyVector* Cohesion::behave(Agent* pAgent)
 {
-	Geometry2D::MyVector* steer = new Geometry2D::MyVector(*pAgent->mDirection);
+	Geometry2D::MyVector* steer = new Geometry2D::MyVector(0, 0);
 	float vision = 70;
 	int count = 0;
 	Geometry2D::Circle<Geometry2D::GeomteryBase::MyFloat>* checkingSpace = new Geometry2D::Circle<Geometry2D::GeomteryBase::MyFloat>(*pAgent->getPosition(), vision);
@@ -19,7 +19,7 @@ Geometry2D::MyVector* Cohesion::behave(Agent* pAgent)
 
 	for (auto agent : *list) {
 		count++;
-		Geometry2D::MyVector* diff = new Geometry2D::MyVector(*agent->getPosition(), *pAgent->getPosition());
+		Geometry2D::MyVector* diff = new Geometry2D::MyVector(*pAgent->getPosition(), *agent->getPosition());
 		steer->vectorAddition(*diff);
 		delete diff;
 	}
