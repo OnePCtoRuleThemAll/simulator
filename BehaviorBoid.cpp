@@ -21,6 +21,8 @@ Geometry2D::MyVector* BehaviorBoid::behave(Agent* pAgent)
 	Geometry2D::MyVector* aliV = ali->behave(pAgent);
 	Geometry2D::MyVector* cohV = coh->behave(pAgent);
 
+	cohV->vectorMultiplication(50);
+	aliV->vectorMultiplication(20);
 	
 	sepV->vectorAddition(*aliV);
 	sepV->vectorAddition(*cohV);
@@ -28,5 +30,7 @@ Geometry2D::MyVector* BehaviorBoid::behave(Agent* pAgent)
 	delete aliV;
 	delete cohV;
 
+	sepV->normalize();
+	sepV->vectorMultiplication(0.2);
 	return sepV;
 }

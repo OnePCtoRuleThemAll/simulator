@@ -62,17 +62,18 @@ bool World::remove(Agent* pAgent)
 std::list<Agent*>* World::searchAgents(Agent* pAgent, Geometry2D::GeomteryBase* form)
 {
 	Geometry2D::GeomteryBase::MyFloat topX = (mPointTop->mPositionX < form->boundingRec->mTopPoint->mPositionX) ? form->boundingRec->mTopPoint->mPositionX : mPointTop->mPositionX;
-	Geometry2D::GeomteryBase::MyFloat topY = (mPointTop->mPositionY < form->boundingRec->mTopPoint->mPositionX) ? form->boundingRec->mTopPoint->mPositionY : mPointTop->mPositionY;
-	Geometry2D::GeomteryBase::MyFloat bottomX = (mPointTop->mPositionX > form->boundingRec->mBottomPoint->mPositionX) ? form->boundingRec->mBottomPoint->mPositionX : mPointTop->mPositionX;
-	Geometry2D::GeomteryBase::MyFloat bottomY = (mPointTop->mPositionY > form->boundingRec->mBottomPoint->mPositionY) ? form->boundingRec->mBottomPoint->mPositionY : mPointTop->mPositionY;
+	Geometry2D::GeomteryBase::MyFloat topY = (mPointTop->mPositionY < form->boundingRec->mTopPoint->mPositionY) ? form->boundingRec->mTopPoint->mPositionY : mPointTop->mPositionY;
+	Geometry2D::GeomteryBase::MyFloat bottomX = (mPointBottom->mPositionX > form->boundingRec->mBottomPoint->mPositionX) ? form->boundingRec->mBottomPoint->mPositionX : mPointBottom->mPositionX;
+	Geometry2D::GeomteryBase::MyFloat bottomY = (mPointBottom->mPositionY > form->boundingRec->mBottomPoint->mPositionY) ? form->boundingRec->mBottomPoint->mPositionY : mPointBottom->mPositionY;
 	std::list<Agent*>* list = new std::list<Agent*>();
 
 	int point1Order = mapping(topX, topY);
 	int point2Order = mapping(bottomX, topY);
+	int blocksBetween = point2Order - point1Order;
 	int point3Order = mapping(topX, bottomY);
 
 	for (int i = point1Order; i <= point3Order; i += mMatrixColumns) {
-		for (int j = i; j <= point2Order; j++) {
+		for (int j = i; j < i + blocksBetween; j++) {
 			for (Agent* agent : *(matrix->at(j))) {
 				if (form->isPointIn(*agent->getPosition())) {
 					if (agent != pAgent) {
@@ -163,18 +164,24 @@ unsigned int World::mapping(Geometry2D::GeomteryBase::MyFloat posX, Geometry2D::
 {
 	unsigned int columns = 0;
 	unsigned int rows = 0;
+	if (posX = mPointBottom->mPositionX ) {
+		posX--;
+	}
+	if (posY = mPointBottom->mPositionY) {
+		posY--;
+	}
 	if (mPointTop->mPositionX < 0) {
-		columns = ceil((posX - mPointTop->mPositionX) / mMatrixBlockSize);
+		columns = floor((posX - mPointTop->mPositionX) / mMatrixBlockSize);
 	}
 	else {
-		columns = ceil((posX) / mMatrixBlockSize);
+		columns = floor((posX) / mMatrixBlockSize);
 	}
 
 	if (mPointBottom->mPositionY < 0) {
-		rows = ceil((posY - mPointBottom->mPositionY) / mMatrixBlockSize);
+		rows = floor((posY - mPointBottom->mPositionY) / mMatrixBlockSize);
 	}
 	else {
-		rows = ceil((posY) / mMatrixBlockSize);
+		rows = floor((posY) / mMatrixBlockSize);
 	}
 
 	return rows * mMatrixColumns + columns;

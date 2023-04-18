@@ -11,8 +11,8 @@ Cohesion::~Cohesion()
 
 Geometry2D::MyVector* Cohesion::behave(Agent* pAgent)
 {
-	Geometry2D::MyVector* steer = new Geometry2D::MyVector(0, 0);
-	float vision = 50;
+	Geometry2D::MyVector* steer = new Geometry2D::MyVector(*pAgent->mDirection);
+	float vision = 200;
 	int count = 0;
 	Geometry2D::Circle<Geometry2D::GeomteryBase::MyFloat>* checkingSpace = new Geometry2D::Circle<Geometry2D::GeomteryBase::MyFloat>(*pAgent->getPosition(), vision);
 	std::list<Agent*>* list = pAgent->mWorld->searchAgents(pAgent, checkingSpace);

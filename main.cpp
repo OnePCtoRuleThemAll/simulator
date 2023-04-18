@@ -111,11 +111,11 @@ int main(int argc, char* argv[]) {
 
 
 
-    TestSimlation* sim = new TestSimlation();
-    sim->runReplication(1, 5000);
+   /* TestSimlation* sim = new TestSimlation();
+    sim->runReplication(1, 5000);*/
 
-    /*BoidSimulation* sim = new BoidSimulation();
-    sim->runReplication(1,5000);*/
+    BoidSimulation* sim = new BoidSimulation();
+    sim->runReplication(1,5000);
 
     float positions[] = {
         -0.015f, -0.005f,

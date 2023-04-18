@@ -45,15 +45,14 @@ void Agent::act()
 void Agent::moveTo(Geometry2D::MyVector& velocity)
 {
 	if (canAgentMove(velocity)) {
-		std::ofstream logfile;
-		logfile.open("mylog.txt", std::ios::app);  // open the file for appending
+		//std::ofstream logfile;
+		//logfile.open("mylog.txt", std::ios::app);  // open the file for appending
 
-		
 		this->mOldPosition->assign(*mPosition);
 		Geometry2D::moveThisPointByVector(*this->mPosition, velocity);
 
-		logfile << this->mPosition->mPositionX << "," << this->mPosition->mPositionY << std::endl;
-		logfile.close();
+		/*logfile << this->mPosition->mPositionX << "," << this->mPosition->mPositionY << std::endl;
+		logfile.close();*/
 	}
 }
 
