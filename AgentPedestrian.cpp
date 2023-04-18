@@ -8,8 +8,8 @@ AgentPedestrian::AgentPedestrian(World* world, Geometry2D::MyPoint* target, Geom
 	this->mWorld = world;
 	this->mPosition = spawn;
 	this->mOldPosition = new Geometry2D::MyPoint(*this->mPosition);
-	this->mDirection = new Geometry2D::MyVector(1, 1);
-	this->mOldDirection = new Geometry2D::MyVector(1, 1);
+	this->mDirection = new Geometry2D::MyVector(1, 0);
+	this->mOldDirection = new Geometry2D::MyVector(1, 0);
 	this->mShape = new Shapes::TriangleDrawerDynamic<Geometry2D::GeomteryBase::MyFloat>(*this->mOldPosition, *this->mOldDirection,
 		*this->mWorld->mPointTop, *this->mWorld->mPointBottom, this->mWorld->mAgentDrawer);
 	this->mBehavoir = new std::vector<Behavior*>();
