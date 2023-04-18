@@ -6,13 +6,16 @@ class TestAgent:
 	public Agent
 {
 public:
-	TestAgent(World* world);
+	TestAgent(World* world, int vert, int hor);
 
 	~TestAgent();
 
 	Agent& assign(const Agent& other) override;
 
 	bool equals(const Agent& other) override;
+
+	int mVerticalOffset;
+	int mHorizontalOffset;
 };
 
 class TestBehaviour :

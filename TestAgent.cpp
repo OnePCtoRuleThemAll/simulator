@@ -1,6 +1,8 @@
 #include "TestAgent.h"
 
-TestAgent::TestAgent(World* world)
+TestAgent::TestAgent(World* world, int ver, int hor):
+	mVerticalOffset(ver),
+	mHorizontalOffset(hor)
 {
 	this->mWorld = world;
 	this->mPosition = new Geometry2D::MyPoint(50, 50);
@@ -50,24 +52,25 @@ bool TestAgent::equals(const Agent& other)
 
 Geometry2D::MyVector* TestBehaviour::behave(Agent* pAgent)
 {
+	TestAgent* newAgent = dynamic_cast<TestAgent*>(pAgent);
 	Geometry2D::MyVector* result = new Geometry2D::MyVector(1, 0);
 	// Move down until reaching (70,70)
-	if (pAgent->mPosition->mPositionX == 70 && pAgent->mPosition->mPositionY < 70) {
+	if (pAgent->mPosition->mPositionX == 70.0 + newAgent->mHorizontalOffset && pAgent->mPosition->mPositionY < 70.0 + newAgent->mVerticalOffset) {
 		result->mDeltaX = 0;
 		result->mDeltaY = 0.25;
 	}
 	// Move left until reaching (50,70)
-	else if (pAgent->mPosition->mPositionX > 50 && pAgent->mPosition->mPositionY == 70) {
+	else if (pAgent->mPosition->mPositionX > 50.0 - newAgent->mHorizontalOffset && pAgent->mPosition->mPositionY == 70.0 + newAgent->mVerticalOffset) {
 		result->mDeltaX = -0.25;
 		result->mDeltaY = 0;
 	}
 	// Move up until reaching (50,50)
-	else if (pAgent->mPosition->mPositionX == 50 && pAgent->mPosition->mPositionY > 50) {
+	else if (pAgent->mPosition->mPositionX == 50.0 - newAgent->mHorizontalOffset && pAgent->mPosition->mPositionY > 50.0 - newAgent->mVerticalOffset) {
 		result->mDeltaX = 0;
 		result->mDeltaY = -0.25;
 	}
 	// Move right until reaching (70,50)
-	else if (pAgent->mPosition->mPositionX < 70 && pAgent->mPosition->mPositionY == 50) {
+	else if (pAgent->mPosition->mPositionX < 70.0 + newAgent->mHorizontalOffset && pAgent->mPosition->mPositionY == 50.0 - newAgent->mVerticalOffset) {
 		result->mDeltaX = 0.25;
 		result->mDeltaY = 0;
 	}
