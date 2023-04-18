@@ -10,9 +10,9 @@ public:
 
 	virtual void createWorld() = 0;
 	
-	void runSimulation(int numberOfSimulations, int numberOfReplicataions);
+	void runSimulation(int numberOfSimulations, int numberOfReplicataions, int numberOfTicks);
 
-	void runReplication(int numberOfReplicataions);
+	void runReplication(int numberOfReplicataions, int numberOfTicks);
 
 	World* mWorld;
 };

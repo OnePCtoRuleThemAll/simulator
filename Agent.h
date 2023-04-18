@@ -39,6 +39,8 @@ public:
 
 	void moveTo(Geometry2D::MyVector& velocity);
 
+	bool canAgentMove(Geometry2D::MyVector& velocity);
+
 	Geometry2D::MyPoint* getPosition();
 
 	Geometry2D::MyPoint* getOldPosition();

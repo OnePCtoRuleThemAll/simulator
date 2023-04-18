@@ -42,8 +42,27 @@ void Agent::act()
 
 void Agent::moveTo(Geometry2D::MyVector& velocity)
 {
-	this->mOldPosition->assign(*mPosition);
-	Geometry2D::moveThisPointByVector(*this->mPosition, velocity);
+	if (canAgentMove(velocity)) {
+		this->mOldPosition->assign(*mPosition);
+		Geometry2D::moveThisPointByVector(*this->mPosition, velocity);
+	}
+}
+
+bool Agent::canAgentMove(Geometry2D::MyVector& velocity)
+{
+	Geometry2D::MyPoint* newPos = Geometry2D::movePointByVector(velocity ,*this->mPosition);
+	if (newPos->mPositionX < this->mWorld->mPointTop->mPositionX || newPos->mPositionX > this->mWorld->mPointBottom->mPositionX) {
+		delete newPos;
+		return false;
+	}
+	else if (newPos->mPositionY < this->mWorld->mPointTop->mPositionY || newPos->mPositionY > this->mWorld->mPointBottom->mPositionY) {
+		delete newPos;
+		return false;
+	}
+	else {
+		delete newPos;
+		return true;
+	}
 }
 
 Geometry2D::MyPoint* Agent::getPosition()

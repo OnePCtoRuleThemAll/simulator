@@ -3,6 +3,7 @@
 #include "Separation.h"
 #include "Cohesion.h"
 #include "Alignment.h"
+#include "Agent.h"
 
 class BehaviorBoid :
 	public Behavior

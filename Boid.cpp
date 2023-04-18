@@ -16,9 +16,10 @@ Boid::Boid(World* world)
 	posX = ((float)rand() / RAND_MAX) * 2 - 1;
 	posY = ((float)rand() / RAND_MAX) * 2 - 1;
 	this->mDirection = new Geometry2D::MyVector(posX, posY);
-	/*this->mShape = new Shapes::TriangleDrawerDynamic<Geometry2D::GeomteryBase::MyFloat>(*this->mOldPosition, *this->mDirection,
+	this->mShape = new Shapes::TriangleDrawerDynamic<Geometry2D::GeomteryBase::MyFloat>(*this->mOldPosition, *this->mOldDirection,
 		*this->mWorld->mPointTop, *this->mWorld->mPointBottom, this->mWorld->mAgentDrawer);
-	this->mBehavoir = new BehaviorBoid();*/
+	this->mBehavoir = new std::vector<Behavior*>();
+	this->mBehavoir->push_back(new BehaviorBoid());
 }
 
 Boid::~Boid()
@@ -34,4 +35,24 @@ Boid::~Boid()
 	this->mOldPosition = nullptr;
 	this->mShape = nullptr;
 	this->mBehavoir = nullptr;
+}
+
+Agent& Boid::assign(const Agent& other)
+{
+	return *this;
+}
+
+bool Boid::equals(const Agent& other)
+{
+	if (this == &other) {
+		return true;
+	}
+	else {
+		const Boid* otherAgent = dynamic_cast<const Boid*>(&other);
+		if (otherAgent->mDirection->equals(*this->mDirection) && otherAgent->mPosition->equals(*this->mPosition) &&
+			otherAgent->mOldPosition->equals(*this->mOldPosition) && otherAgent->mWorld == this->mWorld) {
+			return true;
+		}
+	}
+	return false;
 }
