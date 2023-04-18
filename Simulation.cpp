@@ -10,16 +10,19 @@ Simulation::~Simulation()
 	mWorld = nullptr;
 }
 
-void Simulation::runSimulation(int numberOfSimulations , int numberOfReplications)
+void Simulation::runSimulation(int numberOfSimulations , int numberOfReplications, int numberOfTicks)
 {
 	for (int i = 0; i < numberOfSimulations; i++) {
-		runReplication(numberOfReplications);
+		runReplication(numberOfReplications, numberOfTicks);
 	}
 }
 
-void Simulation::runReplication(int numberOfReplications)
+void Simulation::runReplication(int numberOfReplications, int numberOfTicks)
 {
 	for (int i = 0; i < numberOfReplications; i++) {
-		mWorld->runWorld();
+		createWorld();
+		for (int j = 0; j < numberOfTicks; j++) {
+			mWorld->runWorld();
+		}
 	}
 }

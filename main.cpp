@@ -110,8 +110,7 @@ int main(int argc, char* argv[]) {
     Shapes::RectangleDrawer<int>* rectangle = new Shapes::RectangleDrawer<int>(*point5, *point7, *point4, *point6);
 
     TestSimlation* sim = new TestSimlation();
-    sim->createWorld();
-    sim->runReplication(1000);
+    sim->runReplication(1, 1000);
 
     /*BoidSimulation* sim = new BoidSimulation();
     sim->createWorld();

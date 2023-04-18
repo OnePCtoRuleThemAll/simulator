@@ -27,10 +27,6 @@ Geometry2D::MyVector* BehaviorBoid::behave(Agent* pAgent)
 
 	delete aliV;
 	delete cohV;
-	pAgent.
-
-	/*if (Geometry2D::movePointByVector(*sepV)) {
-	}*/
 
 	return sepV;
 }
