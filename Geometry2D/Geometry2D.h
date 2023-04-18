@@ -151,7 +151,7 @@ namespace Geometry2D
 
 	template<typename T>
 	inline Vector<T>::Vector(const Point<T>& point1, const Point<T>& point2) :
-		mDeltaX(point2.mPositionX - point2.mPositionX),
+		mDeltaX(point2.mPositionX - point1.mPositionX),
 		mDeltaY(point2.mPositionY - point1.mPositionY)
 	{
 	}

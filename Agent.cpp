@@ -27,13 +27,16 @@ bool Agent::operator==(const Agent& other)
 void Agent::execute()
 {
 	this->mOldDirection->assign(*mDirection);
-	Geometry2D::MyVector* result = new Geometry2D::MyVector(0, 0);
+	Geometry2D::MyVector* result = new Geometry2D::MyVector(*mDirection);
+	result->normalize();
 	for (int i = 0; i < this->mBehavoir->size(); i++) {
 		Geometry2D::MyVector* behaviorLocal = this->mBehavoir->at(i)->behave(this);
 		result->vectorAddition(*behaviorLocal);
 		delete behaviorLocal;
 	}
 	delete mDirection;
+	result->normalize();
+	result->vectorMultiplication(1);
 	this->mDirection = result;
 
 	this->moveTo(*this->mDirection);
@@ -42,9 +45,6 @@ void Agent::execute()
 void Agent::act()
 {
 	this->execute();
-	this->mShape->rotate(*this->mDirection);
-	this->mShape->translate(*this->mPosition);
-
 }
 
 void Agent::moveTo(Geometry2D::MyVector& velocity)
@@ -55,6 +55,9 @@ void Agent::moveTo(Geometry2D::MyVector& velocity)
 
 		this->mOldPosition->assign(*mPosition);
 		Geometry2D::moveThisPointByVector(*this->mPosition, velocity);
+
+		this->mShape->rotate(*this->mDirection);
+		this->mShape->translate(*this->mPosition);
 
 		/*logfile << this->mPosition->mPositionX << "," << this->mPosition->mPositionY << std::endl;
 		logfile.close();*/
