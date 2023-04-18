@@ -110,11 +110,10 @@ int main(int argc, char* argv[]) {
     Shapes::RectangleDrawer<int>* rectangle = new Shapes::RectangleDrawer<int>(*point5, *point7, *point4, *point6);
 
     TestSimlation* sim = new TestSimlation();
-    sim->runReplication(1, 1000);
+    sim->runReplication(1, 5000);
 
     /*BoidSimulation* sim = new BoidSimulation();
-    sim->createWorld();
-    sim->runReplication(1000);*/
+    sim->runReplication(1,5000);*/
 
     float positions[] = {
         -0.015f, -0.005f,
