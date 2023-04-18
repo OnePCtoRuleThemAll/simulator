@@ -1,5 +1,4 @@
 #include "TestSimulation.h"
-#include "TestSimulation.h"
 
 void TestSimlation::createWorld()
 {

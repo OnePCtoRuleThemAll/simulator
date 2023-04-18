@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Agent.cpp" />
+    <ClCompile Include="AgentPedestrian.cpp" />
     <ClCompile Include="Alignment.cpp" />
     <ClCompile Include="Behavior.cpp" />
     <ClCompile Include="BehaviorBoid.cpp" />
@@ -149,6 +150,7 @@
     <ClCompile Include="Geometry2D\GeometryBase.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Obstacle.cpp" />
+    <ClCompile Include="ScenarioA.cpp" />
     <ClCompile Include="Separation.cpp" />
     <ClCompile Include="Simulation.cpp" />
     <ClCompile Include="Rendering\DrawTriangles.cpp" />
@@ -165,6 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Agent.h" />
+    <ClInclude Include="AgentPedestrian.h" />
     <ClInclude Include="Alignment.h" />
     <ClInclude Include="Behavior.h" />
     <ClInclude Include="BehaviorBoid.h" />
@@ -185,6 +188,7 @@
     <ClInclude Include="Rendering\DrawTriangles.h" />
     <ClInclude Include="Rendering\Shader.h" />
     <ClInclude Include="Rendering\Window.h" />
+    <ClInclude Include="ScenarioA.h" />
     <ClInclude Include="Shapes\CircleDrawer.h" />
     <ClInclude Include="Shapes\MovableShape.h" />
     <ClInclude Include="Shapes\RectangleDrawer.h" />

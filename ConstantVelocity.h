@@ -1,26 +1,16 @@
 #pragma once
 #include "Behavior.h"
+#include "AgentPedestrian.h"
 
-namespace MovementModels {
-	class ConstantVelocity
-	{
-	public:
-		ConstantVelocity();
-		~ConstantVelocity();
 
-	private:
-		double mNotTraveledDistance;
-		Geometry2D::MyPoint correctPossition(const Geometry2D::MyPoint nextPossition, const Geometry2D::MyVector direction);
+class ConstantVelocity :
+	public Behavior
+{
+public:
+	Geometry2D::MyVector* behave(Agent* pAgent) override;
 
-	protected:
-		Geometry2D::MyPoint computeNextPosition();
-	};
-
-	ConstantVelocity::ConstantVelocity()
-	{
-	}
-
-	ConstantVelocity::~ConstantVelocity()
-	{
-	}
-}
+private:
+	double mNotTraveledDistance = 0;
+	Geometry2D::MyPoint* correctPossition(const Geometry2D::MyPoint nextPosition,
+		const Geometry2D::MyVector direction, Agent* pAgent);
+};

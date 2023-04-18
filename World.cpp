@@ -130,6 +130,7 @@ void World::update(Agent* pAgent)
 void World::runWorld()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
+
 	toUpdate->clear();
 	for (int i = 0; i < matrix->size(); i++) {
 		for (Agent* agent : *(matrix->at(i))) {
@@ -140,6 +141,7 @@ void World::runWorld()
 	for (int i = 0; i < toUpdate->size(); i++) {
 		this->update(toUpdate->at(i));
 	}
+
 	this->mAgentDrawer->drawElements();
 	/* Swap front and back buffers */
 	glfwSwapBuffers(Window::getInstance().getWindow());

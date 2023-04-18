@@ -1,7 +1,6 @@
 #pragma once
 #include "Agent.h"
 #include "Shapes/TriangleDrawerDynamic.h"
-#include "BehaviorBoid.h"
 
 class TestAgent:
 	public Agent

@@ -14,6 +14,7 @@
 #include "Rendering/Window.h"
 
 #include "TestSimulation.h"
+#include "ScenarioA.h"
 using namespace std;
 
 int main(int argc, char* argv[]) { 
@@ -78,9 +79,13 @@ int main(int argc, char* argv[]) {
     int viewportY = (height - viewportHeight) / 2;
     glViewport(viewportX, viewportY, viewportWidth, viewportHeight);
 
-    TestSimlation* sim = new TestSimlation();
-    sim->createWorld();
-    sim->runReplication(2000);
+    //TestSimlation* sim = new TestSimlation();
+    //sim->createWorld();
+    //sim->runReplication(2000);
+
+    ScenarioA* scenarioA = new ScenarioA();
+    scenarioA->createWorld();
+    scenarioA->runReplication(1000);
 
 
     glfwDestroyWindow(windowPtr);
