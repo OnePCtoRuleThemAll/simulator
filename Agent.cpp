@@ -38,8 +38,9 @@ void Agent::execute()
 void Agent::act()
 {
 	this->execute();
-	this->mShape->translate(*this->mPosition);
 	this->mShape->rotate(*this->mDirection);
+	this->mShape->translate(*this->mPosition);
+
 }
 
 void Agent::moveTo(Geometry2D::MyVector& velocity)
