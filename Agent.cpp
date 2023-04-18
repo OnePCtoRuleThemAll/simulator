@@ -29,9 +29,13 @@ void Agent::execute()
 	this->mOldDirection->assign(*mDirection);
 	Geometry2D::MyVector* result = new Geometry2D::MyVector(0, 0);
 	for (int i = 0; i < this->mBehavoir->size(); i++) {
-		result->vectorAddition(*this->mBehavoir->at(i)->behave(this));
+		Geometry2D::MyVector* behaviorLocal = this->mBehavoir->at(i)->behave(this);
+		result->vectorAddition(*behaviorLocal);
+		delete behaviorLocal;
 	}
+	delete this->mDirection;
 	this->mDirection = result;
+
 	this->moveTo(*this->mDirection);
 }
 
