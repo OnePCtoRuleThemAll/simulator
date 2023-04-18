@@ -79,13 +79,13 @@ int main(int argc, char* argv[]) {
     int viewportY = (height - viewportHeight) / 2;
     glViewport(viewportX, viewportY, viewportWidth, viewportHeight);
 
-    //TestSimlation* sim = new TestSimlation();
-    //sim->createWorld();
-    //sim->runReplication(2000);
+    TestSimlation* sim = new TestSimlation();
+    sim->createWorld();
+    sim->runReplication(1, 5000);
 
-    ScenarioA* scenarioA = new ScenarioA();
-    scenarioA->createWorld();
-    scenarioA->runReplication(1000);
+    //ScenarioA* scenarioA = new ScenarioA();
+    //scenarioA->createWorld();
+    //scenarioA->runReplication(1, 1000);
 
 
     glfwDestroyWindow(windowPtr);
