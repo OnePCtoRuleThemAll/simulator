@@ -81,7 +81,7 @@ int main(int argc, char* argv[]) {
 
     TestSimlation* sim = new TestSimlation();
     sim->createWorld();
-    sim->runReplication(1, 5000);
+    sim->runReplication(1, 10000);
 
     //ScenarioA* scenarioA = new ScenarioA();
     //scenarioA->createWorld();
