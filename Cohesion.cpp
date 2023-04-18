@@ -19,12 +19,15 @@ Geometry2D::MyVector* Cohesion::behave(Agent* pAgent)
 
 	for (auto agent : *list) {
 		count++;
-		Geometry2D::MyVector* diff = new Geometry2D::MyVector(*pAgent->getPosition(), *agent->getPosition());
+		Geometry2D::MyVector* diff = new Geometry2D::MyVector(*agent->getPosition(), *pAgent->getPosition());
 		steer->vectorAddition(*diff);
+		delete diff;
 	}
 	if (count > 0) {
 		steer->vectorMultiplication(1 / (float)count);
 		steer->normalize();
 	}
+	delete checkingSpace;
+	delete list;
 	return steer;
 }

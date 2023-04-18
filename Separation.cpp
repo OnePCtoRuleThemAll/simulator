@@ -24,6 +24,7 @@ Geometry2D::MyVector* Separation::behave(Agent* pAgent)
 		Geometry2D::GeomteryBase::MyFloat weight = 1 / Geometry2D::distanceBetweenPoints(*agent->getPosition(), *pAgent->getPosition());
 		diff->vectorMultiplication(weight);
 		steer->vectorAddition(*diff);
+		delete diff;
 	}
 	if (count > 0) {
 		steer->vectorMultiplication(1 / (float)count);
@@ -31,5 +32,7 @@ Geometry2D::MyVector* Separation::behave(Agent* pAgent)
 	if (steer->sizeOfVector() > 0) {
 		steer->normalize();
 	}
+	delete checkingSpace;
+	delete list;
 	return steer;
 }

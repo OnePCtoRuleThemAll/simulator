@@ -33,7 +33,7 @@ void Agent::execute()
 		result->vectorAddition(*behaviorLocal);
 		delete behaviorLocal;
 	}
-	delete this->mDirection;
+	delete mDirection;
 	this->mDirection = result;
 
 	this->moveTo(*this->mDirection);

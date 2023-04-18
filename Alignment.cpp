@@ -26,5 +26,7 @@ Geometry2D::MyVector* Alignment::behave(Agent* pAgent)
 		steer->vectorMultiplication(1 / (float)count);
 		steer->normalize();
 	}
+	delete checkingSpace;
+	delete list;
 	return steer;
 }

@@ -15,6 +15,7 @@
 
 #include "TestSimulation.h"
 #include "ScenarioA.h"
+#include "BoidSimulation.h"
 using namespace std;
 
 int main(int argc, char* argv[]) { 
@@ -79,8 +80,10 @@ int main(int argc, char* argv[]) {
     int viewportY = (height - viewportHeight) / 2;
     glViewport(viewportX, viewportY, viewportWidth, viewportHeight);
 
-    TestSimlation* sim = new TestSimlation();
-    sim->createWorld();
+    /*TestSimlation* sim = new TestSimlation();
+    sim->runReplication(1, 10000);*/
+
+    BoidSimulation* sim = new BoidSimulation();
     sim->runReplication(1, 10000);
 
     //ScenarioA* scenarioA = new ScenarioA();
