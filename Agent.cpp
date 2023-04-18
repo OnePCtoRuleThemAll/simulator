@@ -65,6 +65,9 @@ void Agent::moveTo(Geometry2D::MyVector& velocity)
 
 bool Agent::canAgentMove(Geometry2D::MyVector& velocity)
 {
+	if (velocity.mDeltaX == 0 && velocity.mDeltaY == 0) {
+		return false;
+	}
 	Geometry2D::MyPoint* newPos = Geometry2D::movePointByVector(velocity ,*this->mPosition);
 	if (newPos->mPositionX < this->mWorld->mPointTop->mPositionX || newPos->mPositionX > this->mWorld->mPointBottom->mPositionX) {
 		delete newPos;
@@ -78,6 +81,7 @@ bool Agent::canAgentMove(Geometry2D::MyVector& velocity)
 		delete newPos;
 		return true;
 	}
+	
 }
 
 Geometry2D::MyPoint* Agent::getPosition()
