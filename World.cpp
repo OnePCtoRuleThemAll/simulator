@@ -164,10 +164,10 @@ unsigned int World::mapping(Geometry2D::GeomteryBase::MyFloat posX, Geometry2D::
 {
 	unsigned int columns = 0;
 	unsigned int rows = 0;
-	if (posX = mPointBottom->mPositionX ) {
+	if (posX == mPointBottom->mPositionX ) {
 		posX--;
 	}
-	if (posY = mPointBottom->mPositionY) {
+	if (posY == mPointBottom->mPositionY) {
 		posY--;
 	}
 	if (mPointTop->mPositionX < 0) {

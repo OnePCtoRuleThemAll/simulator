@@ -9,7 +9,7 @@ void BoidSimulation::createWorld()
     Geometry2D::MyPoint* point2 = new Geometry2D::MyPoint(1000, 1000);
     World* newWorld = new World(*point1, *point2, 100);
     mWorld = newWorld;
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 30; i++) {
         Boid* agent = new Boid(mWorld);
         mWorld->insert(agent);
     }

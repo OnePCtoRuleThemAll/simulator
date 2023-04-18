@@ -17,12 +17,12 @@ BehaviorBoid::~BehaviorBoid()
 
 Geometry2D::MyVector* BehaviorBoid::behave(Agent* pAgent)
 {
-	Geometry2D::MyVector* sepV = sep->behave(pAgent);
+	Geometry2D::MyVector* sepV = pAgent->mDirection;
 	Geometry2D::MyVector* aliV = ali->behave(pAgent);
 	Geometry2D::MyVector* cohV = coh->behave(pAgent);
 
-	cohV->vectorMultiplication(50);
-	aliV->vectorMultiplication(20);
+	cohV->vectorMultiplication(0.5);
+	aliV->vectorMultiplication(0);
 	
 	sepV->vectorAddition(*aliV);
 	sepV->vectorAddition(*cohV);

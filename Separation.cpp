@@ -12,7 +12,7 @@ Separation::~Separation()
 Geometry2D::MyVector* Separation::behave(Agent* pAgent)
 {
 	Geometry2D::MyVector* steer = new Geometry2D::MyVector(*pAgent->mDirection);
-	float separation = 50;
+	float separation = 30;
 	int count = 0;
 	Geometry2D::Circle<Geometry2D::GeomteryBase::MyFloat>* checkingSpace = new Geometry2D::Circle<Geometry2D::GeomteryBase::MyFloat>(*pAgent->getPosition(), separation);
 	std::list<Agent*>* list = pAgent->mWorld->searchAgents(pAgent, checkingSpace);
@@ -21,7 +21,7 @@ Geometry2D::MyVector* Separation::behave(Agent* pAgent)
 		count++;
 		Geometry2D::MyVector* diff = new Geometry2D::MyVector(*pAgent->getPosition(), *agent->getPosition());
 		diff->normalize();
-		Geometry2D::GeomteryBase::MyFloat weight = 1 / Geometry2D::distanceBetweenPoints(*pAgent->getPosition(), *agent->getPosition());
+		Geometry2D::GeomteryBase::MyFloat weight = 1 / Geometry2D::distanceBetweenPoints(*agent->getPosition(), *pAgent->getPosition());
 		diff->vectorMultiplication(weight);
 		steer->vectorAddition(*diff);
 	}
