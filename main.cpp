@@ -14,6 +14,7 @@
 #include "Rendering/Window.h"
 
 #include "TestSimulation.h"
+#include "BoidSimulation.h"
 using namespace std;
 
 int main(int argc, char* argv[]) { 
@@ -111,6 +112,10 @@ int main(int argc, char* argv[]) {
     TestSimlation* sim = new TestSimlation();
     sim->createWorld();
     sim->runReplication(1000);
+
+    /*BoidSimulation* sim = new BoidSimulation();
+    sim->createWorld();
+    sim->runReplication(1000);*/
 
     float positions[] = {
         -0.015f, -0.005f,

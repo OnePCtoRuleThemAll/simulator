@@ -50,7 +50,6 @@ bool TestAgent::equals(const Agent& other)
 
 Geometry2D::MyVector* TestBehaviour::behave(Agent* pAgent)
 {
-
 	Geometry2D::MyVector* result = new Geometry2D::MyVector(1, 0);
 	// Move down until reaching (70,70)
 	if (pAgent->mPosition->mPositionX == 70 && pAgent->mPosition->mPositionY < 70) {
