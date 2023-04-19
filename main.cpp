@@ -87,7 +87,7 @@ int main(int argc, char* argv[]) {
     //sim->runReplication(1, 10000);
 
     ScenarioA* scenarioA = new ScenarioA();
-    scenarioA->runReplication(1, 1000);
+    scenarioA->runReplication(3, 100);
 
 
     glfwDestroyWindow(windowPtr);

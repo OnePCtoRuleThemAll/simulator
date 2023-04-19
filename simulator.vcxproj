@@ -156,6 +156,7 @@
     <ClCompile Include="Simulation.cpp" />
     <ClCompile Include="Rendering\DrawTriangles.cpp" />
     <ClCompile Include="Rendering\Shader.cpp" />
+    <ClCompile Include="SocialForces.cpp" />
     <ClCompile Include="TestAgent.cpp" />
     <ClCompile Include="TestSimulation.cpp" />
     <ClCompile Include="tests\test.cpp" />
@@ -202,6 +203,7 @@
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="Shapes\TriangleDrawerStatic.h" />
     <ClInclude Include="Simulation.h" />
+    <ClInclude Include="SocialForces.h" />
     <ClInclude Include="TestAgent.h" />
     <ClInclude Include="TestSimulation.h" />
     <ClInclude Include="tests\test.h" />

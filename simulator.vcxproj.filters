@@ -175,6 +175,12 @@
     <ClCompile Include="BoidSimulation.cpp">
       <Filter>Simulation\Source files</Filter>
     </ClCompile>
+    <ClCompile Include="AgentPedestrian.cpp" />
+    <ClCompile Include="ConstantVelocity.cpp" />
+    <ClCompile Include="ScenarioA.cpp" />
+    <ClCompile Include="SocialForces.cpp">
+      <Filter>Agent\Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Geometry2D\Geometry2D.h">
@@ -278,6 +284,12 @@
     <ClInclude Include="Rendering\Window.h" />
     <ClInclude Include="BoidSimulation.h">
       <Filter>Simulation\Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="AgentPedestrian.h" />
+    <ClInclude Include="ConstantVelocity.h" />
+    <ClInclude Include="ScenarioA.h" />
+    <ClInclude Include="SocialForces.h">
+      <Filter>Agent\Header files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

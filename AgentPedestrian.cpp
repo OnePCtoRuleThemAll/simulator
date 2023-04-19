@@ -1,9 +1,10 @@
 #include "AgentPedestrian.h"
 #include "ConstantVelocity.h"
 
-AgentPedestrian::AgentPedestrian(World* world, Geometry2D::MyPoint* target, Geometry2D::MyPoint* spawn, float speed) :
+AgentPedestrian::AgentPedestrian(World* world, Geometry2D::MyPoint* target, Geometry2D::MyPoint* spawn, float speed, float visibility) :
 	mTargetPlace(target),
-	mSpeed(speed)
+	mSpeed(speed),
+	mVisibilityRadius(visibility)
 {
 	this->mWorld = world;
 	this->mPosition = spawn;
@@ -51,4 +52,9 @@ Geometry2D::MyPoint* AgentPedestrian::getTargetPlace()
 float AgentPedestrian::getSpeed()
 {
 	return this->mSpeed;
+}
+
+float AgentPedestrian::getVisibilityRadius()
+{
+	return this->mVisibilityRadius;
 }
