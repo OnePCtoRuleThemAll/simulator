@@ -140,11 +140,24 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Agent.cpp" />
+    <ClCompile Include="AgentPedestrian.cpp" />
+    <ClCompile Include="Alignment.cpp" />
+    <ClCompile Include="Behavior.cpp" />
     <ClCompile Include="BehaviorBoid.cpp" />
+    <ClCompile Include="Boid.cpp" />
+    <ClCompile Include="BoidSimulation.cpp" />
+    <ClCompile Include="Cohesion.cpp" />
+    <ClCompile Include="ConstantVelocity.cpp" />
     <ClCompile Include="Geometry2D\GeometryBase.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Obstacle.cpp" />
+    <ClCompile Include="ScenarioA.cpp" />
+    <ClCompile Include="Separation.cpp" />
     <ClCompile Include="Simulation.cpp" />
+    <ClCompile Include="Rendering\DrawTriangles.cpp" />
+    <ClCompile Include="Rendering\Shader.cpp" />
+    <ClCompile Include="TestAgent.cpp" />
+    <ClCompile Include="TestSimulation.cpp" />
     <ClCompile Include="tests\test.cpp" />
     <ClCompile Include="tests\testGeometry\testGeometry.cpp" />
     <ClCompile Include="ui\console.cpp" />
@@ -155,8 +168,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Agent.h" />
+    <ClInclude Include="AgentPedestrian.h" />
+    <ClInclude Include="Alignment.h" />
     <ClInclude Include="Behavior.h" />
     <ClInclude Include="BehaviorBoid.h" />
+    <ClInclude Include="Boid.h" />
+    <ClInclude Include="BoidSimulation.h" />
+    <ClInclude Include="Cohesion.h" />
+    <ClInclude Include="ConstantVelocity.h" />
     <ClInclude Include="Dependencies\glew-2.1.0\include\GL\eglew.h" />
     <ClInclude Include="Dependencies\glew-2.1.0\include\GL\glew.h" />
     <ClInclude Include="Dependencies\glew-2.1.0\include\GL\glxew.h" />
@@ -167,10 +186,24 @@
     <ClInclude Include="Dependencies\GLFW\64bit\include\GLFW\glfw3native.h" />
     <ClInclude Include="Geometry2D\Geometry2D.h" />
     <ClInclude Include="Geometry2D\GeometryBase.h" />
+    <ClInclude Include="PolySegment.h" />
+    <ClInclude Include="Rendering\DrawTriangles.h" />
+    <ClInclude Include="Rendering\Shader.h" />
+    <ClInclude Include="Rendering\Window.h" />
+    <ClInclude Include="ScenarioA.h" />
+    <ClInclude Include="Shapes\CircleDrawer.h" />
+    <ClInclude Include="Shapes\MovableShape.h" />
+    <ClInclude Include="Shapes\RectangleDrawer.h" />
+    <ClInclude Include="Shapes\Shape.h" />
+    <ClInclude Include="Shapes\StaticShape.h" />
+    <ClInclude Include="Shapes\TriangleDrawerDynamic.h" />
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Rectangle.h" />
+    <ClInclude Include="Shapes\TriangleDrawerStatic.h" />
     <ClInclude Include="Simulation.h" />
+    <ClInclude Include="TestAgent.h" />
+    <ClInclude Include="TestSimulation.h" />
     <ClInclude Include="tests\test.h" />
     <ClInclude Include="tests\testGeometry\testGeometry.h" />
     <ClInclude Include="types.h" />
@@ -189,6 +222,10 @@
     <Library Include="Dependencies\GLFW\32bit\lib-vc2022\glfw3_mt.lib" />
     <Library Include="Dependencies\GLFW\64bit\lib-vc2022\glfw3.lib" />
     <Library Include="Dependencies\GLFW\64bit\lib-vc2022\glfw3_mt.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Shaders\Circle.shader" />
+    <None Include="Resources\Shaders\Triangle.shader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

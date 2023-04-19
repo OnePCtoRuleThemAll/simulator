@@ -1,5 +1,7 @@
 #include "testGeometry.h"
 #include "../../Geometry2D/Geometry2D.h"
+#include <iostream>
+#include <cmath>
 
 namespace tests {
 
@@ -27,9 +29,9 @@ namespace tests {
 
 	void VectorTests::test()
 	{
-		Geometry2D::Vector<int>* vector = new Geometry2D::Vector<int>(2, 5);
-
-		delete vector;
+		Geometry2D::Vector<int>* vector1 = new Geometry2D::Vector<int>(1, 0);
+		
+		delete vector1;
 	}
 
 	LineTests::LineTests() :

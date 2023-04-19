@@ -3,6 +3,7 @@
 #include <vector>
 #include "Obstacle.h"
 #include "Geometry2D/GeometryBase.h"
+#include "Rendering/DrawTriangles.h"
 
 class Agent;
 class World
@@ -21,7 +22,11 @@ public:
 
 	bool remove(Agent* pAgent);
 
-	std::list<Agent*>* search(Agent* pAgent, Geometry2D::GeomteryBase* form);
+	std::list<Agent*>* searchAgents(Agent* pAgent, Geometry2D::GeomteryBase* form);
+
+	std::list<Obstacle*>* searchObstacles(Geometry2D::GeomteryBase* form);
+
+	void shouldAgentUpdate(Agent* pAgent);
 
 	void update(Agent* pAgent);
 
@@ -31,16 +36,23 @@ public:
 
 	Geometry2D::MyPoint* getBottomPoint();
 
-private:
 	std::vector<std::list<Agent*>*>* matrix;
+
+	std::vector<Agent*>* toUpdate;
+
+	std::vector<Obstacle*>* obstacles;
 
 	Geometry2D::MyPoint* mPointTop;
 
 	Geometry2D::MyPoint* mPointBottom;
 
+	DrawTriangles* mAgentDrawer;
+
 	unsigned int mMatrixColumns;
 	
 	unsigned int mMatrixRows;
+
+	float mMatrixBlockSize;
 
 	unsigned int mapping(Geometry2D::GeomteryBase::MyFloat posX, Geometry2D::GeomteryBase::MyFloat posY);
 };

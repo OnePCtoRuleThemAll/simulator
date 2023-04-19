@@ -14,6 +14,13 @@ namespace Geometry2D
 
 #pragma region Point
 
+	template<typename T>
+	void moveThisPointByVector(Point<T>& point, const Vector<T>& vector)
+	{
+		point.mPositionX += vector.mDeltaX;
+		point.mPositionY += vector.mDeltaY;
+	}
+
 	/// <summary>Distance between two points. </summary>
 	/// <param name = "point1"> First point. </param>
 	/// <param name = "point2"> Second point. </param>
@@ -144,7 +151,7 @@ namespace Geometry2D
 
 	template<typename T>
 	inline Vector<T>::Vector(const Point<T>& point1, const Point<T>& point2) :
-		mDeltaX(point2.mPositionX - point2.mPositionX),
+		mDeltaX(point2.mPositionX - point1.mPositionX),
 		mDeltaY(point2.mPositionY - point1.mPositionY)
 	{
 	}
@@ -300,7 +307,7 @@ namespace Geometry2D
 	Point<T>* movePointByVector(const Vector<T>& vector, const Point<T>& point)
 	{
 		Point<T>* pResultPoint = new Point<T>(point);
-		pResultPoint->movePointByVector(vector);
+		moveThisPointByVector(*pResultPoint, vector);
 		return pResultPoint;
 	}
 

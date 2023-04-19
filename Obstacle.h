@@ -5,7 +5,7 @@
 class Obstacle
 {
 public:
-	Obstacle();
+	Obstacle(Geometry2D::GeomteryBase* form);
 
 	~Obstacle();
 

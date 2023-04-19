@@ -2,6 +2,8 @@
 
 #include "Geometry2D/Geometry2D.h"
 #include "World.h"
+#include "Shapes/TriangleDrawerDynamic.h"
+#include "Behavior.h"
 
 class World;
 /// <summary> Abstract parent class of all agents. </summary>
@@ -31,11 +33,13 @@ public:
 	/// <returns>True if objects are equal. </returns>
 	virtual bool equals(const Agent& other) = 0;
 
-	virtual void execute() = 0;
+	void execute();
 
-	virtual void act() = 0;
+	void act();
 
-	void moveTo(Geometry2D::MyPoint& newPosition);
+	void moveTo(Geometry2D::MyVector& velocity);
+
+	bool canAgentMove(Geometry2D::MyVector& velocity);
 
 	Geometry2D::MyPoint* getPosition();
 
@@ -49,12 +53,17 @@ public:
 
 	World* getWorld();
 
+	Shapes::TriangleDrawerDynamic<Geometry2D::GeomteryBase::MyFloat>* mShape;
+
+	std::vector<Behavior*>* mBehavoir;
+
 	void setWorld(World* world);
 
-private:
 	Geometry2D::MyPoint* mPosition;
 
 	Geometry2D::MyPoint* mOldPosition;
 
 	Geometry2D::MyVector* mDirection;
+
+	Geometry2D::MyVector* mOldDirection;
 };
