@@ -84,7 +84,7 @@ int main(int argc, char* argv[]) {
     sim->runReplication(1, 10000);*/
 
     BoidSimulation* sim = new BoidSimulation();
-    sim->runReplication(3, 2000);
+    sim->runReplication(1, 1500);
 
     /*ScenarioA* scenarioA = new ScenarioA();
     scenarioA->runReplication(1, 1000);*/
