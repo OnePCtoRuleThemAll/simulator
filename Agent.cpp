@@ -47,40 +47,49 @@ void Agent::act()
 
 void Agent::moveTo(Geometry2D::MyVector& velocity)
 {
+	/*std::ofstream file("base_model_500.bin", std::ios::out | std::ios::binary | std::ios::app);*/
+
+	this->mOldPosition->assign(*mPosition);
 	if (canAgentMove(velocity)) {
-		//std::ofstream logfile;
-		//logfile.open("mylog.txt", std::ios::app);  // open the file for appending
-
-		this->mOldPosition->assign(*mPosition);
 		Geometry2D::moveThisPointByVector(*this->mPosition, velocity);
-
-		this->mShape->rotate(*this->mDirection);
-		this->mShape->translate(*this->mPosition);
-
-		/*logfile << this->mPosition->mPositionX << "," << this->mPosition->mPositionY << std::endl;
-		logfile.close();*/
 	}
+
+	this->mShape->rotate(*this->mDirection);
+	this->mShape->translate(*this->mPosition);
+
+	/*Geometry2D::GeomteryBase::MyFloat posX = this->mPosition->mPositionX;
+	Geometry2D::GeomteryBase::MyFloat posY = this->mPosition->mPositionY;
+	file.write(reinterpret_cast<const char*>(&posX), sizeof(Geometry2D::GeomteryBase::MyFloat));
+	file.write(reinterpret_cast<const char*>(&posY), sizeof(Geometry2D::GeomteryBase::MyFloat));
+	file.close();*/
 }
 
 bool Agent::canAgentMove(Geometry2D::MyVector& velocity)
 {
-	if (velocity.mDeltaX == 0 && velocity.mDeltaY == 0) {
-		return false;
-	}
 	Geometry2D::MyPoint* newPos = Geometry2D::movePointByVector(velocity ,*this->mPosition);
-	if (newPos->mPositionX < this->mWorld->mPointTop->mPositionX || newPos->mPositionX > this->mWorld->mPointBottom->mPositionX) {
+	if (newPos->mPositionX < this->mWorld->mPointTop->mPositionX) {
+		mPosition->mPositionX = newPos->mPositionX + this->mWorld->mPointBottom->mPositionX;
 		delete newPos;
 		return false;
 	}
-	else if (newPos->mPositionY < this->mWorld->mPointTop->mPositionY || newPos->mPositionY > this->mWorld->mPointBottom->mPositionY) {
+	else if (newPos->mPositionX > this->mWorld->mPointBottom->mPositionX) {
+		mPosition->mPositionX = newPos->mPositionX - this->mWorld->mPointBottom->mPositionX;
 		delete newPos;
 		return false;
 	}
-	else {
+
+	if (newPos->mPositionY < this->mWorld->mPointTop->mPositionY) {
+		mPosition->mPositionY = newPos->mPositionY + this->mWorld->mPointBottom->mPositionY;
 		delete newPos;
-		return true;
+		return false;
 	}
-	
+	else if (newPos->mPositionY > this->mWorld->mPointBottom->mPositionY) {
+		mPosition->mPositionY = newPos->mPositionY - this->mWorld->mPointBottom->mPositionY;
+		delete newPos;
+		return false;
+	}
+	delete newPos;
+	return true;
 }
 
 Geometry2D::MyPoint* Agent::getPosition()

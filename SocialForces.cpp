@@ -2,6 +2,10 @@
 
 Geometry2D::MyVector* SocialForces::behave(Agent* pAgent)
 {
+	mAgentRepulsion->clear();
+	mObstacleRepulsion->clear();
+
+
 	return nullptr;
 }
 
