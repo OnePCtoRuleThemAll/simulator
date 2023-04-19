@@ -47,10 +47,7 @@ void Agent::act()
 
 void Agent::moveTo(Geometry2D::MyVector& velocity)
 {
-	//std::ofstream logfile;
-	//logfile.open("mylog.txt", std::ios::app);  // open the file for appending
-
-	std::ofstream file("base_model_500.bin", std::ios::out | std::ios::binary | std::ios::app);
+	/*std::ofstream file("base_model_500.bin", std::ios::out | std::ios::binary | std::ios::app);*/
 
 	this->mOldPosition->assign(*mPosition);
 	if (canAgentMove(velocity)) {
@@ -60,14 +57,11 @@ void Agent::moveTo(Geometry2D::MyVector& velocity)
 	this->mShape->rotate(*this->mDirection);
 	this->mShape->translate(*this->mPosition);
 
-	Geometry2D::GeomteryBase::MyFloat posX = this->mPosition->mPositionX;
+	/*Geometry2D::GeomteryBase::MyFloat posX = this->mPosition->mPositionX;
 	Geometry2D::GeomteryBase::MyFloat posY = this->mPosition->mPositionY;
 	file.write(reinterpret_cast<const char*>(&posX), sizeof(Geometry2D::GeomteryBase::MyFloat));
 	file.write(reinterpret_cast<const char*>(&posY), sizeof(Geometry2D::GeomteryBase::MyFloat));
-	file.close();
-
-	/*logfile << this->mPosition->mPositionX << "," << this->mPosition->mPositionY << std::endl;
-	logfile.close();*/
+	file.close();*/
 }
 
 bool Agent::canAgentMove(Geometry2D::MyVector& velocity)
