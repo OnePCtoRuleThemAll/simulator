@@ -38,6 +38,8 @@ private:
 
 	Geometry2D::MyVector* repulsiveToObstacleEliptical(Obstacle* obstacle, Agent* pAgent);
 
+	Geometry2D::MyVector* vectorToObstacle(Obstacle* obstacle, Agent* pAgent);
+
 protected:
 	std::list<Agent*>* getVisibleAgents(Agent* pAgent);
 	std::list<Obstacle*>* getVisibleObjects(Agent* pAgent);

@@ -15,10 +15,13 @@ public:
 	Geometry2D::MyPoint* getTargetPlace();
 	float getSpeed();
 	float getVisibilityRadius();
+	float getVelocity();
+	float getMaxVelocity();
 
 private:
 	Geometry2D::MyPoint* mTargetPlace;
 	float mSpeed = 1.0f;
 	float mVisibilityRadius = 1.0f;
-
+	float mVelocity;
+	float mMaxVelocity;
 };

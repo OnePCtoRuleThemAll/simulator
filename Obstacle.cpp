@@ -1,6 +1,6 @@
 #include "Obstacle.h"
 
-Obstacle::Obstacle(Geometry2D::GeomteryBase* form):
+Obstacle::Obstacle(Geometry2D::GeomteryBase* form, OBstacleShape obstacleShape):
 	mForm(form)
 {
 }

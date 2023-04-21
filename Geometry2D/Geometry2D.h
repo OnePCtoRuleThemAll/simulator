@@ -769,6 +769,8 @@ namespace Geometry2D
 		/// <returns>True if line segment line intersects with line. </returns>
 		bool intersectionWithLine(const Line<T>& line) override;
 
+		Vector<T>* shortestVectorToSegment(Point<T>& point, PolySegment<T>& segment) override;
+
 		void boundingRectangle();
 	};
 
@@ -1073,6 +1075,35 @@ namespace Geometry2D
 	{
 		return line.distancetoPoint(point);
 	}
+
+	template<typename T>
+	Vector<T>* LineSegment<T>::shortestVectorToSegment(Point<T>& point, PolySegment<T>& segment) {
+		LineSegment<T>* line = dynamic_cast<LineSegment<T>*>(segment);
+		Vector<T>* u = new Vector<T>(line.mPoint2->mPositionX - line.mPoint1->mPositionX, line.mPoint2->mPositionY - line.mPoint1->mPositionY);
+		double lengthSq = dotProduct(u, u);
+		Vector<T>* v = new Vector<T>(point.mPositionX - line.mPoint1->mPositionX, point.mPositionY - line.mPoint1->mPositionY);
+		double projVU = dotProduct(v, u) / lengthSq;
+		Vector<T>* closestToPoint;
+
+		if (projVU <= 0) {
+			closestToPoint = new Vector<T>(line.mPoint1);
+		}
+		else if (projVU >= 1) {
+			closestToPoint = new Vector<T>(line.mPoint2);
+		}
+		else {
+			u->vectorMultiplication(projVU);
+			closestToPoint = new Vector<T>(line.mPoint1->mPositionX + u->mDeltaX, line.mPoint1->mPositionY + u->mDeltaY);
+		}
+
+		closestToPoint->vectorAddition(Vector<T>(-point.mPositionX, -point.mPositionY));
+		
+		delete u;
+		delete v;
+
+		return closestToPoint;
+	}
+
 #pragma endregion
 
 #pragma region CircleLine
@@ -2099,6 +2130,8 @@ namespace Geometry2D
 		virtual bool intersectionWithLineSegment(const LineSegment<T>& line) = 0;
 
 		virtual bool intersectionWithLine(const Line<T>& line) = 0;
+
+		virtual Vector<T>* shortestVectorToSegment(Point<T>& point, PolySegment<T>& segment);
 
 		PolySegment<T>* mNext;
 
