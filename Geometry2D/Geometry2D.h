@@ -769,7 +769,7 @@ namespace Geometry2D
 		/// <returns>True if line segment line intersects with line. </returns>
 		bool intersectionWithLine(const Line<T>& line) override;
 
-		Vector<T>* shortestVectorToSegment(Point<T>& point, PolySegment<T>& segment) override;
+		Vector<T>* shortestVectorToSegment(Point<T>& point) override;
 
 		void boundingRectangle();
 	};
@@ -1077,8 +1077,8 @@ namespace Geometry2D
 	}
 
 	template<typename T>
-	Vector<T>* LineSegment<T>::shortestVectorToSegment(Point<T>& point, PolySegment<T>& segment) {
-		LineSegment<T>* line = dynamic_cast<LineSegment<T>*>(segment);
+	Vector<T>* LineSegment<T>::shortestVectorToSegment(Point<T>& point) {
+		LineSegment<T>* line = this;
 		Vector<T>* u = new Vector<T>(line.mPoint2->mPositionX - line.mPoint1->mPositionX, line.mPoint2->mPositionY - line.mPoint1->mPositionY);
 		double lengthSq = dotProduct(u, u);
 		Vector<T>* v = new Vector<T>(point.mPositionX - line.mPoint1->mPositionX, point.mPositionY - line.mPoint1->mPositionY);
@@ -2131,7 +2131,7 @@ namespace Geometry2D
 
 		virtual bool intersectionWithLine(const Line<T>& line) = 0;
 
-		virtual Vector<T>* shortestVectorToSegment(Point<T>& point, PolySegment<T>& segment);
+		virtual Vector<T>* shortestVectorToSegment(Point<T>& point);
 
 		PolySegment<T>* mNext;
 
