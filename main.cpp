@@ -87,11 +87,11 @@ int main(int argc, char* argv[]) {
     //BoidSimulation* sim = new BoidSimulation();
     //sim->runReplication(1, 10000);
 
-    ScenarioA* scenarioA = new ScenarioA();
-    scenarioA->runReplication(3, 100);
+    //ScenarioA* scenarioA = new ScenarioA();
+    //scenarioA->runReplication(3, 100);
 
-    //ScenarioB* scenarioB = new ScenarioB();
-    //scenarioB->runReplication(3, 5000);
+    ScenarioB* scenarioB = new ScenarioB();
+    scenarioB->runReplication(3, 5000);
 
 
     glfwDestroyWindow(windowPtr);

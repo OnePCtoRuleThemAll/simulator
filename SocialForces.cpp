@@ -14,7 +14,6 @@ Geometry2D::MyVector* SocialForces::behave(Agent* pAgent)
 	std::list<Agent*>* agents = this->getVisibleAgents(pAgent);
 	std::list<Obstacle*>* obstacles = this->getVisibleObjects(pAgent);
 
-	Fvelocity = new Geometry2D::MyVector(0, 0);
 	Fpeds = new Geometry2D::MyVector(0, 0);
 	Fobstacles = new Geometry2D::MyVector(0, 0);
 
@@ -91,7 +90,7 @@ Geometry2D::MyVector* SocialForces::adaptVelocity(Agent* pAgent)
 		new Geometry2D::MyVector(newAgent->getTargetPlace()->mPositionX - newAgent->mPosition->mPositionX,
 			newAgent->getTargetPlace()->mPositionY - newAgent->mPosition->mPositionY);
 	normalisedDesiredVelocity->normalize();
-	Geometry2D::MyVector* vector;
+	//Geometry2D::MyVector* vector;
 
 	normalisedDesiredVelocity->vectorMultiplication(adatpVel_DesiredVel);
 	//vector = new Geometry2D::MyVector(*newAgent->mDirection);
@@ -105,7 +104,7 @@ Geometry2D::MyVector* SocialForces::adaptVelocity(Agent* pAgent)
 	//delete normalisedDesiredVelocity;
 	//delete vector;
 	normalisedDesiredVelocity = nullptr;
-	vector = nullptr;
+	//vector = nullptr;
 
 	return result;
 }
@@ -154,9 +153,6 @@ Geometry2D::MyVector* SocialForces::repulsiveToAgentCircular(Agent* otherAgent, 
 	//delete e_alfa;
 	//e_alfa = nullptr;
 	//g_dalfabeta = nullptr;
-	
-	const double REPULSION_FACTOR = 1000.0;
-	const double PERSON_RADIUS = 0.4;
 
 	double dx = pAgent->mPosition->mPositionX - otherAgent->mPosition->mPositionX;
 	double dy = pAgent->mPosition->mPositionY - otherAgent->mPosition->mPositionY;
@@ -168,7 +164,6 @@ Geometry2D::MyVector* SocialForces::repulsiveToAgentCircular(Agent* otherAgent, 
 		delete result;
 		result = new Geometry2D::MyVector(fx, fy);
 	}
-
 
 	return result;
 }

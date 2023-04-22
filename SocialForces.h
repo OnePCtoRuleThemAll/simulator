@@ -16,6 +16,9 @@ const double circularLambda = 0.1;
 const double ellipticalForce_A_obs = 4;
 const double ellipticalRange_B_obs = 0.3;
 
+const double REPULSION_FACTOR = 1000.0;
+const double PERSON_RADIUS = 0.4;
+
 class SocialForces:
 	public Behavior
 {
