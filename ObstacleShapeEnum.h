@@ -1,6 +1,6 @@
 #pragma once
 
-enum OBstacleShape
+enum ObstacleShape
 {
 	CIRCLE,
 	POLYGON,

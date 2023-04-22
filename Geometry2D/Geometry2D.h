@@ -50,7 +50,7 @@ namespace Geometry2D
 	/// <typeparam name = "T"> Data type to compute with. </typepram>
 	template<typename T>
 	struct Vector
-		: GeomteryBase
+		: public GeomteryBase
 	{
 		/// <summary> Constructor. </summary>
 		Vector();
@@ -373,7 +373,7 @@ namespace Geometry2D
 	/// <typeparam name = "T"> Data type to compute with. </typepram>
 	template<typename T>
 	struct Line
-		: GeomteryBase
+		: public GeomteryBase
 	{
 		/// <summary> Constructor. </summary>
 		Line();
@@ -684,7 +684,7 @@ namespace Geometry2D
 	/// <typeparam name = "T"> Data type to compute with. </typepram>
 	template<typename T>
 	struct LineSegment
-		: GeomteryBase, PolySegment<T>
+		: public GeomteryBase, public PolySegment<T>
 	{
 		/// <summary> Constructor. </summary>
 		LineSegment();
@@ -886,8 +886,8 @@ namespace Geometry2D
 	template<typename T>
 	inline void LineSegment<T>::moveByVector(const Vector<T>& vector)
 	{
-		mPoint1->movePointByVector(vector);
-		mPoint2->movePointByVector(vector);
+		movePointByVector(vector, *mPoint1);
+		movePointByVector(vector, *mPoint2);
 	}
 
 	template<typename T>
@@ -1079,27 +1079,29 @@ namespace Geometry2D
 	template<typename T>
 	Vector<T>* LineSegment<T>::shortestVectorToSegment(Point<T>& point) {
 		LineSegment<T>* line = this;
-		Vector<T>* u = new Vector<T>(line.mPoint2->mPositionX - line.mPoint1->mPositionX, line.mPoint2->mPositionY - line.mPoint1->mPositionY);
-		double lengthSq = dotProduct(u, u);
-		Vector<T>* v = new Vector<T>(point.mPositionX - line.mPoint1->mPositionX, point.mPositionY - line.mPoint1->mPositionY);
-		double projVU = dotProduct(v, u) / lengthSq;
+		Vector<T>* u = new Vector<T>(line->mPoint2->mPositionX - line->mPoint1->mPositionX, line->mPoint2->mPositionY - line->mPoint1->mPositionY);
+		double lengthSq = dotProduct(*u, *u);
+		Vector<T>* v = new Vector<T>(point.mPositionX - line->mPoint1->mPositionX, point.mPositionY - line->mPoint1->mPositionY);
+		double projVU = dotProduct(*v, *u) / lengthSq;
 		Vector<T>* closestToPoint;
 
 		if (projVU <= 0) {
-			closestToPoint = new Vector<T>(line.mPoint1);
+			closestToPoint = new Vector<T>(line->mPoint1->mPositionX, line->mPoint1->mPositionY);
 		}
 		else if (projVU >= 1) {
-			closestToPoint = new Vector<T>(line.mPoint2);
+			closestToPoint = new Vector<T>(line->mPoint2->mPositionX, line->mPoint2->mPositionY);
 		}
 		else {
 			u->vectorMultiplication(projVU);
-			closestToPoint = new Vector<T>(line.mPoint1->mPositionX + u->mDeltaX, line.mPoint1->mPositionY + u->mDeltaY);
+			closestToPoint = new Vector<T>(line->mPoint1->mPositionX + u->mDeltaX, line->mPoint1->mPositionY + u->mDeltaY);
 		}
 
-		closestToPoint->vectorAddition(Vector<T>(-point.mPositionX, -point.mPositionY));
+		Vector<T>* local = new Vector<T>(-point.mPositionX, -point.mPositionY);
+		closestToPoint->vectorAddition(*local);
 		
 		delete u;
 		delete v;
+		delete local;
 
 		return closestToPoint;
 	}
@@ -1111,7 +1113,7 @@ namespace Geometry2D
 	/// <typeparam name = "T"> Data type to compute with. </typepram>
 	template<typename T>
 	struct CircleLine
-		: GeomteryBase
+		: public GeomteryBase
 	{
 		/// <summary> Constructor. </summary>
 		CircleLine();
@@ -1432,7 +1434,7 @@ namespace Geometry2D
 	/// <typeparam name = "T"> Data type to compute with. </typepram>
 	template<typename T>
 	struct Circle
-		: GeomteryBase
+		: public GeomteryBase
 	{
 		/// <summary> Constructor. </summary>
 		Circle();
@@ -1616,7 +1618,7 @@ namespace Geometry2D
 	template<typename T>
 	inline double Circle<T>::distanceToPoint(const Point<T>& point)
 	{
-		double result = abs(distanceBetweenPoints(point, mCenter) - mRadius);
+		double result = abs(distanceBetweenPoints(point, *mCenter) - mRadius);
 		return result <= 0 ? 0 : result;
 	}
 
@@ -1721,7 +1723,7 @@ namespace Geometry2D
 	/// <typeparam name = "T"> Data type to compute with. </typepram>
 	template<typename T>
 	struct Arc
-		: GeomteryBase, PolySegment<T>
+		: public GeomteryBase, public PolySegment<T>
 	{
 		/// <summary> Constructor. </summary>
 		Arc();
@@ -2112,16 +2114,17 @@ namespace Geometry2D
 
 	/// <summary> Abstract parent class of segments of Polyline and Polygon. </summary>
 	template<typename T>
-	class PolySegment
+	class PolySegment:
+		public GeomteryBase
 	{
 	public:
-		virtual ~PolySegment();
+		//virtual ~PolySegment() = 0;
 
 		virtual bool equals(const GeomteryBase& other) = 0;
 
 		virtual Point<T>* getPoint1() = 0;
 
-		virtual bool isPointIn(const Point<T>& point) override = 0;
+		virtual bool isPointIn(const Point<T>& point) = 0;
 
 		virtual double distancetoPoint(const Point<T>& point) = 0;
 
@@ -2131,7 +2134,7 @@ namespace Geometry2D
 
 		virtual bool intersectionWithLine(const Line<T>& line) = 0;
 
-		virtual Vector<T>* shortestVectorToSegment(Point<T>& point);
+		virtual Vector<T>* shortestVectorToSegment(Point<T>& point) = 0;
 
 		PolySegment<T>* mNext;
 
@@ -2142,7 +2145,7 @@ namespace Geometry2D
 	/// <typeparam name = "T"> Data type to compute with. </typepram>
 	template<typename T>
 	struct Polyline
-		: GeomteryBase
+		: public GeomteryBase
 	{
 		/// <summary> Constructor. </summary>
 		Polyline();
@@ -2197,27 +2200,27 @@ namespace Geometry2D
 		/// <summary> Is point on line. </summary>
 		/// <param name="point"> Point. </param>
 		/// <returns>True if point lies on line. </returns>
-		bool isPointIn(const Point<GeomteryBase::MyFloat>& point) override;
+		virtual bool isPointIn(const Point<GeomteryBase::MyFloat>& point);
 
 		/// <summary> Moves line by vector. </summary>
 		/// <param name="vector"> Vector. </param>
-		void moveByVector(const Vector<T>& vector) override;
+		void moveByVector(const Vector<T>& vector);
 
 		/// <summary> Coefficient of line. </summary>
 		/// <returns> Coefficient of line. </returns>
-		double distancetoPoint(const Point<T>& point) override;
+		double distancetoPoint(const Point<T>& point);
 
 		/// <summary> Intersection with line. </summary>
 		/// <param name="line"> Line. </param>
 		/// <returns>True if polyline  intersects with line. </returns>
-		bool intersectionWithLine(const Line<T>& line) override;
+		bool intersectionWithLine(const Line<T>& line);
 
 		/// <summary> Intersection with line segment. </summary>
 		/// <param name="line"> Line segment. </param>
 		/// <returns>True if polyline intersects with line segment. </returns>
-		bool intersectionWithLineSegment(const LineSegment<T>& line) override;
+		bool intersectionWithLineSegment(const LineSegment<T>& line);
 
-		void boundingRectangle();
+		virtual void boundingRectangle();
 	};
 	template<typename T>
 	inline Polyline<T>::Polyline() :
@@ -2327,8 +2330,8 @@ namespace Geometry2D
 			if (!curThis->equals(*curOther)) {
 				return false;
 			}
-			curThis = curThis->getNext();
-			curOther = curOther->getNext();
+			curThis = curThis->mNext;
+			curOther = curOther->mNext;
 		}
 		return true;
 	}
@@ -2357,7 +2360,7 @@ namespace Geometry2D
 			mFirst = polySegment;
 		}
 		else {
-			mLast->setNext(polySegment);
+			mLast->mNext = polySegment;
 			polySegment->mPrevious = mLast;
 		}
 		mLast = polySegment;
@@ -2369,7 +2372,7 @@ namespace Geometry2D
 		PolySegment<T>* current = mFirst;
 
 		while (current != nullptr) {
-			if (current->isPointOn(point)) {
+			if (current->isPointIn(point)) {
 				return true;
 			}
 			current = current->mNext;
@@ -2460,18 +2463,18 @@ namespace Geometry2D
 	/// <typeparam name = "T"> Data type to compute with. </typepram>
 	template<typename T>
 	struct Polygon
-		: Polyline<T>
+		: public Polyline<T>
 	{
 		/// <summary> Is point in polygon. </summary>
 		/// <param name="point"> Point. </param>
 		/// <returns>True if point lies on line. </returns>
-		bool isPointIn(const Point<GeomteryBase::MyFloat>& point) override;
+		bool isPointIn(Point<GeomteryBase::MyFloat>& point);
 
 		void boundingRectangle() override;
 	};
 
 	template<typename T>
-	inline bool Polygon<T>::isPointIn(const Point<GeomteryBase::MyFloat>& point)
+	inline bool Polygon<T>::isPointIn(Point<GeomteryBase::MyFloat>& point)
 	{
 		Point<T>* p1 = new Point<T>(9999, point.mPositionY);
 		Line<T>* exline = new Line<T>(point, *p1);

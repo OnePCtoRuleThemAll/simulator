@@ -152,6 +152,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="ScenarioA.cpp" />
+    <ClCompile Include="ScenarioB.cpp" />
     <ClCompile Include="Separation.cpp" />
     <ClCompile Include="Simulation.cpp" />
     <ClCompile Include="Rendering\DrawTriangles.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="Rendering\Shader.h" />
     <ClInclude Include="Rendering\Window.h" />
     <ClInclude Include="ScenarioA.h" />
+    <ClInclude Include="ScenarioB.h" />
     <ClInclude Include="Shapes\CircleDrawer.h" />
     <ClInclude Include="Shapes\MovableShape.h" />
     <ClInclude Include="Shapes\RectangleDrawer.h" />

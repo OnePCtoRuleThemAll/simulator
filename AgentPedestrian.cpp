@@ -1,10 +1,14 @@
 #include "AgentPedestrian.h"
 #include "ConstantVelocity.h"
+#include "SocialForces.h"
 
-AgentPedestrian::AgentPedestrian(World* world, Geometry2D::MyPoint* target, Geometry2D::MyPoint* spawn, float speed, float visibility) :
+AgentPedestrian::AgentPedestrian(World* world, Geometry2D::MyPoint* target, Geometry2D::MyPoint* spawn, float speed, float visibilityRange,
+	float velocity, float maxVelocity) :
 	mTargetPlace(target),
 	mSpeed(speed),
-	mVisibilityRadius(visibility)
+	mVisibilityRadius(visibilityRange),
+	mVelocity(velocity),
+	mMaxVelocity(maxVelocity)
 {
 	this->mWorld = world;
 	this->mPosition = spawn;
@@ -14,7 +18,7 @@ AgentPedestrian::AgentPedestrian(World* world, Geometry2D::MyPoint* target, Geom
 	this->mShape = new Shapes::TriangleDrawerDynamic<Geometry2D::GeomteryBase::MyFloat>(*this->mOldPosition, *this->mOldDirection,
 		*this->mWorld->mPointTop, *this->mWorld->mPointBottom, this->mWorld->mAgentDrawer);
 	this->mBehavoir = new std::vector<Behavior*>();
-	this->mBehavoir->push_back(new ConstantVelocity());
+	this->mBehavoir->push_back(new SocialForces());
 }
 
 AgentPedestrian::~AgentPedestrian()
@@ -67,4 +71,9 @@ float AgentPedestrian::getVelocity()
 float AgentPedestrian::getMaxVelocity()
 {
 	return this->mMaxVelocity;
+}
+
+float AgentPedestrian::getTick()
+{
+	return this->mTick;
 }

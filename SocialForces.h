@@ -4,6 +4,7 @@
 #include "AgentPedestrian.h"
 #include <vector>
 #include <list>
+#include <cmath>
 
 const double adaptVel_Ti = 0.5;
 const double adatpVel_DesiredVel = 1.3;
@@ -11,10 +12,6 @@ const double adatpVel_DesiredVel = 1.3;
 const double circularForce_A = 2.5;
 const double circularRange_B = 0.5;
 const double circularLambda = 0.1;
-
-const double ellipticalForce_A = 4.3;
-const double ellipticalRange_B = 1.07;
-const double ellipticalLambda = 0.1;
 
 const double ellipticalForce_A_obs = 4;
 const double ellipticalRange_B_obs = 0.3;
@@ -26,15 +23,12 @@ public:
 	Geometry2D::MyVector* behave(Agent* pAgent) override;
 
 private:
-	std::vector<Geometry2D::MyVector*>* mAgentRepulsion;
-	std::vector<Geometry2D::MyVector*>* mObstacleRepulsion;
 	Geometry2D::MyVector* mAdaptVelocity;
 	Geometry2D::MyVector* mGradientVelocity;
 
 	Geometry2D::MyVector* adaptVelocity(Agent* pAgent);
 	
 	Geometry2D::MyVector* repulsiveToAgentCircular(Agent* otherAgent, Agent* pAgent);
-	Geometry2D::MyVector* repulsiveToAgentEliptical(Agent* otherAgent, Agent* pAgent);
 
 	Geometry2D::MyVector* repulsiveToObstacleEliptical(Obstacle* obstacle, Agent* pAgent);
 
