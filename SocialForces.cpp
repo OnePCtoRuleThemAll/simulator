@@ -114,46 +114,61 @@ Geometry2D::MyVector* SocialForces::repulsiveToAgentCircular(Agent* otherAgent, 
 {
 	AgentPedestrian* newAgent = dynamic_cast<AgentPedestrian*>(pAgent);
 	AgentPedestrian* newOtherAgent = dynamic_cast<AgentPedestrian*>(otherAgent);
-	Geometry2D::MyVector* d_alfabeta;
+	/*Geometry2D::MyVector* d_alfabeta;
 	Geometry2D::MyVector* d_alfabeta_Norm;
 	Geometry2D::MyVector* e_alfa;
-	Geometry2D::MyVector* g_dalfabeta;
-	Geometry2D::MyVector* result;
-	double w_Fi;
+	Geometry2D::MyVector* g_dalfabeta;*/
+	Geometry2D::MyVector* result = new Geometry2D::MyVector(0, 0);
+	//double w_Fi;
 
-	d_alfabeta = new Geometry2D::MyVector(pAgent->mPosition->mPositionX - otherAgent->mPosition->mPositionX,
-		pAgent->mPosition->mPositionY - otherAgent->mPosition->mPositionY);
-	d_alfabeta_Norm = new Geometry2D::MyVector(*d_alfabeta);
-	d_alfabeta_Norm->normalize();
+	//d_alfabeta = new Geometry2D::MyVector(pAgent->mPosition->mPositionX - otherAgent->mPosition->mPositionX,
+	//	pAgent->mPosition->mPositionY - otherAgent->mPosition->mPositionY);
+	//d_alfabeta_Norm = new Geometry2D::MyVector(*d_alfabeta);
+	//d_alfabeta_Norm->normalize();
 
-	Geometry2D::MyVector* vector = new Geometry2D::MyVector(*pAgent->mDirection);
-	vector->vectorMultiplication(1 / newAgent->getTick());
-	e_alfa = new Geometry2D::MyVector(*vector);
+	//Geometry2D::MyVector* vector = new Geometry2D::MyVector(*pAgent->mDirection);
+	//vector->vectorMultiplication(1 / newAgent->getTick());
+	//e_alfa = new Geometry2D::MyVector(*vector);
 
-	if (e_alfa->sizeOfVector() > 0) {
-		e_alfa->normalize();
+	//if (e_alfa->sizeOfVector() > 0) {
+	//	e_alfa->normalize();
+	//}
+
+	//d_alfabeta_Norm->vectorMultiplication(-1);
+	//w_Fi = (circularLambda + ((1 - circularLambda) * ((1 + Geometry2D::dotProduct(*e_alfa, *d_alfabeta_Norm)) / 2)));
+	//d_alfabeta_Norm->vectorMultiplication(-1);
+
+	//g_dalfabeta = new Geometry2D::MyVector(*d_alfabeta_Norm);
+	//double coeficient = circularForce_A * exp((newAgent->getVisibilityRadius() + newOtherAgent->getVisibilityRadius() - d_alfabeta->sizeOfVector()) / circularRange_B);
+	//g_dalfabeta->vectorMultiplication(coeficient);
+
+	//result = g_dalfabeta;
+	//result->vectorMultiplication(w_Fi);
+
+	//delete vector;
+	//vector = nullptr;
+	//delete d_alfabeta;
+	//d_alfabeta = nullptr;
+	//delete d_alfabeta_Norm;
+	//d_alfabeta_Norm = nullptr;
+	//delete e_alfa;
+	//e_alfa = nullptr;
+	//g_dalfabeta = nullptr;
+	
+	const double REPULSION_FACTOR = 1000.0;
+	const double PERSON_RADIUS = 0.4;
+
+	double dx = pAgent->mPosition->mPositionX - otherAgent->mPosition->mPositionX;
+	double dy = pAgent->mPosition->mPositionY - otherAgent->mPosition->mPositionY;
+	double dist = sqrt(dx * dx + dy * dy);
+	double overlap = PERSON_RADIUS * 2 - dist;
+	if (overlap > 0) {
+		double fx = REPULSION_FACTOR * dx / dist * overlap;
+		double fy = REPULSION_FACTOR * dy / dist * overlap;
+		delete result;
+		result = new Geometry2D::MyVector(fx, fy);
 	}
 
-	d_alfabeta_Norm->vectorMultiplication(-1);
-	w_Fi = (circularLambda + ((1 - circularLambda) * ((1 + Geometry2D::dotProduct(*e_alfa, *d_alfabeta_Norm)) / 2)));
-	d_alfabeta_Norm->vectorMultiplication(-1);
-
-	g_dalfabeta = new Geometry2D::MyVector(*d_alfabeta_Norm);
-	double coeficient = circularForce_A * exp((newAgent->getVisibilityRadius() + newOtherAgent->getVisibilityRadius() - d_alfabeta->sizeOfVector()) / circularRange_B);
-	g_dalfabeta->vectorMultiplication(coeficient);
-
-	result = g_dalfabeta;
-	result->vectorMultiplication(w_Fi);
-
-	delete vector;
-	vector = nullptr;
-	delete d_alfabeta;
-	d_alfabeta = nullptr;
-	delete d_alfabeta_Norm;
-	d_alfabeta_Norm = nullptr;
-	delete e_alfa;
-	e_alfa = nullptr;
-	g_dalfabeta = nullptr;
 
 	return result;
 }
