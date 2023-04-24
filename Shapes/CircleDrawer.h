@@ -10,7 +10,7 @@ namespace Shapes
 	public:
 		CircleDrawer(Geometry2D::Circle<T>& circle, Geometry2D::Point<T>& worldStart, Geometry2D::Point<T>& worldEnd);
 		~CircleDrawer();
-		void drawFilledCircle();
+		void draw() override;
 
 	private:
 		float xCoordinate;
@@ -40,7 +40,7 @@ namespace Shapes
 
 
 	template<typename T>
-	inline void CircleDrawer<T>::drawFilledCircle()
+	inline void CircleDrawer<T>::draw()
 	{
 		ShaderProgramSource source = this->shader.ParseShader("Resources/Shaders/Circle.shader");
 

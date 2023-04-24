@@ -1,9 +1,12 @@
 #include "ScenarioB.h"
-#include "Shapes/TriangleDrawerStatic.h"
+
+ScenarioB::ScenarioB(int behavior) :
+	mBehaviorType(behavior)
+{
+}
 
 void ScenarioB::createWorld()
 {
-	srand(time(NULL));
 	if (mWorld != nullptr) {
 		delete mWorld;
 	}
@@ -15,6 +18,7 @@ void ScenarioB::createWorld()
 
 void ScenarioB::runReplication(int numberOfReplicataions, int numberOfTicks)
 {
+	srand(time(NULL));
 	for (int i = 0; i < numberOfReplicataions; i++) {
 		createWorld();
 		for (int j = 0; j < numberOfTicks; j++) {
@@ -24,7 +28,7 @@ void ScenarioB::runReplication(int numberOfReplicataions, int numberOfTicks)
 				int y = x == 2 ? rand() % 15 + 5 : 5;
 				Geometry2D::MyPoint* target1 = new Geometry2D::MyPoint(98, rand() % 10 + 30);
 				Geometry2D::MyPoint* spawn1 = new Geometry2D::MyPoint(x, y);
-				AgentPedestrian* agentL = new AgentPedestrian(mWorld, target1, spawn1, 1, 30, 0.2, 0.05);
+				AgentPedestrian* agentL = new AgentPedestrian(mWorld, target1, spawn1, this->mBehaviorType, 30, 0.2, 0.05, j);
 				mWorld->insert(agentL);
 			}
 			else if (j % 24 == 0) {
@@ -32,7 +36,7 @@ void ScenarioB::runReplication(int numberOfReplicataions, int numberOfTicks)
 				int y = x == 98 ? rand() % 15 + 5 : 5;
 				Geometry2D::MyPoint* target2 = new Geometry2D::MyPoint(2, rand() % 10 + 30);
 				Geometry2D::MyPoint* spawn2 = new Geometry2D::MyPoint(x, y);
-				AgentPedestrian* agentR = new AgentPedestrian(mWorld, target2, spawn2, 1, 30, 0.2, 0.05);
+				AgentPedestrian* agentR = new AgentPedestrian(mWorld, target2, spawn2, this->mBehaviorType, 30, 0.2, 0.1, j);
 				mWorld->insert(agentR);
 			}
 		}

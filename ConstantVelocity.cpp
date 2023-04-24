@@ -18,7 +18,7 @@ Geometry2D::MyVector* ConstantVelocity::behave(Agent* pAgent)
 		direction->normalize();
 
 		// calc the distance the agent should travel, depending on the previous shortened/extended step
-		distanceToGo = newAgent->getSpeed() + mNotTraveledDistance;
+		distanceToGo = newAgent->getVelocity() + mNotTraveledDistance;
 		mNotTraveledDistance = 0;
 
 		// calc next step depending on simulation tick

@@ -1,5 +1,6 @@
 #pragma once
 #include "Point.h"
+#include <algorithm>
 
 namespace Geometry2D {
 	
@@ -141,9 +142,10 @@ namespace Geometry2D {
 			 rectangle.mTopPoint->mPositionX > mBottomPoint->mPositionX)
 			return false;
 
-		if (mBottomPoint->mPositionY > rectangle.mTopPoint->mPositionY || 
-			rectangle.mBottomPoint->mPositionY > mTopPoint->mPositionY)
+		if (mBottomPoint->mPositionY < rectangle.mTopPoint->mPositionY || 
+			rectangle.mBottomPoint->mPositionY < mTopPoint->mPositionY)
 			return false;
+
 
 		return true;
 	}

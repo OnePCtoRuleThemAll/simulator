@@ -17,6 +17,8 @@
 #include "ScenarioA.h"
 #include "BoidSimulation.h"
 #include "ScenarioB.h"
+#include "ScenarioC.h"
+
 using namespace std;
 
 int main(int argc, char* argv[]) { 
@@ -87,12 +89,14 @@ int main(int argc, char* argv[]) {
     //BoidSimulation* sim = new BoidSimulation();
     //sim->runReplication(1, 10000);
 
-    //ScenarioA* scenarioA = new ScenarioA();
-    //scenarioA->runReplication(3, 100);
+    ScenarioA* scenarioA = new ScenarioA(1);
+    scenarioA->runReplication(3, 1000);
 
-    ScenarioB* scenarioB = new ScenarioB();
-    scenarioB->runReplication(3, 5000);
+    //ScenarioB* scenarioB = new ScenarioB(1);
+    //scenarioB->runReplication(3, 5000);
 
+    //ScenarioC* scenarioC = new ScenarioC(1);
+    //scenarioC->runReplication(3, 5000);
 
     glfwDestroyWindow(windowPtr);
     glfwTerminate();

@@ -6,7 +6,10 @@ class ScenarioA:
 	public Simulation
 {
 public:
+	ScenarioA(int behaviorType);
+
 	void createWorld() override;
 
+	int mBehaviorType;
 };
 

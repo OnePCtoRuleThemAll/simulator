@@ -12,7 +12,7 @@ namespace Shapes {
 		TriangleDrawerStatic(Geometry2D::Point<T> point1, Geometry2D::Point<T> point2, Geometry2D::Point<T> point3,
 			Geometry2D::Point<T>& worldStart, Geometry2D::Point<T>& worldEnd);
 		~TriangleDrawerStatic();
-		void drawTriangle();
+		void draw() override;
 
 	private:
 		float positions[6];
@@ -42,7 +42,7 @@ namespace Shapes {
 	}
 
 	template<typename T>
-	inline void TriangleDrawerStatic<T>::drawTriangle()
+	inline void TriangleDrawerStatic<T>::draw()
 	{
 
 		ShaderProgramSource source = this->shaderObject.ParseShader("Resources/Shaders/Circle.shader");

@@ -12,6 +12,9 @@ Geometry2D::MyVector* SocialForces::behave(Agent* pAgent)
 	Geometry2D::MyVector* Fobstacles;
 
 	std::list<Agent*>* agents = this->getVisibleAgents(pAgent);
+	if (agents->size() != 0) {
+		std::cout << "I see " << agents->size() << " other agents" << std::endl;
+	}
 	std::list<Obstacle*>* obstacles = this->getVisibleObjects(pAgent);
 
 	Fpeds = new Geometry2D::MyVector(0, 0);
@@ -90,21 +93,18 @@ Geometry2D::MyVector* SocialForces::adaptVelocity(Agent* pAgent)
 		new Geometry2D::MyVector(newAgent->getTargetPlace()->mPositionX - newAgent->mPosition->mPositionX,
 			newAgent->getTargetPlace()->mPositionY - newAgent->mPosition->mPositionY);
 	normalisedDesiredVelocity->normalize();
-	//Geometry2D::MyVector* vector;
+
+	Geometry2D::MyVector* result;
 
 	normalisedDesiredVelocity->vectorMultiplication(adatpVel_DesiredVel);
-	//vector = new Geometry2D::MyVector(*newAgent->mDirection);
-	//vector->vectorMultiplication(-1 / newAgent->getTick());
-	//mGradientVelocity = Geometry2D::vectorAddition(*normalisedDesiredVelocity, *vector);
-	//mGradientVelocity->vectorMultiplication(1 / adaptVel_Ti);
 
-	//Geometry2D::MyVector* result = mGradientVelocity;
-	Geometry2D::MyVector* result = normalisedDesiredVelocity;
+	result = new Geometry2D::MyVector(*newAgent->mDirection);
+	result->vectorMultiplication(-1 / newAgent->getTick());
+	result->vectorAddition(*normalisedDesiredVelocity);
+	result->vectorMultiplication(1 / adaptVel_Ti);
 
-	//delete normalisedDesiredVelocity;
-	//delete vector;
+	delete normalisedDesiredVelocity;
 	normalisedDesiredVelocity = nullptr;
-	//vector = nullptr;
 
 	return result;
 }
@@ -113,57 +113,54 @@ Geometry2D::MyVector* SocialForces::repulsiveToAgentCircular(Agent* otherAgent, 
 {
 	AgentPedestrian* newAgent = dynamic_cast<AgentPedestrian*>(pAgent);
 	AgentPedestrian* newOtherAgent = dynamic_cast<AgentPedestrian*>(otherAgent);
-	/*Geometry2D::MyVector* d_alfabeta;
+	Geometry2D::MyVector* d_alfabeta;
 	Geometry2D::MyVector* d_alfabeta_Norm;
 	Geometry2D::MyVector* e_alfa;
-	Geometry2D::MyVector* g_dalfabeta;*/
+	Geometry2D::MyVector* g_dalfabeta;
 	Geometry2D::MyVector* result = new Geometry2D::MyVector(0, 0);
-	//double w_Fi;
+	double w_Fi;
 
-	//d_alfabeta = new Geometry2D::MyVector(pAgent->mPosition->mPositionX - otherAgent->mPosition->mPositionX,
-	//	pAgent->mPosition->mPositionY - otherAgent->mPosition->mPositionY);
-	//d_alfabeta_Norm = new Geometry2D::MyVector(*d_alfabeta);
-	//d_alfabeta_Norm->normalize();
+	d_alfabeta = new Geometry2D::MyVector(pAgent->mPosition->mPositionX - otherAgent->mPosition->mPositionX,
+		pAgent->mPosition->mPositionY - otherAgent->mPosition->mPositionY);
+	d_alfabeta_Norm = new Geometry2D::MyVector(*d_alfabeta);
+	d_alfabeta_Norm->normalize();
 
-	//Geometry2D::MyVector* vector = new Geometry2D::MyVector(*pAgent->mDirection);
-	//vector->vectorMultiplication(1 / newAgent->getTick());
-	//e_alfa = new Geometry2D::MyVector(*vector);
+	e_alfa = new Geometry2D::MyVector(*pAgent->mDirection);
+	e_alfa->vectorMultiplication(1 / newAgent->getTick());
 
-	//if (e_alfa->sizeOfVector() > 0) {
-	//	e_alfa->normalize();
-	//}
-
-	//d_alfabeta_Norm->vectorMultiplication(-1);
-	//w_Fi = (circularLambda + ((1 - circularLambda) * ((1 + Geometry2D::dotProduct(*e_alfa, *d_alfabeta_Norm)) / 2)));
-	//d_alfabeta_Norm->vectorMultiplication(-1);
-
-	//g_dalfabeta = new Geometry2D::MyVector(*d_alfabeta_Norm);
-	//double coeficient = circularForce_A * exp((newAgent->getVisibilityRadius() + newOtherAgent->getVisibilityRadius() - d_alfabeta->sizeOfVector()) / circularRange_B);
-	//g_dalfabeta->vectorMultiplication(coeficient);
-
-	//result = g_dalfabeta;
-	//result->vectorMultiplication(w_Fi);
-
-	//delete vector;
-	//vector = nullptr;
-	//delete d_alfabeta;
-	//d_alfabeta = nullptr;
-	//delete d_alfabeta_Norm;
-	//d_alfabeta_Norm = nullptr;
-	//delete e_alfa;
-	//e_alfa = nullptr;
-	//g_dalfabeta = nullptr;
-
-	double dx = pAgent->mPosition->mPositionX - otherAgent->mPosition->mPositionX;
-	double dy = pAgent->mPosition->mPositionY - otherAgent->mPosition->mPositionY;
-	double dist = sqrt(dx * dx + dy * dy);
-	double overlap = PERSON_RADIUS * 2 - dist;
-	if (overlap > 0) {
-		double fx = REPULSION_FACTOR * dx / dist * overlap;
-		double fy = REPULSION_FACTOR * dy / dist * overlap;
-		delete result;
-		result = new Geometry2D::MyVector(fx, fy);
+	if (e_alfa->sizeOfVector() > 0) {
+		e_alfa->normalize();
 	}
+
+	d_alfabeta_Norm->vectorMultiplication(-1);
+	w_Fi = (circularLambda + ((1 - circularLambda) * ((1 + Geometry2D::dotProduct(*e_alfa, *d_alfabeta_Norm)) / 2)));
+	d_alfabeta_Norm->vectorMultiplication(-1);
+
+	g_dalfabeta = new Geometry2D::MyVector(*d_alfabeta_Norm);
+	double coeficient = circularForce_A * exp((PERSON_RADIUS + PERSON_RADIUS - d_alfabeta->sizeOfVector()) / circularRange_B);
+	g_dalfabeta->vectorMultiplication(coeficient);
+
+	result = g_dalfabeta;
+	result->vectorMultiplication(w_Fi);
+
+	delete d_alfabeta;
+	d_alfabeta = nullptr;
+	delete d_alfabeta_Norm;
+	d_alfabeta_Norm = nullptr;
+	delete e_alfa;
+	e_alfa = nullptr;
+	g_dalfabeta = nullptr;
+
+	//double dx = pAgent->mPosition->mPositionX - otherAgent->mPosition->mPositionX;
+	//double dy = pAgent->mPosition->mPositionY - otherAgent->mPosition->mPositionY;
+	//double dist = sqrt(dx * dx + dy * dy);
+	//double overlap = PERSON_RADIUS * 2 - dist;
+	//if (overlap > 0) {
+	//	double fx = REPULSION_FACTOR * dx / dist * overlap;
+	//	double fy = REPULSION_FACTOR * dy / dist * overlap;
+	//	delete result;
+	//	result = new Geometry2D::MyVector(fx, fy);
+	//}
 
 	return result;
 }
@@ -190,11 +187,10 @@ Geometry2D::MyVector* SocialForces::repulsiveToObstacleEliptical(Obstacle* obsta
 	d_alfabeta_Leng = d_alfabeta->sizeOfVector();
 
 	yab = new Geometry2D::MyVector(*pAgent->mDirection);
-	yab->vectorMultiplication(newAgent->getTick());
+	yab->vectorMultiplication(1 / newAgent->getTick());
 	yab->vectorMultiplication(-1);
 	dabyab = new Geometry2D::MyVector(d_alfabeta->mDeltaX - yab->mDeltaX, d_alfabeta->mDeltaY - yab->mDeltaY);
 	dabyab_Leng = dabyab->sizeOfVector();
-	yab->vectorMultiplication(-1);
 	bx2 = sqrt(pow((d_alfabeta_Leng + dabyab_Leng), 2) - pow(yab->sizeOfVector(), 2));
 
 	result = new Geometry2D::MyVector(*dabyab);
@@ -235,17 +231,29 @@ Geometry2D::MyVector* SocialForces::vectorToObstacle(Obstacle* obstacle, Agent* 
 	}
 	case POLYGON: {
 		polygon = dynamic_cast<Geometry2D::Polygon<Geometry2D::GeomteryBase::MyFloat>*>(obstacle->mForm);
-		delete nearest;
 		delete result;
-		double shortestDistance = 0;
+		double shortestDistance;
 		Geometry2D::PolySegment<Geometry2D::GeomteryBase::MyFloat>* actual = polygon->mFirst;
-		while (actual != nullptr) {
-			if (shortestDistance > actual->distancetoPoint(*pAgent->mPosition)) {
-				shortestDistance = actual->distancetoPoint(*pAgent->mPosition);
-				nearest = new Geometry2D::MyVector(*actual->shortestVectorToSegment(*pAgent->mPosition));
-			}
+		shortestDistance = actual->distancetoPoint(*pAgent->mPosition);
+		nearest = actual->shortestVectorToSegment(*pAgent->mPosition);
 
+		for (int i = 0; i < polygon->mSize; i++) {
+			if (shortestDistance > actual->distancetoPoint(*pAgent->mPosition)) {
+				delete nearest;
+				shortestDistance = actual->distancetoPoint(*pAgent->mPosition);
+				nearest = actual->shortestVectorToSegment(*pAgent->mPosition);
+				actual = actual->mNext;
+			}
 		}
+		//do {
+		//	if (shortestDistance > actual->distancetoPoint(*pAgent->mPosition)) {
+		//		shortestDistance = actual->distancetoPoint(*pAgent->mPosition);
+		//		nearest = new Geometry2D::MyVector(*actual->shortestVectorToSegment(*pAgent->mPosition));
+		//		actual = actual->mNext;
+		//	}
+
+		//} while (actual != polygon->mLast);
+
 		result = new Geometry2D::MyVector(pAgent->mPosition->mPositionX - nearest->mDeltaX, pAgent->mPosition->mPositionY - nearest->mDeltaY);
 		break;
 	}
@@ -280,6 +288,7 @@ std::list<Agent*>* SocialForces::getVisibleAgents(Agent* pAgent)
 	Geometry2D::Circle<Geometry2D::GeomteryBase::MyFloat>* visibilityRange =
 		new Geometry2D::Circle<Geometry2D::GeomteryBase::MyFloat>(*pAgent->mPosition, newAgent->getVisibilityRadius());
 	std::list<Agent*>* list = pAgent->mWorld->searchAgents(pAgent, visibilityRange);
+	//std::cout << "FROM WORLD: " << list->size() << std::endl;
 	delete visibilityRange;
 	return list;
 }

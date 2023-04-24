@@ -10,7 +10,7 @@ const double adaptVel_Ti = 0.5;
 const double adatpVel_DesiredVel = 1.3;
 
 const double circularForce_A = 2.5;
-const double circularRange_B = 0.5;
+const double circularRange_B = 0.4;
 const double circularLambda = 0.1;
 
 const double ellipticalForce_A_obs = 4;

@@ -10,7 +10,7 @@ namespace Shapes {
         RectangleDrawer(Geometry2D::Point<T> point1, Geometry2D::Point<T> point2,
             Geometry2D::Point<T>& worldStart, Geometry2D::Point<T>& worldEnd);
         ~RectangleDrawer();
-        void drawRectangle();
+        void draw() override;
 
     private:
         float positions[8];
@@ -39,7 +39,7 @@ namespace Shapes {
     }
 
     template<typename T>
-    inline void RectangleDrawer<T>::drawRectangle()
+    inline void RectangleDrawer<T>::draw()
     {
         ShaderProgramSource source = this->shaderObject.ParseShader("Resources/Shaders/Circle.shader");
         unsigned int shader = this->shaderObject.CreateShader(source.VertexSource, source.FragmentSource);

@@ -16,6 +16,8 @@ Geometry2D::MyVector* Separation::behave(Agent* pAgent)
 	int count = 0;
 	Geometry2D::Circle<Geometry2D::GeomteryBase::MyFloat>* checkingSpace = new Geometry2D::Circle<Geometry2D::GeomteryBase::MyFloat>(*pAgent->getPosition(), separation);
 	std::list<Agent*>* list = pAgent->mWorld->searchAgents(pAgent, checkingSpace);
+	if(list->size() > 0) { std::cout << list->size() << std::endl; }
+
 
 	for (auto agent : *list) {
 		count++;

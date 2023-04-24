@@ -1081,27 +1081,33 @@ namespace Geometry2D
 		LineSegment<T>* line = this;
 		Vector<T>* u = new Vector<T>(line->mPoint2->mPositionX - line->mPoint1->mPositionX, line->mPoint2->mPositionY - line->mPoint1->mPositionY);
 		double lengthSq = dotProduct(*u, *u);
-		Vector<T>* v = new Vector<T>(point.mPositionX - line->mPoint1->mPositionX, point.mPositionY - line->mPoint1->mPositionY);
-		double projVU = dotProduct(*v, *u) / lengthSq;
+		Vector<T>* v = new Vector<T>(line->mPoint1->mPositionX - point.mPositionX, line->mPoint1->mPositionY - point.mPositionY);
+		double projVU = -dotProduct(*v, *u) / lengthSq;
 		Vector<T>* closestToPoint;
+		Point<T>* closestPoint;
 
 		if (projVU <= 0) {
-			closestToPoint = new Vector<T>(line->mPoint1->mPositionX, line->mPoint1->mPositionY);
+			closestToPoint = new Vector<T>(line->mPoint1->mPositionX - point.mPositionX, line->mPoint1->mPositionY - point.mPositionY);
 		}
 		else if (projVU >= 1) {
-			closestToPoint = new Vector<T>(line->mPoint2->mPositionX, line->mPoint2->mPositionY);
+			closestToPoint = new Vector<T>(line->mPoint2->mPositionX - point.mPositionX, line->mPoint2->mPositionY - point.mPositionY);
 		}
 		else {
-			u->vectorMultiplication(projVU);
-			closestToPoint = new Vector<T>(line->mPoint1->mPositionX + u->mDeltaX, line->mPoint1->mPositionY + u->mDeltaY);
+			//u->vectorMultiplication(projVU);
+			//closestToPoint = new Vector<T>(line->mPoint1->mPositionX + u->mDeltaX, line->mPoint1->mPositionY + u->mDeltaY);
+			closestPoint = new Point<T>((1 - projVU) * line->mPoint1->mPositionX + projVU * line->mPoint2->mPositionX,
+				(1 - projVU) * line->mPoint1->mPositionY + projVU * line->mPoint2->mPositionY);
+			closestToPoint = new Vector<T>(closestPoint->mPositionX - point.mPositionX, closestPoint->mPositionY - point.mPositionY);
+			delete closestPoint;
 		}
 
-		Vector<T>* local = new Vector<T>(-point.mPositionX, -point.mPositionY);
-		closestToPoint->vectorAddition(*local);
-		
+		//Vector<T>* local = new Vector<T>(-point.mPositionX, -point.mPositionY);
+		//closestToPoint->vectorAddition(*local);
+
 		delete u;
 		delete v;
-		delete local;
+		//delete local;
+
 
 		return closestToPoint;
 	}
@@ -2114,7 +2120,7 @@ namespace Geometry2D
 
 	/// <summary> Abstract parent class of segments of Polyline and Polygon. </summary>
 	template<typename T>
-	class PolySegment:
+	class PolySegment :
 		public GeomteryBase
 	{
 	public:
@@ -2497,22 +2503,33 @@ namespace Geometry2D
 	{
 		PolySegment<T>* current = this->mFirst;
 		Point<T>* currentPoint;
+
+		T xMax = 0;
+		T xMin = 0;
+		T yMax = 0;
+		T yMin = 0;
+
 		currentPoint = current->getPoint1();
 		if (currentPoint != nullptr) {
-			this->boundingRec->mTopPoint->mPositionX = currentPoint->mPositionX;
-			this->boundingRec->mBottomPoint->mPositionX = currentPoint->mPositionX;
-			this->boundingRec->mTopPoint->mPositionY = currentPoint->mPositionY;
-			this->boundingRec->mBottomPoint->mPositionY = currentPoint->mPositionY;
+			xMax = currentPoint->mPositionX;
+			xMin = currentPoint->mPositionX;
+			yMax = currentPoint->mPositionX;
+			yMin = currentPoint->mPositionX;
 		}
 		current = current->mNext;
 		do {
 			currentPoint = current->getPoint1();
-			this->boundingRec->mTopPoint->mPositionX = std::min(this->boundingRec->mTopPoint->mPositionX, currentPoint->mPositionX);
-			this->boundingRec->mTopPoint->mPositionY = std::min(this->boundingRec->mTopPoint->mPositionY, currentPoint->mPositionY);
-			this->boundingRec->mBottomPoint->mPositionX = std::max(this->boundingRec->mBottomPoint->mPositionX, currentPoint->mPositionX);
-			this->boundingRec->mBottomPoint->mPositionY = std::max(this->boundingRec->mBottomPoint->mPositionY, currentPoint->mPositionY);
+			xMax = xMax < currentPoint->mPositionX ? currentPoint->mPositionX : xMax;
+			xMin = xMin > currentPoint->mPositionX ? currentPoint->mPositionX : xMin;
+			yMax = yMax < currentPoint->mPositionX ? currentPoint->mPositionX : yMax;
+			yMin = yMin > currentPoint->mPositionX ? currentPoint->mPositionX : yMin;
 			current = current->mNext;
 		} while (current != this->mLast);
+
+		this->boundingRec->mTopPoint->mPositionX = xMin;
+		this->boundingRec->mBottomPoint->mPositionX = xMax;
+		this->boundingRec->mTopPoint->mPositionY = yMin;
+		this->boundingRec->mBottomPoint->mPositionY = yMax;
 	}
 
 	using MyPoint = Point<GeomteryBase::MyFloat>;

@@ -1,14 +1,15 @@
 #include "AgentPedestrian.h"
 #include "ConstantVelocity.h"
 #include "SocialForces.h"
+#include "BehaviorBoid.h"
 
-AgentPedestrian::AgentPedestrian(World* world, Geometry2D::MyPoint* target, Geometry2D::MyPoint* spawn, float speed, float visibilityRange,
-	float velocity, float maxVelocity) :
+AgentPedestrian::AgentPedestrian(World* world, Geometry2D::MyPoint* target, Geometry2D::MyPoint* spawn, int behaviorType, float visibilityRange,
+	float velocity, float maxVelocity, int id) :
 	mTargetPlace(target),
-	mSpeed(speed),
 	mVisibilityRadius(visibilityRange),
 	mVelocity(velocity),
-	mMaxVelocity(maxVelocity)
+	mMaxVelocity(maxVelocity),
+	mId(id)
 {
 	this->mWorld = world;
 	this->mPosition = spawn;
@@ -18,7 +19,21 @@ AgentPedestrian::AgentPedestrian(World* world, Geometry2D::MyPoint* target, Geom
 	this->mShape = new Shapes::TriangleDrawerDynamic<Geometry2D::GeomteryBase::MyFloat>(*this->mOldPosition, *this->mOldDirection,
 		*this->mWorld->mPointTop, *this->mWorld->mPointBottom, this->mWorld->mAgentDrawer);
 	this->mBehavoir = new std::vector<Behavior*>();
-	this->mBehavoir->push_back(new SocialForces());
+	switch (behaviorType)
+	{
+	case 0:
+		this->mBehavoir->push_back(new ConstantVelocity());
+		break;
+	case 1:
+		this->mBehavoir->push_back(new SocialForces());
+		break;
+	case 2:
+		this->mBehavoir->push_back(new BehaviorBoid());
+		break;
+	default:
+		break;
+	}
+	
 }
 
 AgentPedestrian::~AgentPedestrian()
@@ -51,11 +66,6 @@ bool AgentPedestrian::equals(const Agent& other)
 Geometry2D::MyPoint* AgentPedestrian::getTargetPlace()
 {
 	return this->mTargetPlace;
-}
-
-float AgentPedestrian::getSpeed()
-{
-	return this->mSpeed;
 }
 
 float AgentPedestrian::getVisibilityRadius()

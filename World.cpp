@@ -73,7 +73,7 @@ std::list<Agent*>* World::searchAgents(Agent* pAgent, Geometry2D::GeomteryBase* 
 	int point3Order = mapping(topX, bottomY);
 
 	for (int i = point1Order; i <= point3Order; i += mMatrixColumns) {
-		for (int j = i; j < i + blocksBetween; j++) {
+		for (int j = i; j <= i + blocksBetween; j++) {
 			for (Agent* agent : *(matrix->at(j))) {
 				if (form->isPointIn(*agent->getPosition())) {
 					if (agent != pAgent) {
@@ -144,6 +144,10 @@ void World::runWorld()
 		this->update(toUpdate->at(i));
 	}
 
+	for (int i = 0; i < obstacles->size(); i++) {
+		obstacles->at(i)->mShape->draw();
+	}
+
 	this->mAgentDrawer->drawElements();
 	/* Swap front and back buffers */
 	glfwSwapBuffers(Window::getInstance().getWindow());
@@ -187,4 +191,9 @@ unsigned int World::mapping(Geometry2D::GeomteryBase::MyFloat posX, Geometry2D::
 	}
 
 	return rows * mMatrixColumns + columns;
+}
+
+void World::insertObstacle(Obstacle* obstacle)
+{
+	obstacles->push_back(obstacle);
 }
