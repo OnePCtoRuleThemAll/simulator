@@ -79,6 +79,11 @@ float AgentPedestrian::getVisibilityRadius()
 	return this->mVisibilityRadius;
 }
 
+float AgentPedestrian::getVelocity()
+{
+	return this->mVelocity;
+}
+
 float AgentPedestrian::getMaxVelocity()
 {
 	return this->mMaxVelocity;

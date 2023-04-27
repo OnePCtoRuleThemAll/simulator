@@ -11,6 +11,6 @@ public:
 
 private:
 	double mNotTraveledDistance = 0;
-	Geometry2D::MyPoint* correctPossition(const Geometry2D::MyPoint nextPosition,
+	Geometry2D::MyPoint* correctPosition(const Geometry2D::MyPoint nextPosition,
 		const Geometry2D::MyVector direction, Agent* pAgent);
 };

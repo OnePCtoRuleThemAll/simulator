@@ -28,7 +28,7 @@ Geometry2D::MyVector* ConstantVelocity::behave(Agent* pAgent)
 		// correct the skipping the destination and set a new pedestrian position in the model
 		Geometry2D::MyPoint* nextPosition = new Geometry2D::MyPoint(*pAgent->getPosition());
 		Geometry2D::moveThisPointByVector(*nextPosition, *step);
-		Geometry2D::MyPoint* correctedPosition = this->correctPossition(*nextPosition, *direction, pAgent);
+		Geometry2D::MyPoint* correctedPosition = this->correctPosition(*nextPosition, *direction, pAgent);
 
 		// calc the distance the pedestrian will travel
 		traveledDistance = abs(pAgent->getPosition()->mPositionX - correctedPosition->mPositionX) +
@@ -59,7 +59,7 @@ Geometry2D::MyVector* ConstantVelocity::behave(Agent* pAgent)
 	return result;
 }
 
-Geometry2D::MyPoint* ConstantVelocity::correctPossition(const Geometry2D::MyPoint nextPosition,
+Geometry2D::MyPoint* ConstantVelocity::correctPosition(const Geometry2D::MyPoint nextPosition,
 	const Geometry2D::MyVector direction, Agent* pAgent)
 {
 	Geometry2D::MyPoint* result = new Geometry2D::MyPoint(0, 0);

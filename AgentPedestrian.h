@@ -14,6 +14,7 @@ public:
 
 	Geometry2D::MyPoint* getTargetPlace();
 	float getVisibilityRadius();
+	float getVelocity();
 	float getMaxVelocity();
 	float getTick();
 
@@ -23,7 +24,8 @@ public:
 private:
 	Geometry2D::MyPoint* mTargetPlace;
 	const float mVisibilityRadius = 3;
-	const float mMaxVelocity = 0.2;
+	const float mVelocity = 0.2;
+	const float mMaxVelocity = 0.25;
 	const float mTick = 1;
 
 };
