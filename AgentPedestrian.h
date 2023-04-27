@@ -5,8 +5,7 @@ class AgentPedestrian :
 	public Agent
 {
 public:
-	AgentPedestrian(World* world, Geometry2D::MyPoint* target, Geometry2D::MyPoint* spawn, int behaviorType, float visibilityRange,
-		float velocity, float maxVelocity, int id);
+	AgentPedestrian(World* world, Geometry2D::MyPoint* target, Geometry2D::MyPoint* spawn, int behaviorType, int id);
 	~AgentPedestrian();
 
 	Agent& assign(const Agent& other) override;
@@ -24,8 +23,9 @@ public:
 
 private:
 	Geometry2D::MyPoint* mTargetPlace;
-	float mVisibilityRadius;
-	float mVelocity;
-	float mMaxVelocity;
-	float mTick = 0.5;
+	const float mVisibilityRadius = 3;
+	const float mVelocity = 0.2;
+	const float mMaxVelocity = 0.2;
+	const float mTick = 1;
+
 };

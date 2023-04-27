@@ -3,12 +3,8 @@
 #include "SocialForces.h"
 #include "BehaviorBoid.h"
 
-AgentPedestrian::AgentPedestrian(World* world, Geometry2D::MyPoint* target, Geometry2D::MyPoint* spawn, int behaviorType, float visibilityRange,
-	float velocity, float maxVelocity, int id) :
+AgentPedestrian::AgentPedestrian(World* world, Geometry2D::MyPoint* target, Geometry2D::MyPoint* spawn, int behaviorType, int id) :
 	mTargetPlace(target),
-	mVisibilityRadius(visibilityRange),
-	mVelocity(velocity),
-	mMaxVelocity(maxVelocity),
 	mId(id)
 {
 	this->mWorld = world;
@@ -60,6 +56,16 @@ Agent& AgentPedestrian::assign(const Agent& other)
 
 bool AgentPedestrian::equals(const Agent& other)
 {
+	if (this == &other) {
+		return true;
+	}
+	else {
+		const AgentPedestrian* otherAgent = dynamic_cast<const AgentPedestrian*>(&other);
+		if (otherAgent->mDirection->equals(*this->mDirection) && otherAgent->mPosition->equals(*this->mPosition) &&
+			otherAgent->mOldPosition->equals(*this->mOldPosition) && otherAgent->mWorld == this->mWorld) {
+			return true;
+		}
+	}
 	return false;
 }
 

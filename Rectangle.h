@@ -133,10 +133,10 @@ namespace Geometry2D {
 	template<typename T>
 	inline bool Rectangle<T>::intersectionRectangle(Rectangle<T>& rectangle)
 	{
-		if (mTopPoint->mPositionX == mBottomPoint->mPositionX || mTopPoint->mPositionY == mBottomPoint->mPositionY || 
-			rectangle.mTopPoint->mPositionX == rectangle.mBottomPoint->mPositionX || 
-			rectangle.mTopPoint->mPositionY == rectangle.mBottomPoint->mPositionY)
-			return false;
+		//if (mTopPoint->mPositionX == mBottomPoint->mPositionX || mTopPoint->mPositionY == mBottomPoint->mPositionY || 
+		//	rectangle.mTopPoint->mPositionX == rectangle.mBottomPoint->mPositionX || 
+		//	rectangle.mTopPoint->mPositionY == rectangle.mBottomPoint->mPositionY)
+		//	return false;
 
 		if (mTopPoint->mPositionX > rectangle.mBottomPoint->mPositionX || 
 			 rectangle.mTopPoint->mPositionX > mBottomPoint->mPositionX)

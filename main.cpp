@@ -4,20 +4,17 @@
 #include "ui/console.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include "Rendering/Shader.h"
-#include "Shapes/CircleDrawer.h"
-#include "Rendering/DrawTriangles.h"
 #include <iostream>
-#include "Shapes/TriangleDrawerDynamic.h"
-#include "Shapes/TriangleDrawerStatic.h"
-#include "Shapes/RectangleDrawer.h"
-#include "Rendering/Window.h"
 
+#include "Rendering/Window.h"
 #include "TestSimulation.h"
-#include "ScenarioA.h"
 #include "BoidSimulation.h"
+#include "ScenarioA.h"
 #include "ScenarioB.h"
 #include "ScenarioC.h"
+#include "ScenarioD.h"
+#include "ScenarioE.h"
+#include "ScenarioF.h"
 
 using namespace std;
 
@@ -89,14 +86,23 @@ int main(int argc, char* argv[]) {
     //BoidSimulation* sim = new BoidSimulation();
     //sim->runReplication(1, 10000);
 
-    ScenarioA* scenarioA = new ScenarioA(1);
-    scenarioA->runReplication(3, 1000);
+    //ScenarioA* scenarioA = new ScenarioA(1);
+    //scenarioA->runReplication(10, 1000);
 
     //ScenarioB* scenarioB = new ScenarioB(1);
-    //scenarioB->runReplication(3, 5000);
+    //scenarioB->runReplication(10, 100);
 
     //ScenarioC* scenarioC = new ScenarioC(1);
-    //scenarioC->runReplication(3, 5000);
+    //scenarioC->runReplication(10, 500);
+
+    //ScenarioD* scenarioD = new ScenarioD(1);
+    //scenarioD->runReplication(10, 100);
+
+    //ScenarioE* scenarioE = new ScenarioE(1);
+    //scenarioE->runReplication(10, 100);
+
+    ScenarioF* scenarioF = new ScenarioF(1);
+    scenarioF->runReplication(10, 100);
 
     glfwDestroyWindow(windowPtr);
     glfwTerminate();

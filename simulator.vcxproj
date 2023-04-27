@@ -154,6 +154,9 @@
     <ClCompile Include="ScenarioA.cpp" />
     <ClCompile Include="ScenarioB.cpp" />
     <ClCompile Include="ScenarioC.cpp" />
+    <ClCompile Include="ScenarioD.cpp" />
+    <ClCompile Include="ScenarioE.cpp" />
+    <ClCompile Include="ScenarioF.cpp" />
     <ClCompile Include="Separation.cpp" />
     <ClCompile Include="Simulation.cpp" />
     <ClCompile Include="Rendering\DrawTriangles.cpp" />
@@ -197,6 +200,9 @@
     <ClInclude Include="ScenarioA.h" />
     <ClInclude Include="ScenarioB.h" />
     <ClInclude Include="ScenarioC.h" />
+    <ClInclude Include="ScenarioD.h" />
+    <ClInclude Include="ScenarioE.h" />
+    <ClInclude Include="ScenarioF.h" />
     <ClInclude Include="Shapes\CircleDrawer.h" />
     <ClInclude Include="Shapes\MovableShape.h" />
     <ClInclude Include="Shapes\RectangleDrawer.h" />

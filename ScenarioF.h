@@ -3,15 +3,13 @@
 #include "AgentPedestrian.h"
 #include "Shapes/TriangleDrawerStatic.h"
 
-class ScenarioC:
+class ScenarioF :
 	public Simulation
 {
 public:
-	ScenarioC(int behavior);
-	
-	void createWorld() override;
+	ScenarioF(int behavior);
 
-	void runReplication(int numberOfReplicataions, int numberOfTicks) override;
+	void createWorld() override;
 
 	int mBehaviorType;
 };

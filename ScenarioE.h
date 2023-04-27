@@ -1,13 +1,13 @@
 #pragma once
 #include "Simulation.h"
 #include "AgentPedestrian.h"
-#include "Shapes/TriangleDrawerStatic.h"
+#include "Shapes/RectangleDrawer.h"
 
-class ScenarioB:
+class ScenarioE :
 	public Simulation
 {
 public:
-	ScenarioB(int behavior);
+	ScenarioE(int behavior);
 
 	void createWorld() override;
 

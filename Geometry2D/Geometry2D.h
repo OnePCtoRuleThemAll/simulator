@@ -1082,7 +1082,8 @@ namespace Geometry2D
 		Vector<T>* u = new Vector<T>(line->mPoint2->mPositionX - line->mPoint1->mPositionX, line->mPoint2->mPositionY - line->mPoint1->mPositionY);
 		double lengthSq = dotProduct(*u, *u);
 		Vector<T>* v = new Vector<T>(line->mPoint1->mPositionX - point.mPositionX, line->mPoint1->mPositionY - point.mPositionY);
-		double projVU = -dotProduct(*v, *u) / lengthSq;
+		double projVU = dotProduct(*u, *v) / lengthSq;
+		projVU *= -1;
 		Vector<T>* closestToPoint;
 		Point<T>* closestPoint;
 
@@ -1093,20 +1094,14 @@ namespace Geometry2D
 			closestToPoint = new Vector<T>(line->mPoint2->mPositionX - point.mPositionX, line->mPoint2->mPositionY - point.mPositionY);
 		}
 		else {
-			//u->vectorMultiplication(projVU);
-			//closestToPoint = new Vector<T>(line->mPoint1->mPositionX + u->mDeltaX, line->mPoint1->mPositionY + u->mDeltaY);
 			closestPoint = new Point<T>((1 - projVU) * line->mPoint1->mPositionX + projVU * line->mPoint2->mPositionX,
 				(1 - projVU) * line->mPoint1->mPositionY + projVU * line->mPoint2->mPositionY);
 			closestToPoint = new Vector<T>(closestPoint->mPositionX - point.mPositionX, closestPoint->mPositionY - point.mPositionY);
 			delete closestPoint;
 		}
 
-		//Vector<T>* local = new Vector<T>(-point.mPositionX, -point.mPositionY);
-		//closestToPoint->vectorAddition(*local);
-
 		delete u;
 		delete v;
-		//delete local;
 
 
 		return closestToPoint;
@@ -2521,8 +2516,8 @@ namespace Geometry2D
 			currentPoint = current->getPoint1();
 			xMax = xMax < currentPoint->mPositionX ? currentPoint->mPositionX : xMax;
 			xMin = xMin > currentPoint->mPositionX ? currentPoint->mPositionX : xMin;
-			yMax = yMax < currentPoint->mPositionX ? currentPoint->mPositionX : yMax;
-			yMin = yMin > currentPoint->mPositionX ? currentPoint->mPositionX : yMin;
+			yMax = yMax < currentPoint->mPositionY ? currentPoint->mPositionY : yMax;
+			yMin = yMin > currentPoint->mPositionY ? currentPoint->mPositionY : yMin;
 			current = current->mNext;
 		} while (current != this->mLast);
 

@@ -103,7 +103,7 @@ std::list<Obstacle*>* World::searchObstacles(Geometry2D::GeomteryBase* form)
 void World::shouldAgentUpdate(Agent* pAgent)
 {
 	int spotVector = mapping(pAgent->getPosition()->mPositionX, pAgent->getPosition()->mPositionY);
-	int spotVectorOld = mapping(pAgent->getOldPosition()->mPositionX, pAgent->getOldPosition()->mPositionY);;
+	int spotVectorOld = mapping(pAgent->getOldPosition()->mPositionX, pAgent->getOldPosition()->mPositionY);
 
 	if (spotVector != spotVectorOld) {
 		this->toUpdate->push_back(pAgent);
@@ -112,7 +112,7 @@ void World::shouldAgentUpdate(Agent* pAgent)
 
 void World::update(Agent* pAgent)
 {
-	int spotVectorOld = mapping(pAgent->getOldPosition()->mPositionX, pAgent->getOldPosition()->mPositionY);;
+	int spotVectorOld = mapping(pAgent->getOldPosition()->mPositionX, pAgent->getOldPosition()->mPositionY);
 	
 	auto itr = matrix->at(spotVectorOld)->begin();
 	bool erased = false;
