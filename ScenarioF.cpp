@@ -66,3 +66,26 @@ void ScenarioF::createWorld()
 	AgentPedestrian* agent = new AgentPedestrian(mWorld, targetPoint, spawnPoint, this->mBehaviorType, 1);
 	mWorld->insert(agent);
 }
+
+void ScenarioF::runReplication(int numberOfReplications, int numberOfTicks)
+{
+	std::ofstream ofs;
+	ofs.open("ScenarioF_Behavior" + std::to_string(this->mBehaviorType) + ".csv", std::ofstream::out | std::ofstream::app);
+
+	for (int i = 0; i < numberOfReplications; i++) {
+
+		auto start = std::chrono::high_resolution_clock::now();
+
+		createWorld();
+		for (int j = 0; j < numberOfTicks; j++) {
+			mWorld->runWorld();
+		}
+
+		auto stop = std::chrono::high_resolution_clock::now();
+		auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+
+		ofs << duration.count() << "\n";
+	}
+
+	ofs.close();
+}

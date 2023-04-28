@@ -16,12 +16,13 @@ void ScenarioC::createWorld()
 	mWorld = newWorld;
 }
 
-void ScenarioC::runReplication(int numberOfReplicataions, int numberOfTicks)
+void ScenarioC::runReplication(int numberOfReplications, int numberOfTicks)
 {
+	srand(10);
 	std::ofstream ofs;
 	ofs.open("ScenarioC_Behavior" + std::to_string(this->mBehaviorType) + ".csv", std::ofstream::out | std::ofstream::app);
 
-	for (int i = 0; i < numberOfReplicataions; i++) {
+	for (int i = 0; i < numberOfReplications; i++) {
 
 		auto start = std::chrono::high_resolution_clock::now();
 
