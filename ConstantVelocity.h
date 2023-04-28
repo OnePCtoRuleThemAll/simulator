@@ -1,6 +1,8 @@
 #pragma once
 #include "Behavior.h"
 #include "AgentPedestrian.h"
+#include <chrono>
+#include <fstream>  
 
 
 class ConstantVelocity :

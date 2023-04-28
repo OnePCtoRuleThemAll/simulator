@@ -3,6 +3,8 @@
 
 Geometry2D::MyVector* ConstantVelocity::behave(Agent* pAgent)
 {
+	auto start = std::chrono::high_resolution_clock::now();
+
 	Geometry2D::MyVector* direction;
 	Geometry2D::MyVector* step;
 	Geometry2D::MyVector* result;
@@ -55,6 +57,16 @@ Geometry2D::MyVector* ConstantVelocity::behave(Agent* pAgent)
 		result = new Geometry2D::MyVector(0, 0);
 		pAgent->mDirection->assign(*result);
 	}
+
+	auto stop = std::chrono::high_resolution_clock::now();
+	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+
+	std::ofstream ofs;
+	ofs.open("constantVelocity.csv", std::ofstream::out | std::ofstream::app);
+
+	ofs << duration.count() << "\n";
+
+	ofs.close();
 
 	return result;
 }

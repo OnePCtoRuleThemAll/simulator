@@ -362,3 +362,10 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /base_model_500.bin
+/constantVelocity.csv
+/ScenarioA_Behavior0.csv
+/ScenarioA_Behavior1.csv
+/ScenarioB_Behavior0.csv
+/ScenarioB_Behavior1.csv
+/ScenarioC_Behavior0.csv
+/ScenarioC_Behavior1.csv

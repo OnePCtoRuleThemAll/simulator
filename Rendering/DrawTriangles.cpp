@@ -3,6 +3,8 @@
 
 DrawTriangles::~DrawTriangles()
 {
+	delete[] positions;
+	delete[] indicies;
 }
 
 void DrawTriangles::updateVertex(const int index, const float position)

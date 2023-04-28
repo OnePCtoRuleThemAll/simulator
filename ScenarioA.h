@@ -10,6 +10,8 @@ public:
 
 	void createWorld() override;
 
+	void runReplication(int numberOfReplications, int numberOfTicks) override;
+
 	int mBehaviorType;
 };
 

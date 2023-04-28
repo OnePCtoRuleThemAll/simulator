@@ -2,6 +2,8 @@
 
 Geometry2D::MyVector* SocialForces::behave(Agent* pAgent)
 {
+	auto start = std::chrono::high_resolution_clock::now();
+
 	AgentPedestrian* newAgent = dynamic_cast<AgentPedestrian*>(pAgent);
 	Geometry2D::MyVector* socialForce = new Geometry2D::MyVector(0, 0);
 	Geometry2D::MyVector* velocityChange;
@@ -43,16 +45,9 @@ Geometry2D::MyVector* SocialForces::behave(Agent* pAgent)
 	}
 
 	socialForce->vectorAddition(*Fvelocity);
-	std::cout << "Desired:" << std::endl;
-	std::cout << "Delta X is " << Fvelocity->mDeltaX << " delta Y is " << Fvelocity->mDeltaY << std::endl;
 	socialForce->vectorAddition(*Fpeds);
-	std::cout << "Agents:" << std::endl;
-	std::cout << "Delta X is " << Fpeds->mDeltaX << " delta Y is " << Fpeds->mDeltaY << std::endl;
 	socialForce->vectorAddition(*Fobstacles);
-	std::cout << "Obstacles:" << std::endl;
-	std::cout << "Delta X is " << Fobstacles->mDeltaX << " delta Y is " << Fobstacles->mDeltaY << std::endl;
 	socialForce->vectorMultiplication(newAgent->getTick());
-	std::cout << "____________________:" << std::endl;
 
 	velocityChange = new Geometry2D::MyVector(*socialForce);
 
@@ -89,6 +84,16 @@ Geometry2D::MyVector* SocialForces::behave(Agent* pAgent)
 	delete agents;
 	delete obstacles;
 
+
+	auto stop = std::chrono::high_resolution_clock::now();
+	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+
+	std::ofstream ofs;
+	ofs.open("socialForces.csv", std::ofstream::out | std::ofstream::app);
+
+	ofs << duration.count() << "\n";
+
+	ofs.close();
 
 	return result;
 }
