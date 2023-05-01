@@ -181,6 +181,11 @@
     <ClCompile Include="SocialForces.cpp">
       <Filter>Agent\Source files</Filter>
     </ClCompile>
+    <ClCompile Include="ScenarioB.cpp" />
+    <ClCompile Include="ScenarioC.cpp" />
+    <ClCompile Include="ScenarioD.cpp" />
+    <ClCompile Include="ScenarioE.cpp" />
+    <ClCompile Include="ScenarioF.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Geometry2D\Geometry2D.h">
@@ -291,6 +296,12 @@
     <ClInclude Include="SocialForces.h">
       <Filter>Agent\Header files</Filter>
     </ClInclude>
+    <ClInclude Include="ObstacleShapeEnum.h" />
+    <ClInclude Include="ScenarioB.h" />
+    <ClInclude Include="ScenarioC.h" />
+    <ClInclude Include="ScenarioD.h" />
+    <ClInclude Include="ScenarioE.h" />
+    <ClInclude Include="ScenarioF.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="Dependencies\GLFW\32bit\lib-vc2022\glfw3.lib">
@@ -325,5 +336,6 @@
     <None Include="Resources\Shaders\Circle.shader">
       <Filter>Resources\Shaders</Filter>
     </None>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

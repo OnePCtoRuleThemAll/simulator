@@ -44,6 +44,8 @@ Geometry2D::MyVector* SocialForces::behave(Agent* pAgent)
 		delete vec;
 	}
 
+	auto calculationStart = std::chrono::high_resolution_clock::now();
+
 	socialForce->vectorAddition(*Fvelocity);
 	socialForce->vectorAddition(*Fpeds);
 	socialForce->vectorAddition(*Fobstacles);
@@ -61,6 +63,9 @@ Geometry2D::MyVector* SocialForces::behave(Agent* pAgent)
 	}
 
 	newVelocity->vectorMultiplication(newAgent->getTick());
+
+	auto calculationEnd = std::chrono::high_resolution_clock::now();
+	auto calculationDuration = std::chrono::duration_cast<std::chrono::microseconds>(calculationEnd - calculationStart);
 
 	Geometry2D::MyPoint* nextPosition = new Geometry2D::MyPoint(*pAgent->getPosition());
 	Geometry2D::moveThisPointByVector(*nextPosition, *newVelocity);
@@ -87,6 +92,13 @@ Geometry2D::MyVector* SocialForces::behave(Agent* pAgent)
 
 	auto stop = std::chrono::high_resolution_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+
+	std::ofstream calculationOfs;
+	calculationOfs.open("socialForcesCalculations.csv", std::ofstream::out | std::ofstream::app);
+
+	calculationOfs << calculationDuration.count() << "\n";
+
+	calculationOfs.close();
 
 	std::ofstream ofs;
 	ofs.open("socialForces.csv", std::ofstream::out | std::ofstream::app);
